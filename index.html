@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Afterlux Club — Eventi, Karaoke & Prenotazioni</title>
+  <meta name="description" content="Afterlux Club a Lörrach: serate a tema, Karaoke ogni giovedì (ingresso gratuito), prenotazioni tavoli, contatti e mappa. Vivi la notte con stile." />
+  <meta name="color-scheme" content="dark">
+  <style>
+    :root{
+      --gold:#ffd700; --gold-d:#e6c200;
+      --bg:#000; --text:#fff; --muted:#bcbcbc;
+      --border:rgba(255,215,0,0.25);
+      --card:rgba(255,255,255,0.06);
+      --radius:16px;
+      --shadow:0 10px 30px rgba(0,0,0,.45);
+    }
+    *{box-sizing:border-box}
+    html,body{
+      margin:0; padding:0; background:var(--bg); color:var(--text);
+      /* Font stack: Helvetica di sistema + fallback */
+      font-family: Helvetica, Arial, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      line-height:1.5;
+      /* Glitter dorati leggeri su nero (non invadenti) */
+      background-image:
+        radial-gradient(rgba(255,215,0,0.08) 0.6px, transparent 0.6px),
+        radial-gradient(rgba(255,215,0,0.05) 1px, transparent 1px);
+      background-size: 3px 3px, 9px 9px;
+      background-position: 0 0, 15px 22px;
+      background-attachment: fixed;
+    }
+    a{color:var(--gold);text-decoration:none}
+    a:hover{text-decoration:underline}
+    h1{font-size:42px;margin:8px 0 6px;letter-spacing:.4px}
+    h2{font-size:28px;margin:0 0 12px;color:var(--gold)}
+    .container{max-width:1100px;margin:0 auto;padding:0 18px}
+    header{position:sticky;top:0;z-index:40;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .logo{display:flex;gap:10px;align-items:center;font-weight:700}
+    .logo img{height:50px;display:block}
+    .menu{display:flex;gap:14px;flex-wrap:wrap}
+    .menu a{padding:8px 12px;border-radius:12px;border:1px solid transparent}
+    .menu a:hover{background:var(--card);border-color:var(--border)}
+    .btn{display:inline-flex;gap:10px;align-items:center;background:var(--gold);color:#000;
+         padding:10px 16px;border-radius:12px;border:none;box-shadow:var(--shadow);cursor:pointer}
+    .btn:hover{background:var(--gold-d)}
+    .btn.ghost{background:transparent;color:var(--gold);border:1px solid var(--border)}
+    section{padding:66px 0;border-top:1px solid var(--border)}
+    .muted{color:var(--muted)}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+    .pill{display:inline-block;padding:4px 10px;border-radius:999px;border:1px solid var(--border);color:var(--muted);font-size:12px}
+    .title{font-weight:700}
+
+    /* HERO */
+    .hero{padding:72px 0}
+    .hero .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center}
+    .poster{height:320px;border-radius:var(--radius);border:1px solid var(--border);
+            background: url('hero.jpg') center/cover no-repeat, var(--card)}
+    .countdown{display:flex;gap:12px;margin-top:14px}
+    .cd-box{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:12px;text-align:center;padding:8px 10px;min-width:70px}
+    .cd-box b{display:block;font-size:22px}
+    .cd-label{font-size:11px;color:var(--muted)}
+
+    /* LISTE */
+    .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .grid-2{display:grid;grid-template-columns:1.1fr .9fr;gap:20px}
+    .map{border:0;width:100%;height:300px;border-radius:12px}
+
+    /* GALLERIA */
+    .gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .gallery img{width:100%;height:220px;object-fit:cover;border-radius:12px;border:1px solid var(--border)}
+
+    /* MODALE DETTAGLIO EVENTO */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:60}
+    .overlay.show{display:flex}
+    .modal{max-width:880px;width:92%;background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+    .modal-head{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--border)}
+    .modal-body{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:14px}
+    .modal-foot{padding:12px 14px;border-top:1px solid var(--border);display:flex;justify-content:flex-end}
+    .modal .poster{height:250px;background-size:cover;background-position:center}
+    .close{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:10px;padding:6px 10px;cursor:pointer}
+
+    footer{padding:20px 0;border-top:1px solid var(--border);color:var(--muted)}
+
+    /* RESPONSIVE */
+    @media (max-width: 960px){
+      .hero .wrap{grid-template-columns:1fr}
+      .cards{grid-template-columns:repeat(2,1fr)}
+      .gallery{grid-template-columns:repeat(3,1fr)}
+      .grid-2{grid-template-columns:1fr}
+      h1{font-size:36px}
+    }
+    @media (max-width: 640px){
+      .menu{display:none}
+      .cards{grid-template-columns:1fr}
+      .gallery{grid-template-columns:repeat(2,1fr)}
+      h1{font-size:32px}
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="container nav">
+      <div class="logo">
+        <!-- carica un file chiamato "logo.png" nella root del repo -->
+        <img src="logo.png" alt="Logo Afterlux Club" loading="lazy">
+        <span>AFTERLUX CLUB</span>
+      </div>
+      <nav class="menu" aria-label="Navigazione principale">
+        <a href="#chi-siamo">Chi siamo</a>
+        <a href="#eventi">Eventi</a>
+        <a href="#galleria">Galleria</a>
+        <a href="#contatti">Contatti</a>
+        <a href="#prenotazioni" class="btn">Prenota ora</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container wrap">
+        <div>
+          <h1>Vivi la notte di Lörrach</h1>
+          <p class="muted">Serate a tema, guest internazionali e vibrazioni dorate. <strong>Karaoke ogni giovedì</strong> dalle 21:30 alle 02:00 — ingresso gratuito.</p>
+          <div style="display:flex;gap:10px;margin:12px 0 0">
+            <a href="#prenotazioni" class="btn">Prenota un tavolo</a>
+            <a href="#eventi" class="btn ghost">Scopri gli eventi</a>
+          </div>
+          <!-- Countdown automatico al prossimo evento con data (se presente) -->
+          <div id="countdown" class="countdown" hidden aria-live="polite">
+            <div class="cd-box"><b id="cd-d">--</b><div class="cd-label">Giorni</div></div>
+            <div class="cd-box"><b id="cd-h">--</b><div class="cd-label">Ore</div></div>
+            <div class="cd-box"><b id="cd-m">--</b><div class="cd-label">Min</div></div>
+            <div class="cd-box"><b id="cd-s">--</b><div class="cd-label">Sec</div></div>
+          </div>
+        </div>
+        <!-- carica un file "hero.jpg" nella root per la copertina -->
+        <div class="poster" aria-label="Copertina"></div>
+      </div>
+    </section>
+
+    <!-- CHI SIAMO -->
+    <section id="chi-siamo">
+      <div class="container">
+        <h2>Chi siamo</h2>
+        <p><strong>Afterlux Club</strong> nasce dall’energia e dalla visione di due giovani soci, <strong>Giuseppe Leocata</strong> e <strong>Luana Ferlito</strong>. Due ragazzi che hanno deciso di mettersi in gioco per creare una discoteca capace di diventare un vero e proprio punto di ritrovo per la città di Lörrach.</p>
+        <p>La nostra missione è riportare vita e vibrazioni alla città, offrendo un luogo dove <em>tutti</em> possano sentirsi a proprio agio: unendo generi musicali diversi, dall’house all’hip-hop, dal reggaeton alla tech house, per soddisfare qualsiasi gusto e creare un’atmosfera inclusiva.</p>
+        <p>Con serate a tema, show dinamici e format innovativi, vogliamo regalare esperienze sempre nuove e uniche al nostro pubblico, trasformando ogni evento in un ricordo indimenticabile.</p>
+      </div>
+    </section>
+
+    <!-- EVENTI -->
+    <section id="eventi">
+      <div class="container">
+        <h2>Eventi</h2>
+        <div id="event-cards" class="cards"></div>
+
+        <h3 style="color:var(--gold);margin-top:34px;">Eventi ricorrenti</h3>
+        <div id="recurring-cards" class="cards"></div>
+      </div>
+    </section>
+
+    <!-- GALLERIA -->
+    <section id="galleria">
+      <div class="container">
+        <h2>Galleria</h2>
+        <div class="gallery">
+          <!-- carica i file gallery-01.jpg ... gallery-08.jpg oppure sostituisci gli src -->
+          <img src="gallery-01.jpg" alt="Afterlux" loading="lazy">
+          <img src="gallery-02.jpg" alt="Afterlux" loading="lazy">
+          <img src="gallery-03.jpg" alt="Afterlux" loading="lazy">
+          <img src="gallery-04.jpg" alt="Afterlux" loading="lazy">
+          <img src="gallery-05.jpg" alt="Afterlux" loading="lazy">
+          <img src="gallery-06.jpg" alt="Afterlux" loading="lazy">
+          <img src="gallery-07.jpg" alt="Afterlux" loading="lazy">
+          <img src="gallery-08.jpg" alt="Afterlux" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTATTI -->
+    <section id="contatti">
+      <div class="container">
+        <h2>Contatti</h2>
+        <div class="grid-2">
+          <div class="card">
+            <p><strong>Telefono:</strong> <a href="tel:+4915738465393">+49 1573 8465393</a></p>
+            <p><strong>Email:</strong> <a href="mailto:afterlux.loerrach@gmail.com">afterlux.loerrach@gmail.com</a></p>
+            <p><strong>Instagram:</strong> <a target="_blank" rel="noopener" href="https://www.instagram.com/afterlux_club?igsh=cWU0emo2ZHZyYjZp">@afterlux_club</a></p>
+            <p><strong>Indirizzo:</strong> Teicherstrasse 14, 79539 Lörrach (DE)</p>
+            <p><strong>Orari:</strong> Lun–Mer chiuso · Gio 21:30–02:00 · Ven 23:00–05:00 · Sab 23:00–05:00 · Dom 14:00–18:00</p>
+          </div>
+          <div>
+            <iframe class="map" src="https://www.google.com/maps?q=Teicherstrasse%2014%2079539%20L%C3%B6rrach&output=embed" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mappa Afterlux Club"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRENOTAZIONI -->
+    <section id="prenotazioni">
+      <div class="container">
+        <h2>Prenotazioni</h2>
+        <p class="muted">Prenota subito il tuo tavolo su WhatsApp o compila il modulo.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+          <a class="btn" href="https://wa.me/4915738465393" target="_blank" rel="noopener">Apri WhatsApp</a>
+          <a class="btn ghost" href="#form">Vai al modulo</a>
+        </div>
+        <div id="form" class="card">
+          <!-- Sostituisci lo src con il tuo Google Form (Invia → <> Incorpora) -->
+          <iframe title="Modulo prenotazioni" src="https://docs.google.com/forms/d/e/1FAIpQLSePLACEHOLDER/viewform?embedded=true" width="100%" height="820" frameborder="0">Caricamento…</iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODALE DETTAGLIO EVENTO (datato o ricorrente) -->
+  <div id="event-detail" class="overlay" role="dialog" aria-modal="true" aria-labelledby="detail-title">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 id="detail-title" style="margin:0">Dettaglio evento</h3>
+        <button class="close" id="detail-close" aria-label="Chiudi">Chiudi ✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="detail-cover" class="poster" aria-label="Copertina evento"></div>
+        <div>
+          <div class="pill" id="detail-date">Data</div>
+          <h3 style="margin:8px 0 6px" id="detail-name">Titolo</h3>
+          <p class="muted" id="detail-desc">Descrizione</p>
+          <div style="margin-top:10px">
+            <strong>Line-up</strong>
+            <div class="muted" id="detail-lineup">—</div>
+          </div>
+          <div style="margin-top:10px">
+            <strong>Prenotazioni</strong>
+            <div class="muted" id="detail-prices">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot"><a href="#prenotazioni" class="btn">Prenota ora</a></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">© <span id="year"></span> Afterlux Club • Tutti i diritti riservati</div>
+  </footer>
+
+  <script>
+    // Anno nel footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // EVENTI con data (mostrati solo se futuri)
+    const eventi = [
+      // ESEMPI (sostituisci con i tuoi; il countdown prende il primo futuro)
+      // {
+      //   slug: 'reggaeton-gold',
+      //   name: 'Reggaeton Gold',
+      //   dateISO: '2025-10-18T23:00:00+02:00',
+      //   shortDate: 'Sab 18 Ott',
+      //   desc: 'Latin / Dembow • Guest DJ',
+      //   lineup: 'DJ Romero, Special Guest TBA',
+      //   prices: 'Lista entro 00:30 • Tavoli da 180€',
+      //   cover: 'reggaeton.jpg'
+      // }
+    ];
+
+    // EVENTI RICORRENTI (sempre visibili)
+    const recurring = [
+      {
+        slug: 'karaoke-night',
+        name: 'Karaoke Night',
+        when: 'Ogni Giovedì',
+        time: '21:30 – 02:00',
+        desc: 'Ingresso gratuito • Il palco è tuo!',
+        lineup: 'Open Mic • Host Afterlux',
+        prices: 'Free Entry',
+        cover: 'karaoke.jpg'           // carica un file "karaoke.jpg" nella root
+      }
+    ];
+
+    // Render eventi futuri
+    const now = new Date();
+    const upcoming = eventi.filter(e => new Date(e.dateISO) > now)
+                           .sort((a,b)=> new Date(a.dateISO)-new Date(b.dateISO));
+
+    const cards = document.getElementById('event-cards');
+    if (upcoming.length){
+      cards.innerHTML = upcoming.map(ev => `
+        <article class="card">
+          <span class="pill">${ev.shortDate}</span>
+          <div class="title">${ev.name}</div>
+          <div class="muted">${ev.desc ?? ''}</div>
+          <div class="muted" style="font-size:12px">${new Date(ev.dateISO).toLocaleString('it-IT', { weekday: 'short', hour: '2-digit', minute: '2-digit' })}</div>
+          ${ev.cover ? `<img src="${ev.cover}" alt="${ev.name}" loading="lazy" style="width:100%;height:180px;object-fit:cover;border-radius:12px;border:1px solid var(--border);margin-top:10px">` : ``}
+          <div class="cta" style="margin-top:10px">
+            <a class="btn event-detail-link" href="#evento/${ev.slug}" data-slug="${ev.slug}">Dettagli & Prenota</a>
+          </div>
+        </article>
+      `).join('');
+    } else {
+      cards.innerHTML = `<p class="muted">Nessun evento datato in programma al momento. Seguici su Instagram per gli annunci! ✨</p>`;
+    }
+
+    // Render ricorrenti
+    const recWrap = document.getElementById('recurring-cards');
+    recWrap.innerHTML = recurring.map(ev => `
+      <article class="card">
+        <span class="pill">${ev.when} • ${ev.time}</span>
+        <div class="title">${ev.name}</div>
+        <div class="muted">${ev.desc ?? ''}</div>
+        ${ev.cover ? `<img src="${ev.cover}" alt="${ev.name}" loading="lazy" style="width:100%;height:180px;object-fit:cover;border-radius:12px;border:1px solid var(--border);margin-top:10px">` : ``}
+        <div class="cta" style="margin-top:10px">
+          <a class="btn recurring-detail-link" href="#evento/${ev.slug}" data-slug="${ev.slug}">Dettagli & Prenota</a>
+        </div>
+      </article>
+    `).join('');
+
+    // Countdown (se c'è almeno un evento futuro)
+    const cdWrap = document.getElementById('countdown');
+    if (upcoming.length){
+      const target = new Date(upcoming[0].dateISO).getTime();
+      const dEl = document.getElementById('cd-d'), hEl = document.getElementById('cd-h'),
+            mEl = document.getElementById('cd-m'), sEl = document.getElementById('cd-s');
+      cdWrap.hidden = false;
+      const tick = ()=>{
+        const t = target - Date.now();
+        if (t <= 0){ dEl.textContent='0'; hEl.textContent='00'; mEl.textContent='00'; sEl.textContent='00'; return; }
+        const d = Math.floor(t/86400000);
+        const h = Math.floor((t%86400000)/3600000);
+        const m = Math.floor((t%3600000)/60000);
+        const s = Math.floor((t%60000)/1000);
+        dEl.textContent=d;
+        hEl.textContent=String(h).padStart(2,'0');
+        mEl.textContent=String(m).padStart(2,'0');
+        sEl.textContent=String(s).padStart(2,'0');
+      };
+      tick(); setInterval(tick, 1000);
+    }
+
+    // Modale dettaglio (funziona per entrambi)
+    const detail = document.getElementById('event-detail');
+    const closeBtn = document.getElementById('detail-close');
+
+    const findAny = slug => upcoming.find(e=>e.slug===slug) || recurring.find(e=>e.slug===slug) || eventi.find(e=>e.slug===slug);
+
+    const fillDetail = ev => {
+      document.getElementById('detail-title').textContent = ev.name;
+      document.getElementById('detail-name').textContent = ev.name;
+      const dateText = ev.dateISO
+        ? new Date(ev.dateISO).toLocaleString('it-IT', { weekday:'long', day:'2-digit', month:'long', hour:'2-digit', minute:'2-digit' })
+        : `${ev.when} • ${ev.time}`;
+      document.getElementById('detail-date').textContent = dateText;
+      document.getElementById('detail-desc').textContent = ev.desc || '';
+      document.getElementById('detail-lineup').textContent = ev.lineup || '—';
+      document.getElementById('detail-prices').textContent = ev.prices || '—';
+      const cover = document.getElementById('detail-cover');
+      cover.style.backgroundImage = ev.cover ? `url(${ev.cover})` : '';
+    };
+
+    const openDetail = slug => {
+      const ev = findAny(slug);
+      if(!ev) return;
+      fillDetail(ev);
+      detail.classList.add('show');
+    };
+    const closeDetail = ()=> detail.classList.remove('show');
+
+    document.addEventListener('click', e=>{
+      const a = e.target.closest('.event-detail-link, .recurring-detail-link');
+      if(a){ e.preventDefault(); openDetail(a.getAttribute('data-slug')); history.pushState(null, '', `#evento/${a.getAttribute('data-slug')}`); }
+    });
+    closeBtn.addEventListener('click', ()=>{ closeDetail(); history.pushState(null,'','#eventi'); });
+    detail.addEventListener('click', (e)=>{ if(e.target===detail) closeDetail(); });
+
+    const handleHash = ()=>{ const m = location.hash.match(/^#evento\/(.+)$/); if(m){ openDetail(m[1]); } };
+    window.addEventListener('hashchange', handleHash); handleHash();
+  </script>
+</body>
+</html>
