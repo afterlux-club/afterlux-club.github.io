@@ -16,19 +16,15 @@
       --shadow:0 10px 30px rgba(0,0,0,.45);
     }
     *{box-sizing:border-box}
-    html,body{
-      margin:0; padding:0; background:var(--bg); color:var(--text);
-      /* Font stack: Helvetica di sistema + fallback */
-      font-family: Helvetica, Arial, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      line-height:1.5;
-      /* Glitter dorati leggeri su nero (non invadenti) */
-      background-image:
-        radial-gradient(rgba(255,215,0,0.08) 0.6px, transparent 0.6px),
-        radial-gradient(rgba(255,215,0,0.05) 1px, transparent 1px);
-      background-size: 3px 3px, 9px 9px;
-      background-position: 0 0, 15px 22px;
-      background-attachment: fixed;
-    }
+ html,body{
+  margin:0;
+  padding:0;
+  background:#000;   /* solo nero */
+  color:#fff;
+  font-family: Helvetica, Arial, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  line-height:1.5;
+}
+
     a{color:var(--gold);text-decoration:none}
     a:hover{text-decoration:underline}
     h1{font-size:42px;margin:8px 0 6px;letter-spacing:.4px}
