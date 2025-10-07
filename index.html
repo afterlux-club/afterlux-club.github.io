@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Afterlux Club — Eventi, Karaoke & Prenotazioni</title>
-  <meta name="description" content="Afterlux Club a Lörrach: serate a tema, Karaoke ogni giovedì (ingresso gratuito), prenotazioni tavoli, contatti e mappa. Vivi la notte con stile." />
+  <meta name="description" content="Afterlux Club a Lörrach: serate a tema, Karaoke ogni giovedì (ingresso gratuito), prenotazioni lounge, contatti e mappa." />
   <meta name="color-scheme" content="dark">
   <style>
     :root{
@@ -16,15 +16,18 @@
       --shadow:0 10px 30px rgba(0,0,0,.45);
     }
     *{box-sizing:border-box}
- html,body{
-  margin:0;
-  padding:0;
-  background:#000;   /* solo nero */
-  color:#fff;
-  font-family: Helvetica, Arial, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  line-height:1.5;
-}
-
+    html,body{
+      margin:0; padding:0; background:var(--bg); color:var(--text);
+      font-family: Helvetica, Arial, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      line-height:1.5;
+      /* glitter dorati leggeri */
+      background-image:
+        radial-gradient(rgba(255,215,0,0.08) 0.6px, transparent 0.6px),
+        radial-gradient(rgba(255,215,0,0.05) 1px, transparent 1px);
+      background-size: 3px 3px, 9px 9px;
+      background-position: 0 0, 15px 22px;
+      background-attachment: fixed;
+    }
     a{color:var(--gold);text-decoration:none}
     a:hover{text-decoration:underline}
     h1{font-size:42px;margin:8px 0 6px;letter-spacing:.4px}
@@ -99,7 +102,6 @@
   <header>
     <div class="container nav">
       <div class="logo">
-        <!-- carica un file chiamato "logo.png" nella root del repo -->
         <img src="logo.png" alt="Logo Afterlux Club" loading="lazy">
         <span>AFTERLUX CLUB</span>
       </div>
@@ -108,7 +110,7 @@
         <a href="#eventi">Eventi</a>
         <a href="#galleria">Galleria</a>
         <a href="#contatti">Contatti</a>
-        <a href="#prenotazioni" class="btn">Prenota ora</a>
+        <a href="#prenotazioni" class="btn">Prenota</a>
       </nav>
     </div>
   </header>
@@ -121,10 +123,9 @@
           <h1>Vivi la notte di Lörrach</h1>
           <p class="muted">Serate a tema, guest internazionali e vibrazioni dorate. <strong>Karaoke ogni giovedì</strong> dalle 21:30 alle 02:00 — ingresso gratuito.</p>
           <div style="display:flex;gap:10px;margin:12px 0 0">
-            <a href="#prenotazioni" class="btn">Prenota un tavolo</a>
+            <a href="#prenotazioni" class="btn">Prenota una lounge</a>
             <a href="#eventi" class="btn ghost">Scopri gli eventi</a>
           </div>
-          <!-- Countdown automatico al prossimo evento con data (se presente) -->
           <div id="countdown" class="countdown" hidden aria-live="polite">
             <div class="cd-box"><b id="cd-d">--</b><div class="cd-label">Giorni</div></div>
             <div class="cd-box"><b id="cd-h">--</b><div class="cd-label">Ore</div></div>
@@ -132,7 +133,6 @@
             <div class="cd-box"><b id="cd-s">--</b><div class="cd-label">Sec</div></div>
           </div>
         </div>
-        <!-- carica un file "hero.jpg" nella root per la copertina -->
         <div class="poster" aria-label="Copertina"></div>
       </div>
     </section>
@@ -143,7 +143,7 @@
         <h2>Chi siamo</h2>
         <p><strong>Afterlux Club</strong> nasce dall’energia e dalla visione di due giovani soci, <strong>Giuseppe Leocata</strong> e <strong>Luana Ferlito</strong>. Due ragazzi che hanno deciso di mettersi in gioco per creare una discoteca capace di diventare un vero e proprio punto di ritrovo per la città di Lörrach.</p>
         <p>La nostra missione è riportare vita e vibrazioni alla città, offrendo un luogo dove <em>tutti</em> possano sentirsi a proprio agio: unendo generi musicali diversi, dall’house all’hip-hop, dal reggaeton alla tech house, per soddisfare qualsiasi gusto e creare un’atmosfera inclusiva.</p>
-        <p>Con serate a tema, show dinamici e format innovativi, vogliamo regalare esperienze sempre nuove e uniche al nostro pubblico, trasformando ogni evento in un ricordo indimenticabile.</p>
+        <p>Con serate a tema, show dinamici e format innovativi, vogliamo regalare esperienze sempre nuove e uniche al nostro pubblico.</p>
       </div>
     </section>
 
@@ -163,7 +163,6 @@
       <div class="container">
         <h2>Galleria</h2>
         <div class="gallery">
-          <!-- carica i file gallery-01.jpg ... gallery-08.jpg oppure sostituisci gli src -->
           <img src="gallery-01.jpg" alt="Afterlux" loading="lazy">
           <img src="gallery-02.jpg" alt="Afterlux" loading="lazy">
           <img src="gallery-03.jpg" alt="Afterlux" loading="lazy">
@@ -195,24 +194,86 @@
       </div>
     </section>
 
-    <!-- PRENOTAZIONI -->
+    <!-- PRENOTAZIONI (contatto diretto) -->
     <section id="prenotazioni">
       <div class="container">
-        <h2>Prenotazioni</h2>
-        <p class="muted">Prenota subito il tuo tavolo su WhatsApp o compila il modulo.</p>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
-          <a class="btn" href="https://wa.me/4915738465393" target="_blank" rel="noopener">Apri WhatsApp</a>
-          <a class="btn ghost" href="#form">Vai al modulo</a>
-        </div>
-        <div id="form" class="card">
-          <!-- Sostituisci lo src con il tuo Google Form (Invia → <> Incorpora) -->
-          <iframe title="Modulo prenotazioni" src="https://docs.google.com/forms/d/e/1FAIpQLSePLACEHOLDER/viewform?embedded=true" width="100%" height="820" frameborder="0">Caricamento…</iframe>
+        <h2>Prenota</h2>
+        <p class="muted">Scrivici direttamente: scegli evento e lounge, poi invia via WhatsApp o Email.</p>
+
+        <!-- opzionale: mappa lounge -->
+        <!-- <img src="mappa-lounge.jpg" alt="Mappa lounge L1–L5" style="width:100%;border-radius:12px;border:1px solid var(--border);margin-bottom:12px"> -->
+
+        <div class="card" style="display:grid;gap:12px">
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+            <label>
+              <div class="muted">Nome e Cognome</div>
+              <input id="pr-nome" type="text" required placeholder="Il tuo nome"
+                     style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+            </label>
+            <label>
+              <div class="muted">Telefono</div>
+              <input id="pr-tel" type="tel" required placeholder="+49 ..."
+                     style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+            </label>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+            <label>
+              <div class="muted">Email</div>
+              <input id="pr-email" type="email" placeholder="nome@email.com"
+                     style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+            </label>
+            <label>
+              <div class="muted">Data (se evento datato)</div>
+              <input id="pr-data" type="date"
+                     style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+            </label>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px">
+            <label>
+              <div class="muted">Evento</div>
+              <select id="pr-event" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+                <option value="">— Seleziona evento —</option>
+              </select>
+            </label>
+
+            <label>
+              <div class="muted">Lounge</div>
+              <select id="pr-lounge" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+                <option value="L1">L1</option>
+                <option value="L2">L2</option>
+                <option value="L3">L3</option>
+                <option value="L4">L4</option>
+                <option value="L5">L5</option>
+              </select>
+            </label>
+
+            <label>
+              <div class="muted">Persone</div>
+              <select id="pr-persone" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+                <option>2</option><option>4</option><option>6</option><option>8</option><option>10</option>
+              </select>
+            </label>
+          </div>
+
+          <label>
+            <div class="muted">Note (optional)</div>
+            <textarea id="pr-note" rows="3" placeholder="Es. compleanno, preferenze..."
+                      style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff"></textarea>
+          </label>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn" type="button" id="btn-wa">Invia su WhatsApp</button>
+            <button class="btn ghost" type="button" id="btn-mail">Invia Email</button>
+            <a class="btn ghost" href="tel:+4915738465393">Chiama</a>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- MODALE DETTAGLIO EVENTO (datato o ricorrente) -->
+  <!-- MODALE -->
   <div id="event-detail" class="overlay" role="dialog" aria-modal="true" aria-labelledby="detail-title">
     <div class="modal">
       <div class="modal-head">
@@ -225,14 +286,8 @@
           <div class="pill" id="detail-date">Data</div>
           <h3 style="margin:8px 0 6px" id="detail-name">Titolo</h3>
           <p class="muted" id="detail-desc">Descrizione</p>
-          <div style="margin-top:10px">
-            <strong>Line-up</strong>
-            <div class="muted" id="detail-lineup">—</div>
-          </div>
-          <div style="margin-top:10px">
-            <strong>Prenotazioni</strong>
-            <div class="muted" id="detail-prices">—</div>
-          </div>
+          <div style="margin-top:10px"><strong>Line-up</strong><div class="muted" id="detail-lineup">—</div></div>
+          <div style="margin-top:10px"><strong>Prenotazioni</strong><div class="muted" id="detail-prices">—</div></div>
         </div>
       </div>
       <div class="modal-foot"><a href="#prenotazioni" class="btn">Prenota ora</a></div>
@@ -244,12 +299,11 @@
   </footer>
 
   <script>
-    // Anno nel footer
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // EVENTI con data (mostrati solo se futuri)
+    // === EVENTI DATATI (metti qui i tuoi con data) ===
     const eventi = [
-      // ESEMPI (sostituisci con i tuoi; il countdown prende il primo futuro)
+      // esempio (sblocca e compila):
       // {
       //   slug: 'reggaeton-gold',
       //   name: 'Reggaeton Gold',
@@ -262,7 +316,7 @@
       // }
     ];
 
-    // EVENTI RICORRENTI (sempre visibili)
+    // === EVENTI RICORRENTI ===
     const recurring = [
       {
         slug: 'karaoke-night',
@@ -272,7 +326,7 @@
         desc: 'Ingresso gratuito • Il palco è tuo!',
         lineup: 'Open Mic • Host Afterlux',
         prices: 'Free Entry',
-        cover: 'karaoke.jpg'           // carica un file "karaoke.jpg" nella root
+        cover: 'karaoke.jpg'
       }
     ];
 
@@ -282,22 +336,18 @@
                            .sort((a,b)=> new Date(a.dateISO)-new Date(b.dateISO));
 
     const cards = document.getElementById('event-cards');
-    if (upcoming.length){
-      cards.innerHTML = upcoming.map(ev => `
-        <article class="card">
-          <span class="pill">${ev.shortDate}</span>
-          <div class="title">${ev.name}</div>
-          <div class="muted">${ev.desc ?? ''}</div>
-          <div class="muted" style="font-size:12px">${new Date(ev.dateISO).toLocaleString('it-IT', { weekday: 'short', hour: '2-digit', minute: '2-digit' })}</div>
-          ${ev.cover ? `<img src="${ev.cover}" alt="${ev.name}" loading="lazy" style="width:100%;height:180px;object-fit:cover;border-radius:12px;border:1px solid var(--border);margin-top:10px">` : ``}
-          <div class="cta" style="margin-top:10px">
-            <a class="btn event-detail-link" href="#evento/${ev.slug}" data-slug="${ev.slug}">Dettagli & Prenota</a>
-          </div>
-        </article>
-      `).join('');
-    } else {
-      cards.innerHTML = `<p class="muted">Nessun evento datato in programma al momento. Seguici su Instagram per gli annunci! ✨</p>`;
-    }
+    cards.innerHTML = upcoming.length ? upcoming.map(ev => `
+      <article class="card">
+        <span class="pill">${ev.shortDate}</span>
+        <div class="title">${ev.name}</div>
+        <div class="muted">${ev.desc ?? ''}</div>
+        <div class="muted" style="font-size:12px">${new Date(ev.dateISO).toLocaleString('it-IT', { weekday: 'short', hour: '2-digit', minute: '2-digit' })}</div>
+        ${ev.cover ? `<img src="${ev.cover}" alt="${ev.name}" loading="lazy" style="width:100%;height:180px;object-fit:cover;border-radius:12px;border:1px solid var(--border);margin-top:10px">` : ``}
+        <div class="cta" style="margin-top:10px">
+          <a class="btn event-detail-link" href="#evento/${ev.slug}" data-slug="${ev.slug}">Dettagli & Prenota</a>
+        </div>
+      </article>
+    `).join('') : `<p class="muted">Nessun evento datato in programma. Seguici su Instagram ✨</p>`;
 
     // Render ricorrenti
     const recWrap = document.getElementById('recurring-cards');
@@ -313,7 +363,7 @@
       </article>
     `).join('');
 
-    // Countdown (se c'è almeno un evento futuro)
+    // Countdown
     const cdWrap = document.getElementById('countdown');
     if (upcoming.length){
       const target = new Date(upcoming[0].dateISO).getTime();
@@ -335,12 +385,10 @@
       tick(); setInterval(tick, 1000);
     }
 
-    // Modale dettaglio (funziona per entrambi)
+    // Modale dettaglio
     const detail = document.getElementById('event-detail');
     const closeBtn = document.getElementById('detail-close');
-
     const findAny = slug => upcoming.find(e=>e.slug===slug) || recurring.find(e=>e.slug===slug) || eventi.find(e=>e.slug===slug);
-
     const fillDetail = ev => {
       document.getElementById('detail-title').textContent = ev.name;
       document.getElementById('detail-name').textContent = ev.name;
@@ -351,18 +399,10 @@
       document.getElementById('detail-desc').textContent = ev.desc || '';
       document.getElementById('detail-lineup').textContent = ev.lineup || '—';
       document.getElementById('detail-prices').textContent = ev.prices || '—';
-      const cover = document.getElementById('detail-cover');
-      cover.style.backgroundImage = ev.cover ? `url(${ev.cover})` : '';
+      document.getElementById('detail-cover').style.backgroundImage = ev.cover ? `url(${ev.cover})` : '';
     };
-
-    const openDetail = slug => {
-      const ev = findAny(slug);
-      if(!ev) return;
-      fillDetail(ev);
-      detail.classList.add('show');
-    };
+    const openDetail = slug => { const ev = findAny(slug); if(!ev) return; fillDetail(ev); detail.classList.add('show'); };
     const closeDetail = ()=> detail.classList.remove('show');
-
     document.addEventListener('click', e=>{
       const a = e.target.closest('.event-detail-link, .recurring-detail-link');
       if(a){ e.preventDefault(); openDetail(a.getAttribute('data-slug')); history.pushState(null, '', `#evento/${a.getAttribute('data-slug')}`); }
@@ -370,6 +410,52 @@
     closeBtn.addEventListener('click', ()=>{ closeDetail(); history.pushState(null,'','#eventi'); });
     detail.addEventListener('click', (e)=>{ if(e.target===detail) closeDetail(); });
 
+    // === PRENOTA: popola menu Evento + WhatsApp/Email ===
+    (function populateEventSelect(){
+      const sel = document.getElementById('pr-event');
+      if (!sel) return;
+      const names = [];
+      try {
+        if (upcoming.length) names.push(...upcoming.map(e => e.name));
+        if (recurring.length) names.push(...recurring.map(e => e.name + ' (ricorrente)'));
+      } catch(e){}
+      if (!names.length) names.push('Karaoke Night (ricorrente)');
+      names.forEach(n => { const opt = document.createElement('option'); opt.value = n; opt.textContent = n; sel.appendChild(opt); });
+    })();
+
+    function buildMessage(){
+      const nome = document.getElementById('pr-nome').value.trim();
+      const tel  = document.getElementById('pr-tel').value.trim();
+      const mail = document.getElementById('pr-email').value.trim();
+      const data = document.getElementById('pr-data').value;
+      const evento = document.getElementById('pr-event').value;
+      const lounge = document.getElementById('pr-lounge').value;
+      const persone= document.getElementById('pr-persone').value;
+      const note   = document.getElementById('pr-note').value.trim();
+      const righe = [
+        'Ciao Afterlux! Vorrei prenotare una lounge.',
+        evento ? `Evento: ${evento}` : 'Evento: (da definire)',
+        data ? `Data: ${data}` : null,
+        `Lounge: ${lounge}`,
+        `Persone: ${persone}`,
+        nome ? `Nome: ${nome}` : null,
+        tel ? `Telefono: ${tel}` : null,
+        mail ? `Email: ${mail}` : null,
+        note ? `Note: ${note}` : null
+      ].filter(Boolean);
+      return righe.join('\n');
+    }
+    document.getElementById('btn-wa')?.addEventListener('click', () => {
+      const text = encodeURIComponent(buildMessage());
+      window.open(`https://wa.me/4915738465393?text=${text}`, '_blank');
+    });
+    document.getElementById('btn-mail')?.addEventListener('click', () => {
+      const subject = encodeURIComponent('Prenotazione Lounge - Afterlux');
+      const body    = encodeURIComponent(buildMessage());
+      window.location.href = `mailto:afterlux.loerrach@gmail.com?subject=${subject}&body=${body}`;
+    });
+
+    // hash router on load
     const handleHash = ()=>{ const m = location.hash.match(/^#evento\/(.+)$/); if(m){ openDetail(m[1]); } };
     window.addEventListener('hashchange', handleHash); handleHash();
   </script>
