@@ -74,13 +74,15 @@
     box-shadow: 0 0 10px rgba(255,215,0,0.2);
   }
 
-  .card img {
-    width: 20%;
-    border-radius: 10px;
-    margin-top: 10px;
-    border: 1px solid rgba(255,215,0,0.3);
-  }
-
+  /* mettilo nel tuo <style> */
+.card img {
+  width: 100%;
+  height: 360px;         /* puoi provare 300–420 */
+  object-fit: cover;
+  border-radius: 12px;
+  margin-top: 10px;
+  border: 1px solid rgba(255,215,0,0.25);
+}
   footer {
     text-align: center;
     padding: 30px 20px;
@@ -107,29 +109,76 @@
   </header>
 
   <!-- EVENTI -->
-  <section id="eventi">
-    <h2>Eventi</h2>
+  <script>
+// === EVENTI DATATI (OTTOBRE 2025) ===
+// Nota fuso orario: fino al 25/10 è CEST (+02), dal 26/10 è CET (+01).
 
-    <h3 style="color:#FFD700;margin-top:40px;">Eventi ricorrenti</h3>
-    <div class="cards">
-      <article class="card">
-        <span class="pill">Ogni Giovedì</span>
-        <div class="title"><strong>Karaoke Night</strong></div>
-        <div class="muted">Ingresso gratuito • Dalle 21:30 alle 02:00</div>
-        <div class="muted" style="font-size:12px">Teicherstrasse 14, Lörrach</div>
-        <img src="karaoke.jpg" alt="Karaoke Night Afterlux Club">
-        <div class="cta">
-          <a class="btn" href="#prenotazioni">Prenota un tavolo</a>
-        </div>
-      </article>
-    </div>
-  </section>
+const eventi = [
+  {
+    slug: 'russian-beats-2025-10-11',
+    name: 'Russian Beats',
+    dateISO: '2025-10-11T22:30:00+02:00',
+    shortDate: 'Sab 11 Ott',
+    desc: 'Beginn 22:30 • Latin/Club mix',
+    lineup: 'Music by DJ Andy',
+    prices: 'Entrata info in cassa',
+    cover: 'russian-beats-2025-10-11.jpg'
+  },
+  {
+    slug: 'rhythms-of-world-2025-10-18',
+    name: 'Rhythms of World',
+    dateISO: '2025-10-18T23:00:00+02:00',
+    shortDate: 'Sab 18 Ott',
+    desc: 'Start 23:00 • Eintritt GRATIS & ein GRATIS-SHOT',
+    lineup: 'Guest: David Costa',
+    prices: 'Ingresso gratuito',
+    cover: 'rhythms-of-world-2025-10-18.jpg'
+  },
+  {
+    slug: 'la-noche-brasilena-2025-10-25',
+    name: 'La noche brasileña',
+    dateISO: '2025-10-25T23:00:00+02:00',
+    shortDate: 'Sab 25 Ott',
+    desc: 'Start 23:00',
+    lineup: 'Direkt aus Neapel: Salese',
+    prices: 'Eintritt 5€ & ein GRATIS-SHOT',
+    cover: 'la-noche-brasilena-2025-10-25.jpg'
+  },
+  {
+    slug: 'halloween-party-2025-10-31',
+    name: 'Halloween Party',
+    dateISO: '2025-10-31T23:00:00+01:00', // già in CET
+    shortDate: 'Ven 31 Ott',
+    desc: 'Latin Mix • Costume Contest',
+    lineup: 'DJ Pepe',
+    prices: 'Vorverkauf 5€ • Abendkasse 10€',
+    cover: 'halloween-party-2025-10-31.jpg'
+  }
+];
+
+// (ricorrenti invariati)
+const recurring = [
+  {
+    slug: 'karaoke-night',
+    name: 'Karaoke Night',
+    when: 'Ogni Giovedì',
+    time: '21:30 – 02:00',
+    desc: 'Ingresso gratuito • Il palco è tuo!',
+    lineup: 'Open Mic • Host Afterlux',
+    prices: 'Free Entry',
+    cover: 'karaoke.jpg'
+  }
+];
+</script>
+
 
   <!-- GALLERIA -->
   <section id="galleria">
     <h2>Galleria</h2>
     <p>Aggiungi qui le tue foto o i video degli eventi...</p>
   </section>
+<!-- dentro la galleria -->
+<img src="promoter.jpg" alt="Afterlux cerca promoter" loading="lazy">
 
   <!-- CONTATTI -->
   <section id="contatti">
@@ -143,7 +192,8 @@
       <iframe class="map" src="https://www.google.com/maps?q=Teicherstrasse%2014%2079539%20L%C3%B6rrach&output=embed" width="100%" height="250" style="border:0;" allowfullscreen loading="lazy"></iframe>
     </div>
   </section>
-
+<!-- subito sopra il form di prenotazione -->
+<img src="lounge-map.jpg" alt="Mappa Lounge L1–L5" style="width:100%;max-height:520px;object-fit:cover;border:1px solid rgba(255,215,0,0.25);border-radius:12px;margin-bottom:12px">
   <!-- PRENOTAZIONI -->
   <section id="prenotazioni">
     <h2>Prenota ora</h2>
