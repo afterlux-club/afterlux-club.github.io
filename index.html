@@ -13,9 +13,7 @@
   body {
     margin: 0;
     font-family: 'Helvetica', sans-serif;
-    background-color: #000;
-    background-image: radial-gradient(rgba(255,215,0,0.3) 1px, transparent 1px);
-    background-size: 4px 4px;
+    background-color: #000; /* Sfondo completamente nero */
     color: #fff;
   }
 
@@ -33,6 +31,10 @@
     text-decoration: none;
   }
 
+  a:hover {
+    text-decoration: underline;
+  }
+
   .btn {
     background-color: #FFD700;
     color: #000;
@@ -40,6 +42,7 @@
     padding: 10px 20px;
     border-radius: 4px;
     cursor: pointer;
+    font-weight: bold;
   }
 
   .btn:hover {
@@ -47,7 +50,7 @@
   }
 
   .logo img {
-    height: 56px;
+    height: 140px; /* logo più grande */
     display: block;
     margin: 0 auto;
   }
@@ -73,21 +76,22 @@
 
   footer {
     text-align: center;
-    padding: 20px;
+    padding: 30px 20px;
     border-top: 1px solid rgba(255,215,0,0.2);
     font-size: 14px;
     color: #aaa;
+    background-color: #000;
   }
 </style>
 </head>
 
 <body>
+  <!-- HEADER -->
   <header>
     <div class="logo">
       <img src="afterluxluna.png" alt="Afterlux Club Logo" loading="lazy">
     </div>
     <nav>
-      <a href="#chi-siamo">Chi siamo</a> |
       <a href="#eventi">Eventi</a> |
       <a href="#galleria">Galleria</a> |
       <a href="#contatti">Contatti</a> |
@@ -95,13 +99,7 @@
     </nav>
   </header>
 
-  <section id="chi-siamo">
-    <h2>Chi siamo</h2>
-    <p><strong>Afterlux Club</strong> nasce dall’energia e dalla visione di due giovani soci, <strong>Giuseppe Leocata</strong> e <strong>Luana Ferlito</strong>. Due ragazzi che hanno deciso di mettersi in gioco per creare una discoteca capace di diventare un vero e proprio punto di ritrovo per la città di Lörrach.</p>
-    <p>La nostra missione è riportare vita e vibrazioni alla città, offrendo un luogo dove <em>tutti</em> possano sentirsi a proprio agio: unendo generi musicali diversi, dall’house all’hip-hop, dal reggaeton alla tech house, per soddisfare qualsiasi gusto e creare un’atmosfera inclusiva.</p>
-    <p>Con serate a tema, show dinamici e format innovativi, vogliamo regalare esperienze sempre nuove e uniche al nostro pubblico, trasformando ogni evento in un ricordo indimenticabile. <br> Afterlux Club non è solo una discoteca: è un viaggio notturno che appartiene a chi sceglie di viverlo.</p>
-  </section>
-
+  <!-- EVENTI -->
   <section id="eventi">
     <h2>Eventi</h2>
 
@@ -119,11 +117,13 @@
     </div>
   </section>
 
+  <!-- GALLERIA -->
   <section id="galleria">
     <h2>Galleria</h2>
     <p>Aggiungi qui le tue foto o i video degli eventi...</p>
   </section>
 
+  <!-- CONTATTI -->
   <section id="contatti">
     <h2>Contatti</h2>
     <div class="card">
@@ -136,14 +136,25 @@
     </div>
   </section>
 
+  <!-- PRENOTAZIONI -->
   <section id="prenotazioni">
     <h2>Prenota ora</h2>
     <p>Per prenotazioni o richieste speciali contattaci direttamente tramite <strong>WhatsApp</strong> o <strong>telefono</strong>:</p>
     <p><a class="btn" href="https://wa.me/4915738465393" target="_blank">Prenota su WhatsApp</a></p>
   </section>
 
+  <!-- CHI SIAMO (ora nella parte finale) -->
+  <section id="chi-siamo">
+    <h2>Chi siamo</h2>
+    <p><strong>Afterlux Club</strong> nasce dall’energia e dalla visione di due giovani soci, <strong>Giuseppe Leocata</strong> e <strong>Luana Ferlito</strong>. Due ragazzi che hanno deciso di mettersi in gioco per creare una discoteca capace di diventare un vero e proprio punto di ritrovo per la città di Lörrach.</p>
+    <p>La nostra missione è riportare vita e vibrazioni alla città, offrendo un luogo dove <em>tutti</em> possano sentirsi a proprio agio: unendo generi musicali diversi, dall’house all’hip-hop, dal reggaeton alla tech house, per soddisfare qualsiasi gusto e creare un’atmosfera inclusiva.</p>
+    <p>Con serate a tema, show dinamici e format innovativi, vogliamo regalare esperienze sempre nuove e uniche al nostro pubblico, trasformando ogni evento in un ricordo indimenticabile. <br> Afterlux Club non è solo una discoteca: è un viaggio notturno che appartiene a chi sceglie di viverlo.</p>
+  </section>
+
+  <!-- FOOTER -->
   <footer>
     <p>© 2025 Afterlux Club - Tutti i diritti riservati</p>
   </footer>
 </body>
 </html>
+
