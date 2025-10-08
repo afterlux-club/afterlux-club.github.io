@@ -70,6 +70,10 @@
     @media (max-width: 800px){ .modal-body{grid-template-columns:1fr} }
 
     footer{border-top:1px solid var(--border);text-align:center;color:var(--muted);padding-bottom:28px}
+
+    /* ==== NUOVO: nascondi Prenota finché non si clicca da un evento ==== */
+    #prenotazioni { display: none; }       /* sezione nascosta all'avvio */
+    nav a.btn { display: none; }           /* nasconde il pulsante Prenota nel menu */
   </style>
 </head>
 <body>
@@ -103,64 +107,58 @@
     </section>
 
     <!-- GALLERIA -->
-   <section id="galleria">
-  <h2>Galleria</h2>
+    <section id="galleria">
+      <h2>Galleria</h2>
 
-  <img
-    src="./Lounge-Afterlux.png"
-    alt="Disposizione Lounge Afterlux"
-    loading="lazy"
-    style="
-      width:30%;
-      max-width:1000px;
-      display:block;
-      margin:0 auto 20px;
-      border-radius:12px;
-      box-shadow:0 0 20px rgba(255,215,0,.3);
-    "
-  >
+      <!-- Lounge -->
+      <img
+        src="./Lounge-Afterlux.png"
+        alt="Disposizione Lounge Afterlux"
+        loading="lazy"
+        style="
+          width:30%;
+          max-width:1000px;
+          display:block;
+          margin:0 auto 20px;
+          border-radius:12px;
+          box-shadow:0 0 20px rgba(255,215,0,.3);
+        "
+      >
       <p style="color:#FFD700; text-align:center;">
-    Prenota la tua Lounge: 1–5 disponibili ogni weekend.
-  </p>
-</section>
-    
-<!-- Sezione PROMOTER -->
-<div class="promoter-section" style="text-align:center; margin-top:40px;">
-  <h3 style="color:#FFD700; font-size:1.8rem; margin-bottom:15px;">
-    Diventa un Promoter Afterlux
-  </h3>
+        Prenota la tua Lounge: L1–L5 disponibili ogni weekend.
+      </p>
 
-  <img
-    src="./promoter.jpg"
-    alt="Promoter Afterlux Club"
-    loading="lazy"
-    style="
-      width:20%;
-      max-width:800px;
-      display:block;
-      margin:0 auto 20px;
-      border-radius:12px;
-      box-shadow:0 0 20px rgba(255,215,0,.3);
-    "
-  >
-
-  <p style="color:#FFD700; font-size:1rem; max-width:800px; margin:0 auto;">
-    Vuoi far parte del team Afterlux? Cerchiamo persone motivate in tutta la Germania!
-    Contattaci su Instagram o via email per entrare nel nostro programma promoter
-    e ricevere vantaggi esclusivi come ingressi gratuiti e lounge riservate.
-  </p>
-  <br>
-  <a href="https://www.instagram.com/afterlux_club/" target="_blank"
-     style="background-color:#FFD700; color:black; padding:10px 25px;
-            border-radius:25px; text-decoration:none; font-weight:bold;
-            transition:0.3s;">
-    Contattaci su Instagram
-  </a>
-</div>
-
- 
-
-
+      <!-- PROMOTER -->
+      <div class="promoter-section" style="text-align:center; margin-top:40px;">
+        <h3 style="color:#FFD700; font-size:1.8rem; margin-bottom:15px;">
+          Diventa un Promoter Afterlux
+        </h3>
+        <img
+          src="./promoter.jpg"
+          alt="Promoter Afterlux Club"
+          loading="lazy"
+          style="
+            width:30%;
+            max-width:800px;
+            display:block;
+            margin:0 auto 20px;
+            border-radius:12px;
+            box-shadow:0 0 20px rgba(255,215,0,.3);
+          "
+        >
+        <p style="color:#FFD700; font-size:1rem; max-width:800px; margin:0 auto;">
+          Vuoi far parte del team Afterlux? Cerchiamo persone motivate in tutta la Germania!
+          Contattaci su Instagram o via email per entrare nel nostro programma promoter
+          e ricevere vantaggi esclusivi come ingressi gratuiti e lounge riservate.
+        </p>
+        <br>
+        <a href="https://www.instagram.com/afterlux_club/" target="_blank" rel="noopener"
+           style="background-color:#FFD700; color:black; padding:10px 25px;
+                  border-radius:25px; text-decoration:none; font-weight:bold;">
+          Contattaci su Instagram
+        </a>
+      </div>
+    </section>
 
     <!-- CONTATTI -->
     <section id="contatti">
@@ -181,7 +179,7 @@
       </div>
     </section>
 
-    <!-- PRENOTAZIONI -->
+    <!-- PRENOTAZIONI (nascosta all'avvio) -->
     <section id="prenotazioni">
       <h2>Prenota</h2>
       <p class="muted">Scrivici direttamente: scegli evento e lounge, poi invia via WhatsApp o Email.</p>
@@ -224,7 +222,7 @@
           <label>
             <div class="muted">Lounge</div>
             <select id="pr-lounge" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-              <option>N1</option><option>N2</option><option>N3</option><option>N4</option><option>N5</option>
+              <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
             </select>
           </label>
 
@@ -248,12 +246,7 @@
           <a class="btn ghost" href="tel:+4915738465393">Chiama</a>
         </div>
       </div>
-    </section>/* nascondi la sezione Prenota finché non viene richiesta */
-#prenotazioni { display: none; }
-
-/* nascondi il tasto Prenota nel menu */
-nav a.btn { display: none; }
-
+    </section>
 
     <!-- CHI SIAMO (in fondo) -->
     <section id="chi-siamo" style="margin-top:42px">
@@ -278,7 +271,8 @@ nav a.btn { display: none; }
           <div style="margin-top:10px"><strong>Info</strong><div class="muted" id="detail-prices">—</div></div>
         </div>
       </div>
-      <div class="modal-foot"><a href="#prenotazioni" class="btn">Prenota ora</a></div>
+      <!-- NUOVO: bottone che fa comparire la sezione Prenota -->
+      <div class="modal-foot"><button id="open-booking" class="btn" type="button">Prenota ora</button></div>
     </div>
   </div>
 
@@ -333,7 +327,7 @@ nav a.btn { display: none; }
       }
     ];
 
-        // === RICORRENTI ===
+    // === RICORRENTI ===
     const recurring = [
       {
         slug:'karaoke-night',
@@ -356,7 +350,6 @@ nav a.btn { display: none; }
         cover:'kinderdisco.jpg'
       }
     ];
-
 
     // RENDER EVENTI
     const now = new Date();
@@ -467,7 +460,25 @@ nav a.btn { display: none; }
     document.getElementById('btn-mail')?.addEventListener('click', ()=>{
       location.href = `mailto:afterlux.loerrach@gmail.com?subject=${encodeURIComponent('Prenotazione Lounge - Afterlux')}&body=${encodeURIComponent(buildMsg())}`;
     });
+
+    /* ===== NUOVO: mostra la sezione Prenota solo quando si clicca dalla modale ===== */
+    function showBookingSection(){
+      const s = document.getElementById('prenotazioni');
+      if (!s) return;
+      s.style.display = 'block';   // rendi visibile
+      closeDetail();               // chiudi la modale
+      s.scrollIntoView({ behavior: 'smooth', block: 'start' }); // scroll dolce
+    }
+    // listener delegato per il bottone nella modale
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('#open-booking');
+      if (btn) showBookingSection();
+    });
+    // se l'utente apre direttamente #prenotazioni da URL, mostrala
+    if (location.hash === '#prenotazioni') {
+      const s = document.getElementById('prenotazioni');
+      if (s) s.style.display = 'block';
+    }
   </script>
 </body>
 </html>
-
