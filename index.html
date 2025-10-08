@@ -224,7 +224,7 @@
           <label>
             <div class="muted">Lounge</div>
             <select id="pr-lounge" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-              <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+              <option>N1</option><option>N2</option><option>N3</option><option>N4</option><option>N5</option>
             </select>
           </label>
 
@@ -248,7 +248,12 @@
           <a class="btn ghost" href="tel:+4915738465393">Chiama</a>
         </div>
       </div>
-    </section>
+    </section>/* nascondi la sezione Prenota finché non viene richiesta */
+#prenotazioni { display: none; }
+
+/* nascondi il tasto Prenota nel menu */
+nav a.btn { display: none; }
+
 
     <!-- CHI SIAMO (in fondo) -->
     <section id="chi-siamo" style="margin-top:42px">
