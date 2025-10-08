@@ -21,7 +21,7 @@
       color:var(--text);
       /* sfondo immagine + overlay scuro per leggibilità */
       background:
-        linear-gradient(rgba(0,0,0,.62), rgba(0,0,0,.72)) ,
+        linear-gradient(rgba(0,0,0,.60), rgba(0,0,0,.72)) ,
         url("Neuer%C3%B6ffnung%20Afterlux%20L%C3%B6rrach%20A6.png") center/cover fixed no-repeat #000;
       min-height:100vh;
       line-height:1.45;
@@ -35,8 +35,8 @@
 
     /* LOGO */
     .logo{display:flex;justify-content:center;align-items:center;margin:4px 0 8px}
-    .logo img{height:360px;max-width:100%;display:block}
-    @media (max-width: 680px){ .logo img{height:180px} }
+    .logo img{height:400px;max-width:100%;display:block}
+    @media (max-width: 680px){ .logo img{height:200px} }
 
     /* NAV */
     nav{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:18px}
@@ -59,7 +59,7 @@
     /* MAPPA */
     .map{width:100%;height:300px;border:0;border-radius:12px}
 
-    /* DETTAGLIO MODALE (semplice) */
+    /* DETTAGLIO MODALE */
     .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
     .overlay.show{display:flex}
     .modal{max-width:900px;width:100%;background:#0a0a0a;border:1px solid var(--border);border-radius:16px;overflow:hidden}
@@ -98,34 +98,62 @@
       <h2>I prossimi eventi</h2>
       <div id="event-cards" class="cards"></div>
 
-      <h3 style="margin-top:20px">Eventi ricorrenti</h3>
+      <h3 style="margin-top:26px">Eventi ricorrenti</h3>
       <div id="recurring-cards" class="cards"></div>
     </section>
 
- <section id="galleria">
-  <h2>Galleria</h2>
+    <!-- GALLERIA -->
+    <section id="galleria">
+      <h2>Galleria</h2>
 
-  <img
-    src="./Lounge-Afterlux.png"
-    alt="Disposizione Lounge Afterlux"
-    loading="lazy"
-    style="
-      width:30%;
-      max-width:1000px;
-      display:block;
-      margin:0 auto 20px;
-      border-radius:12px;
-      box-shadow:0 0 20px rgba(255,215,0,.3);
-    "
-  >
+      <!-- Lounge -->
+      <img
+        src="./Lounge-Afterlux.png"
+        alt="Disposizione Lounge Afterlux"
+        loading="lazy"
+        style="
+          width:100%;
+          max-width:1000px;
+          display:block;
+          margin:0 auto 20px;
+          border-radius:12px;
+          box-shadow:0 0 20px rgba(255,215,0,.3);
+        "
+      >
+      <p style="color:#FFD700; text-align:center;">
+        Prenota la tua Lounge: L1–L5 disponibili ogni weekend.
+      </p>
 
-  <p style="color:#FFD700; text-align:center;">
-    Prenota la tua Lounge: 1–5 disponibili ogni weekend.
-  </p>
-</section>
-
-
-
+      <!-- PROMOTER -->
+      <div class="promoter-section" style="text-align:center; margin-top:40px;">
+        <h3 style="color:#FFD700; font-size:1.8rem; margin-bottom:15px;">
+          Diventa un Promoter Afterlux
+        </h3>
+        <img
+          src="./promoter.jpg"
+          alt="Promoter Afterlux Club"
+          loading="lazy"
+          style="
+            width:100%;
+            max-width:800px;
+            display:block;
+            margin:0 auto 20px;
+            border-radius:12px;
+            box-shadow:0 0 20px rgba(255,215,0,.3);
+          "
+        >
+        <p style="color:#FFD700; font-size:1rem; max-width:800px; margin:0 auto;">
+          Vuoi far parte del team Afterlux? Scrivici su Instagram o via email per entrare nel nostro programma promoter
+          e ricevere vantaggi esclusivi come ingressi gratuiti e lounge riservate.
+        </p>
+        <br>
+        <a href="https://www.instagram.com/afterlux_club/" target="_blank" rel="noopener"
+           style="background-color:#FFD700; color:black; padding:10px 25px;
+                  border-radius:25px; text-decoration:none; font-weight:bold;">
+          Contattaci su Instagram
+        </a>
+      </div>
+    </section>
 
     <!-- CONTATTI -->
     <section id="contatti">
@@ -189,7 +217,7 @@
           <label>
             <div class="muted">Lounge</div>
             <select id="pr-lounge" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-              <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+              <option>L1</option><option>L2</option><option>L3</option><option>L4</option><option>L5</option>
             </select>
           </label>
 
@@ -224,7 +252,7 @@
     </section>
   </main>
 
-  <!-- MODALE SEMPLICE -->
+  <!-- MODALE DETTAGLIO EVENTO -->
   <div id="event-detail" class="overlay" role="dialog" aria-modal="true" aria-labelledby="detail-title">
     <div class="modal">
       <div class="modal-head"><h3 id="detail-title" style="margin:0">Dettaglio evento</h3></div>
@@ -249,7 +277,7 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // === EVENTI DATATI (usa i nomi file che hai caricato) ===
+    // === EVENTI DATATI (nomi file con spazi → gestiti con encodeURI) ===
     const eventi = [
       {
         slug:'russian-beats-2025-10-11',
@@ -269,7 +297,7 @@
         desc:'Start 23:00',
         lineup:'David Costa',
         prices:'Eintritt GRATIS & ein GRATIS-SHOT',
-        cover:'david costa 18.10.jpg'
+        cover:'David Costa 18.10.jpg'
       },
       {
         slug:'la-noche-brasilena-2025-10-25',
@@ -279,7 +307,7 @@
         desc:'Start 23:00',
         lineup:'Salese',
         prices:'Eintritt 5€ & ein GRATIS-SHOT',
-        cover:'dj salese 25.10.jpg'
+        cover:'DJ Salese 25.10.jpg'
       },
       {
         slug:'halloween-party-2025-10-31',
@@ -289,11 +317,11 @@
         desc:'Latin Mix • Costume Contest',
         lineup:'DJ Pepe',
         prices:'Vorverkauf 5€ • Abendkasse 10€',
-        cover:'hallowe 31.10.jpg'
+        cover:'31.10.jpg di halloween'
       }
     ];
 
-       // === RICORRENTI ===
+    // === RICORRENTI ===
     const recurring = [
       {
         slug:'karaoke-night',
@@ -324,14 +352,14 @@
     const cards = document.getElementById('event-cards');
     cards.innerHTML = upcoming.length ? upcoming.map(ev => `
       <article class="card">
-        <img src="${encodeURI(ev.cover)}" alt="${ev.name}">
+        <img src="\${encodeURI(ev.cover)}" alt="\${ev.name}">
         <div class="content">
-          <div class="pill">${ev.shortDate}</div>
-          <h3>${ev.name}</h3>
-          <p class="muted">${ev.desc ?? ''}</p>
-          <p class="muted" style="font-size:12px">${new Date(ev.dateISO).toLocaleString('it-IT',{weekday:'short',hour:'2-digit',minute:'2-digit'})}</p>
+          <div class="pill">\${ev.shortDate}</div>
+          <h3>\${ev.name}</h3>
+          <p class="muted">\${ev.desc ?? ''}</p>
+          <p class="muted" style="font-size:12px">\${new Date(ev.dateISO).toLocaleString('it-IT',{weekday:'short',hour:'2-digit',minute:'2-digit'})}</p>
           <div style="margin-top:8px">
-            <a class="btn event-detail-link" href="#evento/${ev.slug}" data-slug="${ev.slug}">Dettagli & Prenota</a>
+            <a class="btn event-detail-link" href="#evento/\${ev.slug}" data-slug="\${ev.slug}">Dettagli & Prenota</a>
           </div>
         </div>
       </article>
@@ -340,13 +368,13 @@
     const recWrap = document.getElementById('recurring-cards');
     recWrap.innerHTML = recurring.map(ev => `
       <article class="card">
-        ${ev.cover ? `<img src="${encodeURI(ev.cover)}" alt="${ev.name}">` : ``}
+        \${ev.cover ? `<img src="\${encodeURI(ev.cover)}" alt="\${ev.name}">` : ``}
         <div class="content">
-          <div class="pill">${ev.when} • ${ev.time}</div>
-          <h3>${ev.name}</h3>
-          <p class="muted">${ev.desc ?? ''}</p>
+          <div class="pill">\${ev.when} • \${ev.time}</div>
+          <h3>\${ev.name}</h3>
+          <p class="muted">\${ev.desc ?? ''}</p>
           <div style="margin-top:8px">
-            <a class="btn recurring-detail-link" href="#evento/${ev.slug}" data-slug="${ev.slug}">Dettagli & Prenota</a>
+            <a class="btn recurring-detail-link" href="#evento/\${ev.slug}" data-slug="\${ev.slug}">Dettagli & Prenota</a>
           </div>
         </div>
       </article>
@@ -377,11 +405,11 @@
       document.getElementById('detail-name').textContent = ev.name;
       document.getElementById('detail-date').textContent = ev.dateISO
         ? new Date(ev.dateISO).toLocaleString('it-IT',{weekday:'long',day:'2-digit',month:'long',hour:'2-digit',minute:'2-digit'})
-        : `${ev.when} • ${ev.time}`;
+        : \`\${ev.when} • \${ev.time}\`;
       document.getElementById('detail-desc').textContent = ev.desc || '—';
       document.getElementById('detail-lineup').textContent = ev.lineup || '—';
       document.getElementById('detail-prices').textContent = ev.prices || '—';
-      document.getElementById('detail-cover').style.backgroundImage = ev.cover ? `url(${encodeURI(ev.cover)})` : '';
+      document.getElementById('detail-cover').style.backgroundImage = ev.cover ? \`url(\${encodeURI(ev.cover)})\` : '';
     };
     const findAny = slug => upcoming.find(e=>e.slug===slug) || eventi.find(e=>e.slug===slug) || recurring.find(e=>e.slug===slug);
     const openDetail = slug => { const ev=findAny(slug); if(!ev) return; fillDetail(ev); overlay.classList.add('show'); };
@@ -393,7 +421,7 @@
     });
     window.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDetail(); });
 
-    // PRENOTA: selettore eventi + messaggi
+    // PRENOTA: select eventi + messaggi
     (function populateSelect(){
       const sel = document.getElementById('pr-event');
       if (!sel) return;
@@ -413,18 +441,18 @@
       const note   = document.getElementById('pr-note').value.trim();
       return [
         'Ciao Afterlux! Vorrei prenotare una lounge.',
-        evento ? `Evento: ${evento}` : 'Evento: (da definire)',
-        data ? `Data: ${data}` : null,
-        `Lounge: ${lounge}`, `Persone: ${persone}`,
-        nome ? `Nome: ${nome}` : null, tel ? `Telefono: ${tel}` : null, mail ? `Email: ${mail}` : null,
-        note ? `Note: ${note}` : null
-      ].filter(Boolean).join('\n');
+        evento ? \`Evento: \${evento}\` : 'Evento: (da definire)',
+        data ? \`Data: \${data}\` : null,
+        \`Lounge: \${lounge}\`, \`Persone: \${persone}\`,
+        nome ? \`Nome: \${nome}\` : null, tel ? \`Telefono: \${tel}\` : null, mail ? \`Email: \${mail}\` : null,
+        note ? \`Note: \${note}\` : null
+      ].filter(Boolean).join('\\n');
     }
     document.getElementById('btn-wa')?.addEventListener('click', ()=>{
-      window.open(`https://wa.me/4915738465393?text=${encodeURIComponent(buildMsg())}`,'_blank');
+      window.open(\`https://wa.me/4915738465393?text=\${encodeURIComponent(buildMsg())}\`,'_blank');
     });
     document.getElementById('btn-mail')?.addEventListener('click', ()=>{
-      location.href = `mailto:afterlux.loerrach@gmail.com?subject=${encodeURIComponent('Prenotazione Lounge - Afterlux')}&body=${encodeURIComponent(buildMsg())}`;
+      location.href = \`mailto:afterlux.loerrach@gmail.com?subject=\${encodeURIComponent('Prenotazione Lounge - Afterlux')}&body=\${encodeURIComponent(buildMsg())}\`;
     });
   </script>
 </body>
