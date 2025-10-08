@@ -69,7 +69,7 @@
 
     footer{border-top:1px solid var(--border);text-align:center;color:var(--muted);padding-bottom:28px}
 
-    /* NASCONDI "PRENOTA" ALL'AVVIO */
+    /* NASCONDI "PRENOTA" ALL'AVVIO (soluzione B: resta !important) */
     #prenotazioni{display:none !important;}
     nav a.btn{display:none;}
   </style>
@@ -81,7 +81,6 @@
       <a href="#eventi">Eventi</a>
       <a href="#galleria">Galleria</a>
       <a href="#contatti">Contatti</a>
-      <!-- niente tasto Prenota -->
     </nav>
     <div id="countdown" class="container" hidden style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
       <span class="pill"><b id="cd-d">--</b> giorni</span>
@@ -140,7 +139,7 @@
       </div>
     </section>
 
-    <!-- PRENOTAZIONI (NASCOSTA) -->
+    <!-- PRENOTAZIONI (NASCOSTA FINCHÉ NON CLICCHI "PRENOTA ORA") -->
     <section id="prenotazioni">
       <h2>Prenota</h2>
       <p class="muted">Scrivici direttamente: scegli evento e lounge, poi invia via WhatsApp o Email.</p>
@@ -296,7 +295,7 @@
       }; tick(); setInterval(tick,1000); cdWrap.hidden=false;
     }
 
-    // MODALE + PRECOMPILAZIONE PRENOTA
+    // MODALE + PRENOTA (Soluzione B: forziamo l'important)
     let currentDetailSlug = null;
     const overlay = document.getElementById('event-detail');
 
@@ -336,7 +335,7 @@
     function ensureEventSelectOptions(){
       const sel = document.getElementById('pr-event');
       if (!sel) return;
-      if (sel.options.length > 1) return; // già popolato
+      if (sel.options.length > 1) return;
       const list = [...upcoming.map(e=>e.name), ...recurring.map(e=>e.name+' (ricorrente)')];
       (list.length?list:['Karaoke Night (ricorrente)']).forEach(n=>{
         const o=document.createElement('option'); o.value=n; o.textContent=n; sel.appendChild(o);
@@ -348,13 +347,11 @@
       const sec = document.getElementById('prenotazioni');
       if (!sec) return;
 
-      // mostra la sezione
-      sec.style.display = 'block';
+      // ► Forza la visualizzazione anche se il CSS usa !important
+      sec.style.setProperty('display','block','important');
 
-      // popola select se necessario
       ensureEventSelectOptions();
 
-      // precompila
       const sel = document.getElementById('pr-event');
       if (sel && ev){
         sel.value = ev.dateISO ? ev.name : `${ev.name} (ricorrente)`;
