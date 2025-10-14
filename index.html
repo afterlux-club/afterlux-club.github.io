@@ -14,7 +14,7 @@
   <title>Afterlux Club — Events & Reservierungen</title>
   <link rel="icon" type="image/png" href="afterluxluna.png" />
 
-  <!-- Open Graph (condivisione social) -->
+  <!-- Open Graph -->
   <meta property="og:title" content="Afterlux Club – Events & Reservierungen">
   <meta property="og:description" content="Scopri i prossimi eventi e prenota la tua lounge a Lörrach.">
   <meta property="og:image" content="afterluxluna.png">
@@ -46,10 +46,9 @@
     h1,h2,h3{color:var(--gold);margin:0 0 12px}
     .container{max-width:1100px;margin:0 auto}
 
-    /* LOGO */
+    /* LOGO (più reattivo) */
     .logo{display:flex;justify-content:center;align-items:center;margin:4px 0 8px}
-    .logo img{height:360px;max-width:100%;display:block}
-    @media (max-width:680px){.logo img{height:180px}}
+    .logo img{height:clamp(140px,22vw,360px);max-width:100%;display:block}
 
     /* NAV */
     nav{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:18px}
@@ -64,7 +63,15 @@
     /* CARDS */
     .cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
     .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-    .card img{width:100%;height:360px;object-fit:cover;display:block}
+    /* Immagini/Video più adatti a PC e smartphone */
+    .card img,
+    .card video{
+      width:100%;
+      height:clamp(220px,32vw,420px);
+      object-fit:cover;
+      display:block;
+      background:#000;
+    }
     .card .content{padding:14px}
     .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.1);font-size:12px;margin-bottom:8px}
     .muted{color:var(--muted)}
@@ -87,6 +94,9 @@
     /* "RESERVIEREN" ZU BEGINN VERSTECKEN (mit !important) */
     #prenotazioni{display:none !important;}
     nav a.btn{display:none;}
+
+    /* ► Nascondi per sempre il bottone Tickets dentro al modal */
+    #buy-tickets{display:none !important;}
   </style>
 </head>
 <body>
@@ -132,7 +142,7 @@
       <h2>Galerie</h2>
 
       <img src="./Lounge-Afterlux.png" alt="Lounge-Plan Afterlux" loading="lazy"
-           style="width:30%;max-width:1000px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
+           style="width:min(30%,520px);max-width:1000px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
       <p style="color:#FFD700;text-align:center">Reserviere deine Lounge: N1–N5 jedes Wochenende verfügbar.</p>
 
       <!-- GALLERIA · VIDEO CARD -->
@@ -140,11 +150,7 @@
         <article class="card">
           <video
             controls playsinline preload="metadata" poster="afterluxluna.png" loading="lazy"
-            style="width:100%;height:360px;object-fit:cover;display:block;background:#000"
-            aria-label="Afterlux Club – Video Teaser">
-            <source src="video%20afterlux%20.mp4" type="video/mp4">
-            Il tuo browser non supporta il video.
-          </video>
+            aria-label="Afterlux Club – Video Teaser"></video>
           <div class="content">
             <div class="pill">Highlight • Club Teaser</div>
             <h3>Afterlux – Video</h3>
@@ -156,13 +162,23 @@
                 onclick="this.closest('.card').querySelector('video').pause()">⏸︎ Pause</button>
             </div>
           </div>
+          <!-- sorgente video (fuori dal tag per pulizia HTML) -->
+          <script>
+            (function(){
+              const v=document.currentScript.previousElementSibling.previousElementSibling;
+              if(v && !v.querySelector('source')){
+                const s=document.createElement('source');
+                s.src='video%20afterlux%20.mp4'; s.type='video/mp4'; v.appendChild(s);
+              }
+            })();
+          </script>
         </article>
       </div>
 
       <div class="promoter-section" style="text-align:center;margin-top:40px">
         <h3 style="color:#FFD700;font-size:1.8rem;margin-bottom:15px">Werde Afterlux Promoter</h3>
         <img src="./promoter.jpg" alt="Afterlux Club Promoter" loading="lazy"
-             style="width:30%;max-width:800px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
+             style="width:min(30%,520px);max-width:800px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
         <p style="color:#FFD700;font-size:1rem;max-width:800px;margin:0 auto">
           Du willst Teil vom Afterlux-Team werden? Schreib uns auf Instagram oder per E-Mail und sichere dir exklusive Vorteile.
         </p><br>
@@ -401,16 +417,12 @@
       document.getElementById('detail-cover').style.backgroundImage = ev.cover ? `url(${encodeURI(ev.cover)})` : '';
     };
 
+    // ► Nessun bottone "Tickets" nel modal
     function openDetail(slug){
       const ev = findAny(slug);
       if (!ev) return;
       currentDetailSlug = slug;
       fillDetail(ev);
-
-      const buy = document.getElementById('buy-tickets');
-      if (ev.ticketUrl){ buy.href = ev.ticketUrl; buy.style.display = 'inline-block'; }
-      else { buy.style.display='none'; }
-
       overlay.classList.add('show');
     }
     const closeDetail = ()=> overlay.classList.remove('show');
