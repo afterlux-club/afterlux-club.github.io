@@ -1,6 +1,5 @@
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-RN07E4K7GL">
-</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RN07E4K7GL"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -14,6 +13,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Afterlux Club — Events & Reservierungen</title>
   <link rel="icon" type="image/png" href="afterluxluna.png" />
+
+  <!-- Open Graph (condivisione social) -->
+  <meta property="og:title" content="Afterlux Club – Events & Reservierungen">
+  <meta property="og:description" content="Scopri i prossimi eventi e prenota la tua lounge a Lörrach.">
+  <meta property="og:image" content="afterluxluna.png">
+  <meta property="og:type" content="website">
+
   <meta name="color-scheme" content="dark" />
   <style>
     :root{
@@ -71,7 +77,7 @@
     .overlay.show{display:flex}
     .modal{max-width:900px;width:100%;background:#0a0a0a;border:1px solid var(--border);border-radius:16px;overflow:hidden}
     .modal-head,.modal-foot{padding:12px 14px;border-bottom:1px solid var(--border)}
-    .modal-foot{border-top:1px solid var(--border);border-bottom:none;display:flex;justify-content:flex-end;gap:10px}
+    .modal-foot{border-top:1px solid var(--border);border-bottom:none;display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}
     .modal-body{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:14px}
     .modal .cover{height:260px;background:#111 center/cover no-repeat;border:1px solid var(--border);border-radius:12px}
     @media (max-width:800px){.modal-body{grid-template-columns:1fr}}
@@ -85,7 +91,7 @@
 </head>
 <body>
   <header class="container">
-    <div class="logo"><img src="afterluxluna.png" alt="Afterlux Club Logo" loading="lazy"></div>
+    <div class="logo"><img src="afterluxluna.png" alt="Afterlux Club Logo" loading="eager" decoding="async"></div>
     <nav aria-label="Hauptnavigation">
       <a href="#eventi">Events</a>
       <a href="#galleria">Galerie</a>
@@ -103,6 +109,18 @@
     <!-- EVENTS -->
     <section id="eventi">
       <h2>Kommende Events</h2>
+
+      <!-- Ricerca + filtro mese -->
+      <div class="card" style="padding:12px;display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+        <input id="q" placeholder="Suchen… (z.B. Latin, Halloween)" aria-label="Events suchen"
+               style="flex:1;min-width:200px;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+        <select id="month" aria-label="Nach Monat filtern"
+                style="padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+          <option value="">Alle Monate</option>
+        </select>
+        <button class="btn ghost" type="button" id="clr">Zurücksetzen</button>
+      </div>
+
       <div id="event-cards" class="cards"></div>
 
       <h3 style="margin-top:26px">Wiederkehrende Events</h3>
@@ -121,7 +139,7 @@
       <div class="cards" style="margin-top:18px">
         <article class="card">
           <video
-            controls playsinline preload="metadata" poster="afterluxluna.png"
+            controls playsinline preload="metadata" poster="afterluxluna.png" loading="lazy"
             style="width:100%;height:360px;object-fit:cover;display:block;background:#000"
             aria-label="Afterlux Club – Video Teaser">
             <source src="video%20afterlux%20.mp4" type="video/mp4">
@@ -232,14 +250,6 @@
         </div>
       </div>
     </section>
-
-    <!-- ÜBER UNS -->
-    <section id="chi-siamo" style="margin-top:42px">
-      <h2>Über uns</h2>
-      <p><strong>Afterlux Club</strong> ist die Vision von zwei jungen Partnern, <strong>Giuseppe Leocata</strong> und <strong>Luana Ferlito</strong>.</p>
-      <p>Unsere Mission: Lörrachs Nachtleben pushen – mit einem Ort, an dem sich <em>jede*r</em> wohlfühlt. Wir mixen verschiedene Musikgenres, von House bis Hip-Hop, Reggaeton bis Tech House, und schaffen eine offene, inklusive Atmosphäre.</p>
-      <p>Mit Motto-Nights, Shows und frischen Formaten sorgen wir für neue, einzigartig e Erlebnisse – jede Nacht soll in Erinnerung bleiben.</p>
-    </section>
   </main>
 
   <!-- MODAL -->
@@ -259,6 +269,7 @@
       <div class="modal-foot">
         <button id="open-booking" class="btn" type="button">Jetzt reservieren</button>
         <a id="buy-tickets" class="btn ghost" href="#" target="_blank" rel="noopener" style="display:none">Tickets kaufen</a>
+        <button id="add-calendar" class="btn ghost" type="button">In den Kalender</button>
       </div>
     </div>
   </div>
@@ -286,39 +297,73 @@
       { slug:'karaoke-night', name:'Karaoke Night', when:'Jeden Donnerstag', time:'21:30 – 02:00', desc:'Eintritt frei • Die Bühne gehört dir!', lineup:'Open Mic • Host Afterlux', prices:'Free Entry', cover:'karaoke.jpg' },
     ];
 
-    // CARDS RENDERN
-    const now = new Date();
-    const upcoming = eventi.filter(e => new Date(e.dateISO) > now).sort((a,b)=>new Date(a.dateISO)-new Date(b.dateISO));
-    const cards = document.getElementById('event-cards');
-    cards.innerHTML = upcoming.length ? upcoming.map(ev => `
+    // Helpers
+    const $ = sel => document.querySelector(sel);
+    const cards = $('#event-cards');
+    const recWrap = $('#recurring-cards');
+
+    // Popola select mesi presenti
+    (()=>{ 
+      const months = [...new Set(eventi.map(e =>
+        new Date(e.dateISO).toLocaleString('de-DE',{month:'long',year:'numeric'})
+      ))];
+      const sel=$('#month'); months.forEach(m=>{const o=document.createElement('option');o.textContent=m;o.value=m;sel.appendChild(o);});
+      $('#clr').addEventListener('click', ()=>{ $('#q').value=''; $('#month').value=''; filter(); });
+    })();
+
+    // Render funzioni
+    function cardHTML(ev){
+      return `
       <article class="card">
-        <img src="${encodeURI(ev.cover)}" alt="${ev.name}">
+        <img src="${encodeURI(ev.cover)}" alt="${ev.name}" loading="lazy" decoding="async">
         <div class="content">
           <div class="pill">${ev.shortDate}</div>
           <h3>${ev.name}</h3>
           <p class="muted">${ev.desc ?? ''}</p>
-          <p class="muted" style="font-size:12px">${new Date(ev.dateISO).toLocaleString('it-IT',{weekday:'short',hour:'2-digit',minute:'2-digit'})}</p>
-          <div style="margin-top:8px">
-            <a class="btn event-detail-link" href="#evento/${ev.slug}" data-slug="${ev.slug}">Details & Reservieren</a>
+          <p class="muted" style="font-size:12px">${new Date(ev.dateISO).toLocaleString('de-DE',{weekday:'short',hour:'2-digit',minute:'2-digit'})}</p>
+          <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+            <a class="btn event-detail-link" href="#evento/${ev.slug}" data-slug="${ev.slug}" aria-label="Details zu ${ev.name}">Details & Reservieren</a>
+            ${ev.ticketUrl ? `<a class="btn ghost" href="${ev.ticketUrl}" target="_blank" rel="noopener" aria-label="Tickets für ${ev.name} kaufen">Tickets</a>` : ``}
           </div>
         </div>
-      </article>
-    `).join('') : `<p class="muted">Keine geplanten Events mit Datum.</p>`;
+      </article>`;
+    }
 
-    const recWrap = document.getElementById('recurring-cards');
+    const now = new Date();
+    const upcoming = eventi.filter(e => new Date(e.dateISO) > now).sort((a,b)=>new Date(a.dateISO)-new Date(b.dateISO));
+
+    function render(list){
+      cards.innerHTML = list.length ? list.map(cardHTML).join('') : `<p class="muted">Keine geplanten Events mit Datum.</p>`;
+    }
+    render(upcoming);
+
     recWrap.innerHTML = recurring.map(ev => `
       <article class="card">
-        ${ev.cover ? `<img src="${encodeURI(ev.cover)}" alt="${ev.name}">` : ``}
+        ${ev.cover ? `<img src="${encodeURI(ev.cover)}" alt="${ev.name}" loading="lazy">` : ``}
         <div class="content">
           <div class="pill">${ev.when} • ${ev.time}</div>
           <h3>${ev.name}</h3>
           <p class="muted">${ev.desc ?? ''}</p>
           <div style="margin-top:8px">
-            <a class="btn recurring-detail-link" href="#evento/${ev.slug}" data-slug="${ev.slug}">Details & Reservieren</a>
+            <a class="btn recurring-detail-link" href="#evento/${ev.slug}" data-slug="${ev.slug}" aria-label="Details zu ${ev.name}">Details & Reservieren</a>
           </div>
         </div>
       </article>
     `).join('');
+
+    // Ricerca & filtro
+    function filter(){
+      const q=$('#q').value.toLowerCase().trim();
+      const m=$('#month').value;
+      const list = upcoming.filter(e=>{
+        const mm=new Date(e.dateISO).toLocaleString('de-DE',{month:'long',year:'numeric'});
+        const txt=(e.name+' '+(e.desc||'')+' '+(e.lineup||'')).toLowerCase();
+        return (!q||txt.includes(q)) && (!m||m===mm);
+      });
+      render(list);
+    }
+    $('#q').addEventListener('input', filter);
+    $('#month').addEventListener('change', filter);
 
     // COUNTDOWN
     const cdWrap = document.getElementById('countdown');
@@ -356,25 +401,18 @@
       document.getElementById('detail-cover').style.backgroundImage = ev.cover ? `url(${encodeURI(ev.cover)})` : '';
     };
 
-    const openDetail = slug => {
+    function openDetail(slug){
       const ev = findAny(slug);
       if (!ev) return;
       currentDetailSlug = slug;
       fillDetail(ev);
 
-      // set Eventfrog button visibility/link
       const buy = document.getElementById('buy-tickets');
-      if (buy){
-        if (ev.ticketUrl){
-          buy.href = ev.ticketUrl;
-          buy.style.display = 'inline-block';
-        } else {
-          buy.style.display = 'none';
-        }
-      }
+      if (ev.ticketUrl){ buy.href = ev.ticketUrl; buy.style.display = 'inline-block'; }
+      else { buy.style.display='none'; }
 
       overlay.classList.add('show');
-    };
+    }
     const closeDetail = ()=> overlay.classList.remove('show');
 
     document.addEventListener('click', e=>{
@@ -383,6 +421,15 @@
       if(e.target===overlay) closeDetail();
     });
     window.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDetail(); });
+
+    // Deep-link: #evento/slug
+    function handleHash(){
+      if(location.hash.startsWith('#evento/')){
+        const slug = location.hash.split('/')[1]; if(slug) openDetail(slug);
+      }
+    }
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
 
     function ensureEventSelectOptions(){
       const sel = document.getElementById('pr-event');
@@ -402,20 +449,15 @@
       ensureEventSelectOptions();
 
       const sel = document.getElementById('pr-event');
-      if (sel && ev){
-        sel.value = ev.dateISO ? ev.name : `${ev.name} (wiederkehrend)`;
-      }
+      if (sel && ev){ sel.value = ev.dateISO ? ev.name : `${ev.name} (wiederkehrend)`; }
       const dateInput = document.getElementById('pr-data');
       if (dateInput){
         if (ev && ev.dateISO){
           const d = new Date(ev.dateISO);
           const yyyy=d.getFullYear(), mm=String(d.getMonth()+1).padStart(2,'0'), dd=String(d.getDate()).padStart(2,'0');
           dateInput.value = `${yyyy}-${mm}-${dd}`;
-        } else {
-          dateInput.value = '';
-        }
+        } else { dateInput.value = ''; }
       }
-
       closeDetail();
       sec.scrollIntoView({behavior:'smooth',block:'start'});
     }
@@ -425,6 +467,44 @@
       if (e.target && e.target.id === 'open-booking'){
         showBookingSectionFrom(currentDetailSlug);
       }
+    });
+
+    // Add to Calendar (ICS download)
+    document.getElementById('add-calendar').addEventListener('click', ()=>{
+      if(!currentDetailSlug) return;
+      const ev = findAny(currentDetailSlug); if(!ev) return;
+      const start = new Date(ev.dateISO);
+      const end = new Date(start.getTime()+3*3600e3); // +3h
+      const dt = d=>d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+      const ics = [
+        'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Afterlux//Events//DE',
+        'BEGIN:VEVENT',
+        `UID:${ev.slug}@afterlux`,
+        `DTSTAMP:${dt(new Date())}`,
+        `DTSTART:${dt(start)}`,
+        `DTEND:${dt(end)}`,
+        `SUMMARY:${ev.name}`,
+        `DESCRIPTION:${(ev.desc||'').replace(/\n/g,'\\n')}`,
+        'LOCATION:Afterlux Club, Teichstrasse 14, 79539 Lörrach',
+        'END:VEVENT','END:VCALENDAR'
+      ].join('\r\n');
+      const blob = new Blob([ics], {type:'text/calendar'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download=`${ev.slug}.ics`; a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // Validazione minima + salvataggio auto dati
+    function isValid(){
+      const n=document.getElementById('pr-nome').value.trim();
+      const t=document.getElementById('pr-tel').value.trim();
+      if(!n||!t){ alert('Bitte Name und Telefon angeben.'); return false; }
+      return true;
+    }
+    ['pr-nome','pr-tel','pr-email'].forEach(id=>{
+      const el=document.getElementById(id);
+      el.value = localStorage.getItem(id)||'';
+      el.addEventListener('change',()=>localStorage.setItem(id,el.value));
     });
 
     // Nachrichtenaufbau (WhatsApp / E-Mail) – auf Deutsch
@@ -446,10 +526,12 @@
         note ? `Notizen: ${note}` : null
       ].filter(Boolean).join('\n');
     }
-    document.getElementById('btn-wa')?.addEventListener('click', ()=>{
+    document.getElementById('btn-wa')?.addEventListener('click', (e)=>{
+      if(!isValid()) return;
       window.open(`https://wa.me/4915738465393?text=${encodeURIComponent(buildMsg())}`,'_blank');
     });
-    document.getElementById('btn-mail')?.addEventListener('click', ()=>{
+    document.getElementById('btn-mail')?.addEventListener('click', (e)=>{
+      if(!isValid()) return;
       location.href = `mailto:afterlux.loerrach@gmail.com?subject=${encodeURIComponent('Lounge-Reservierung - Afterlux')}&body=${encodeURIComponent(buildMsg())}`;
     });
 
@@ -500,7 +582,6 @@
         if (matches.length===1){
           return {"@type":"Offer","price":matches[0],"priceCurrency":"EUR","availability":"https://schema.org/InStock","url":ev.ticketUrl||location.href};
         }
-        // più prezzi (es. 5€ prevendita / 10€ cassa)
         return matches.map(p=>({"@type":"Offer","price":p,"priceCurrency":"EUR","availability":"https://schema.org/InStock","url":ev.ticketUrl||location.href}));
       }
 
