@@ -14,7 +14,6 @@
   <title>Afterlux Club — Events & Reservierungen</title>
   <link rel="icon" type="image/png" href="afterluxluna.png" />
 
-  <!-- Open Graph -->
   <meta property="og:title" content="Afterlux Club – Events & Reservierungen">
   <meta property="og:description" content="Entdecke die nächsten Events und reserviere deine Lounge in Lörrach.">
   <meta property="og:image" content="afterluxluna.png">
@@ -24,7 +23,7 @@
   <style>
     :root{
       --gold:#FFD700; --gold-d:#e6c200;
-      --text:#fff; --muted:#ffffff;
+      --text:#fff; --muted:#fff;
       --card:rgba(255,255,255,.06);
       --border:rgba(255,215,0,.28);
       --radius:16px;
@@ -33,7 +32,7 @@
     html,body{margin:0}
     body{
       font-family: Helvetica, Arial, sans-serif;
-      color:#fff; /* tutto bianco */
+      color:#fff;
       background:
         linear-gradient(rgba(0,0,0,.62), rgba(0,0,0,.72)),
         url("sfondo%20web.png") center/cover fixed no-repeat #000;
@@ -47,31 +46,66 @@
     h1,h2,h3{color:#fff;margin:0 0 12px}
     .container{max-width:1100px;margin:0 auto}
 
-    /* TOP BAR – logo a destra (x2) */
+    /* ============ TOP (logo centro + hamburger sinistra) ============ */
     .topbar{
-      position:sticky; top:0; z-index:70;
+      position:sticky; top:0; z-index:90;
       background:rgba(0,0,0,.78); backdrop-filter:saturate(140%) blur(6px);
       border-bottom:1px solid rgba(255,215,0,.15);
     }
     .topbar .inner{
-      display:flex; align-items:center; gap:16px; padding:10px 22px;
-      max-width:1100px; margin:0 auto;
+      position:relative;
+      max-width:1100px; margin:0 auto; padding:8px 22px 0;
+      min-height:clamp(120px, 26vh, 240px); /* alto per logo grande */
     }
-    nav{order:1; display:flex; gap:14px; flex-wrap:wrap; margin-left:0}
-    nav a{padding:6px 10px;border-radius:12px;border:1px solid transparent; font-weight:700; color:#fff}
-    nav a:hover{background:var(--card);border-color:var(--border)}
-    .brand{order:2; margin-left:auto; display:flex; align-items:center}
-    /* PRIMA era ~56–88px: ora *doppio* */
+    /* Hamburger */
+    .hamb-btn{
+      position:absolute; left:16px; top:16px;
+      width:44px;height:44px;border-radius:12px;
+      border:1px solid #333;background:#111;display:flex;align-items:center;justify-content:center;cursor:pointer
+    }
+    .hamb-btn span,.hamb-btn::before,.hamb-btn::after{
+      content:""; display:block; width:22px; height:2px; background:#fff; border-radius:2px
+    }
+    .hamb-btn span{box-shadow:0 7px 0 #fff, 0 -7px 0 #fff}
+
+    /* Logo al centro, molto grande */
+    .brand{
+      position:absolute; left:50%; top:8px; transform:translateX(-50%);
+      display:flex; align-items:center; justify-content:center; width:100%;
+      pointer-events:none; /* clic passa attraverso */
+    }
     .brand img{
-      height:clamp(112px,20.8vh,176px);
+      height:clamp(140px, 24vh, 240px); /* più grande di prima */
       width:auto; display:block;
       filter: drop-shadow(0 0 6px rgba(255,255,255,.25));
+      pointer-events:auto; /* link cliccabile */
     }
-    @media (max-width:520px){
-      /* su smartphone lo teniamo grande ma controllato */
-      .brand img{ height:clamp(96px,22vw,140px); }
-      nav a{font-size:14px; padding:6px 8px}
+    /* Desktop ancora più grande */
+    @media (min-width:1100px){
+      .brand img{ height: clamp(180px, 28vh, 300px); }
     }
+
+    /* Menu a tendina (overlay sinistra) */
+    .menu{
+      position:fixed; inset:0 25% 0 0; max-width:360px;
+      background:#0a0a0a; border-right:1px solid #222;
+      transform:translateX(-100%); transition:transform .25s ease; z-index:95;
+      padding:18px;
+    }
+    .menu.show{ transform:translateX(0); }
+    .menu h3{margin:0 0 12px}
+    .menu a{
+      display:block; padding:12px 10px; border:1px solid #222; border-radius:12px;
+      background:rgba(255,255,255,.04); margin-bottom:10px; font-weight:700; color:#fff;
+    }
+    .menu .close{
+      position:absolute; right:-48px; top:12px; background:#111; border:1px solid #333;
+      width:40px; height:40px; border-radius:10px; color:#fff; cursor:pointer;
+    }
+    .scrim{
+      position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:94; display:none
+    }
+    .scrim.show{display:block}
 
     .hero{padding-top:6px; padding-bottom:12px}
     .lead{color:#fff; margin:10px 0 14px}
@@ -110,7 +144,6 @@
 
     /* Logiche richieste */
     #prenotazioni{display:none !important;}
-    nav a.btn{display:none;}
     #buy-tickets{display:none !important;}
 
     /* Contatti a scomparsa */
@@ -131,23 +164,28 @@
 <body>
 
   <!-- TOP BAR -->
-  <div class="topbar">
+  <div class="topbar" id="top">
     <div class="inner">
-      <nav aria-label="Hauptnavigation">
-        <a href="#eventi">Events</a>
-        <a href="#galleria">Galerie</a>
-        <a href="#chi-siamo">Über uns</a>
-        <a href="#contatti" id="nav-contatti">Kontakt</a>
-      </nav>
-      <!-- Solo logo (grande) a destra -->
+      <button class="hamb-btn" aria-label="Menü öffnen" id="openMenu"><span></span></button>
       <a class="brand" href="#top" aria-label="Afterlux Startseite">
         <img src="afterluxluna.png" alt="Afterlux Logo">
       </a>
     </div>
   </div>
 
+  <!-- MENU a tendina -->
+  <aside class="menu" id="menu">
+    <button class="close" aria-label="Menü schließen" id="closeMenu">✕</button>
+    <h3>Menü</h3>
+    <a href="#eventi"  onclick="hideMenu()">Events</a>
+    <a href="#galleria" onclick="hideMenu()">Galerie</a>
+    <a href="#chi-siamo" onclick="hideMenu()">Über uns</a>
+    <a href="#contatti" onclick="hideMenu()">Kontakt</a>
+  </aside>
+  <div class="scrim" id="scrim" onclick="hideMenu()"></div>
+
   <!-- HERO -->
-  <header class="container hero" id="top">
+  <header class="container hero">
     <h1 style="font-size:clamp(28px,7vw,64px);line-height:1.05;margin:8px 0 8px">
       THE ORIGINAL NIGHT EXPERIENCE IN LÖRRACH — AFTERLUX
     </h1>
@@ -156,7 +194,6 @@
       <a class="btn" href="#eventi">Events ansehen</a>
       <a class="btn ghost" href="#chi-siamo">Mehr erfahren</a>
     </div>
-    <!-- Countdown -->
     <div id="countdown" class="container" hidden style="display:flex;gap:10px;flex-wrap:wrap;padding:0">
       <span class="pill"><b id="cd-d">--</b> Tage</span>
       <span class="pill"><b id="cd-h">--</b> Std</span>
@@ -170,7 +207,6 @@
     <section id="eventi">
       <h2>Kommende Events</h2>
 
-      <!-- Ricerca + filtro mese -->
       <div class="card" style="padding:12px;display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
         <input id="q" placeholder="Suchen… (z.B. Latin, Halloween)" aria-label="Events suchen"
                style="flex:1;min-width:200px;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
@@ -199,12 +235,19 @@
     <section id="galleria">
       <h2>Galerie</h2>
 
-      <img src="./Lounge-Afterlux.png" alt="Lounge-Plan Afterlux" loading="lazy"
-           style="width:min(30%,520px);max-width:1000px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
-      <p style="color:#FFD700;text-align:center">Reserviere deine Lounge: N1–N5 jedes Wochenende verfügbar.</p>
+      <!-- Lounge come card a dimensione cover -->
+      <div class="cards" style="margin-bottom:18px">
+        <article class="card">
+          <img src="./Lounge-Afterlux.png" alt="Lounge-Plan Afterlux" loading="lazy">
+          <div class="content">
+            <div class="pill">Lounge-Plan</div>
+            <p class="muted">Reserviere deine Lounge: N1–N5 jedes Wochenende verfügbar.</p>
+          </div>
+        </article>
+      </div>
 
       <!-- Video card -->
-      <div class="cards" style="margin-top:18px">
+      <div class="cards" style="margin-top:0">
         <article class="card">
           <video controls playsinline preload="metadata" poster="afterluxluna.png" loading="lazy"
                  aria-label="Afterlux Club – Video Teaser"></video>
@@ -231,18 +274,16 @@
         </article>
       </div>
 
-      <!-- PROMOTER -->
-      <div class="promoter-section" style="text-align:center;margin-top:40px">
-        <h3 style="color:#FFD700;font-size:1.8rem;margin-bottom:15px">Werde Afterlux Promoter</h3>
-        <img src="./promoter.jpg" alt="Afterlux Club Promoter" loading="lazy"
-             style="width:min(30%,520px);max-width:800px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
-        <p style="color:#FFD700;font-size:1rem;max-width:800px;margin:0 auto">
-          Du willst Teil vom Afterlux-Team werden? Schreib uns auf Instagram oder per E-Mail und sichere dir exklusive Vorteile.
-        </p><br>
-        <a href="https://www.instagram.com/afterlux_club/" target="_blank" rel="noopener"
-           style="background-color:#FFD700;color:#000;padding:10px 25px;border-radius:25px;text-decoration:none;font-weight:bold">
-          Kontaktiere uns auf Instagram
-        </a>
+      <!-- PROMOTER come card a dimensione cover -->
+      <div class="cards" style="margin-top:18px">
+        <article class="card">
+          <img src="./promoter.jpg" alt="Afterlux Club Promoter" loading="lazy">
+          <div class="content">
+            <h3 style="color:#FFD700">Werde Afterlux Promoter</h3>
+            <p class="muted">Schreib uns auf Instagram oder per E-Mail und sichere dir exklusive Vorteile.</p>
+            <a href="https://www.instagram.com/afterlux_club/" target="_blank" rel="noopener" class="btn ghost">Kontakt auf Instagram</a>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -268,7 +309,7 @@
       </div>
     </section>
 
-    <!-- PRENOTAZIONI (si apre solo dalle card) -->
+    <!-- PRENOTAZIONI -->
     <section id="prenotazioni">
       <h2>Reservieren</h2>
       <p class="muted">Schreib uns direkt: Event & Lounge wählen und dann per WhatsApp oder E-Mail senden.</p>
@@ -361,7 +402,6 @@
       <a href="https://www.instagram.com/afterlux_club/" target="_blank" rel="noopener" aria-label="Instagram">
         <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 .002 6.002A3 3 0 0 0 12 9Zm5.5-2a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/></svg>
       </a>
-      <!-- WhatsApp originale (icona bianca) -->
       <a href="https://wa.me/4915738465393" target="_blank" rel="noopener" aria-label="WhatsApp">
         <svg viewBox="0 0 32 32"><path d="M19.1 17.9c-.3-.2-1.7-.8-1.9-.9-.3-.1-.5-.2-.7.2s-.8.9-1 .9-.5 0-1.1-.6c-.6-.6-1.1-1.2-1.2-1.4s0-.5.2-.7c.2-.2.3-.4.5-.6.2-.2.2-.3.3-.5.1-.2 0-.4 0-.6s-.6-1.6-.8-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-1 .4-.3.3-1 1-1 2.5s1 2.9 1.1 3.1c.1.2 2 3.1 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.1-1.4-.2-.1-.4-.2-.7-.3zM27.1 5a13 13 0 0 0-20.2 15.1L5 27l7-1.8A13 13 0 1 0 27.1 5zm-1.9 20.2c-1.7 1.7-4 2.6-6.4 2.6-2.1 0-4.1-.7-5.7-2.1l-.4-.3-4.1 1.1 1.1-4.1-.3-.4a10 10 0 0 1 14.2-14.2 10 10 0 0 1 1.6 13.1c-.2.3-.5.7-.8 1l.8.3v.1z" fill="#fff"/></svg>
       </a>
@@ -375,6 +415,13 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    /* ==== MENU logica ==== */
+    const menu = document.getElementById('menu');
+    const scrim = document.getElementById('scrim');
+    document.getElementById('openMenu').addEventListener('click', ()=>{ menu.classList.add('show'); scrim.classList.add('show'); });
+    document.getElementById('closeMenu').addEventListener('click', hideMenu);
+    function hideMenu(){ menu.classList.remove('show'); scrim.classList.remove('show'); }
 
     /* ======== DATI EVENTI ======== */
     const eventi = [
@@ -494,7 +541,6 @@
       document.getElementById('detail-cover').style.backgroundImage = ev.cover ? `url(${encodeURI(ev.cover)})` : '';
     };
 
-    // Nessun bottone "Tickets" nel modal (richiesta)
     function openDetail(slug){
       const ev = findAny(slug);
       if (!ev) return;
@@ -511,7 +557,6 @@
     });
     window.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDetail(); });
 
-    // Deep-link: #evento/slug
     function handleHash(){
       if(location.hash.startsWith('#evento/')){
         const slug = location.hash.split('/')[1]; if(slug) openDetail(slug);
@@ -623,7 +668,6 @@
 
     /* ======== CONTATTI: toggle ======== */
     const contatti = document.getElementById('contatti');
-    const navContatti = document.getElementById('nav-contatti');
     function openContatti(){
       contatti.classList.add('open');
       contatti.setAttribute('aria-expanded','true');
@@ -635,7 +679,6 @@
       contatti.setAttribute('aria-expanded', String(willOpen));
       if (willOpen) contatti.scrollIntoView({behavior:'smooth',block:'start'});
     }
-    navContatti.addEventListener('click', (e)=>{ e.preventDefault(); openContatti(); history.replaceState(null,'','#contatti'); });
     contatti.querySelector('h2').addEventListener('click', toggleContatti);
     contatti.querySelector('h2').addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); toggleContatti(); } });
 
