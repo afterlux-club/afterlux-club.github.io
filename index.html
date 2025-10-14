@@ -14,12 +14,6 @@
   <title>Afterlux Club — Events & Reservierungen</title>
   <link rel="icon" type="image/png" href="afterluxluna.png" />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="Afterlux Club – Events & Reservierungen">
-  <meta property="og:description" content="Entdecke die nächsten Events und reserviere deine Lounge in Lörrach.">
-  <meta property="og:image" content="afterluxluna.png">
-  <meta property="og:type" content="website">
-
   <meta name="color-scheme" content="dark" />
   <style>
     :root{
@@ -77,7 +71,7 @@
     /* MAP */
     .map{width:100%;height:300px;border:0;border-radius:12px}
 
-    /* OVERLAY + MODAL (riuso per dettagli & prenotazioni) */
+    /* OVERLAY / MODALS */
     .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
     .overlay.show{display:flex}
     .modal{max-width:900px;width:100%;background:#0a0a0a;border:1px solid var(--border);border-radius:16px;overflow:hidden}
@@ -89,7 +83,16 @@
 
     footer{border-top:1px solid var(--border);text-align:center;color:var(--muted);padding-bottom:28px}
 
-    /* Nascondi "Tickets" nel modal eventi (restano esterni nelle card) */
+    /* ACCORDION SECTIONS (chiuse di default) */
+    .acc h2{
+      display:flex;align-items:center;gap:10px;cursor:pointer;
+    }
+    .acc .chev{transition:transform .2s ease;display:inline-block}
+    .acc .body{display:none;margin-top:12px}
+    .acc[aria-expanded="true"] .body{display:block}
+    .acc[aria-expanded="true"] .chev{transform:rotate(90deg)}
+
+    /* Nascondi per sempre "Tickets" nel modal dettagli (resta esterno sulle card) */
     #buy-tickets{display:none !important;}
   </style>
 </head>
@@ -97,11 +100,10 @@
   <header class="container">
     <div class="logo"><img src="afterluxluna.png" alt="Afterlux Club Logo" loading="eager" decoding="async"></div>
     <nav aria-label="Hauptnavigation">
-      <a href="#contatti" id="nav-contatti">Kontakt</a>
-      <a href="#eventi">Events</a>
-      <a href="#chi-siamo">Über uns</a>
-      <a href="#galleria">Galerie</a>
-      <a href="#reservieren" id="nav-res">Reservieren</a>
+      <a href="#contatti" data-open="contatti">Kontakt</a>
+      <a href="#eventi" data-open="eventi">Events</a>
+      <a href="#galleria" data-open="galleria">Galerie</a>
+      <a href="#chi-siamo" data-open="chi-siamo">Über uns</a>
     </nav>
     <div id="countdown" class="container" hidden style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
       <span class="pill"><b id="cd-d">--</b> Tage</span>
@@ -112,13 +114,13 @@
   </header>
 
   <main class="container">
-    <!-- CONTATTI (IN ALTO) – a scomparsa apri/chiudi -->
-    <section id="contatti" aria-expanded="false" style="margin-top:0">
-      <h2 tabindex="0" aria-controls="contatti-body" aria-label="Kontakt öffnen/schließen" style="display:flex;align-items:center;gap:10px;cursor:pointer;">
-        <span class="chev" style="transition:transform .2s ease;display:inline-block">▶</span> Kontakt
-        <span class="toggle-hint" style="font-size:12px;color:var(--muted)">(klicken zum Anzeigen)</span>
+    <!-- K O N T A K T  (accordion) -->
+    <section id="contatti" class="acc" aria-expanded="false">
+      <h2 tabindex="0" aria-controls="contatti-body" aria-label="Kontakt öffnen/schließen">
+        <span class="chev">▶</span> Kontakt
+        <span class="muted" style="font-size:12px">(klicken zum Anzeigen)</span>
       </h2>
-      <div id="contatti-body" class="content-wrapper" style="display:none;margin-top:12px">
+      <div id="contatti-body" class="body">
         <div class="cards">
           <div class="card"><div class="content">
             <p><strong>Telefon:</strong> <a href="tel:+4915738465393">+49 1573 8465393</a></p>
@@ -134,79 +136,89 @@
       </div>
     </section>
 
-    <!-- EVENTS -->
-    <section id="eventi" style="margin-top:32px">
-      <h2>Kommende Events</h2>
+    <!-- E V E N T S  (accordion) -->
+    <section id="eventi" class="acc" aria-expanded="false" style="margin-top:24px">
+      <h2 tabindex="0" aria-controls="eventi-body" aria-label="Events öffnen/schließen">
+        <span class="chev">▶</span> Events
+      </h2>
+      <div id="eventi-body" class="body">
+        <!-- Suche + Filter -->
+        <div class="card" style="padding:12px;display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+          <input id="q" placeholder="Suchen… (z.B. Latin, Halloween)" aria-label="Events suchen"
+                 style="flex:1;min-width:200px;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+          <select id="month" aria-label="Nach Monat filtern"
+                  style="padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+            <option value="">Alle Monate</option>
+          </select>
+          <button class="btn ghost" type="button" id="clr">Zurücksetzen</button>
+        </div>
 
-      <!-- Suche + Filter -->
-      <div class="card" style="padding:12px;display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
-        <input id="q" placeholder="Suchen… (z.B. Latin, Halloween)" aria-label="Events suchen"
-               style="flex:1;min-width:200px;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-        <select id="month" aria-label="Nach Monat filtern"
-                style="padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-          <option value="">Alle Monate</option>
-        </select>
-        <button class="btn ghost" type="button" id="clr">Zurücksetzen</button>
+        <div id="event-cards" class="cards"></div>
+
+        <h3 style="margin-top:26px">Wiederkehrende Events</h3>
+        <div id="recurring-cards" class="cards"></div>
       </div>
-
-      <div id="event-cards" class="cards"></div>
-
-      <h3 style="margin-top:26px">Wiederkehrende Events</h3>
-      <div id="recurring-cards" class="cards"></div>
     </section>
 
-    <!-- ÜBER UNS -->
-    <section id="chi-siamo" style="margin-top:42px">
-      <h2>Über uns</h2>
-      <p><strong>Afterlux Club</strong> ist die Vision zweier junger Partner: <strong>Giuseppe Leocata</strong> und <strong>Luana Ferlito</strong>.</p>
-      <p>Unsere Mission: Wir bringen das Nachtleben in Lörrach nach vorn – mit einem Ort, an dem sich <em>alle</em> wohlfühlen. Bei uns laufen verschiedene Musikrichtungen, von House und Hip-Hop über Reggaeton bis Tech House, in einer offenen, inklusiven Atmosphäre.</p>
-      <p>Mit Motto-Nights, Shows und neuen Formaten schaffen wir regelmäßig frische, einzigartige Erlebnisse – damit jede Nacht in Erinnerung bleibt.</p>
-    </section>
+    <!-- G A L E R I E  (accordion) -->
+    <section id="galleria" class="acc" aria-expanded="false" style="margin-top:24px">
+      <h2 tabindex="0" aria-controls="galleria-body" aria-label="Galerie öffnen/schließen">
+        <span class="chev">▶</span> Galerie
+      </h2>
+      <div id="galleria-body" class="body">
+        <img src="./Lounge-Afterlux.png" alt="Lounge-Plan Afterlux" loading="lazy"
+             style="width:min(30%,520px);max-width:1000px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
+        <p style="color:#FFD700;text-align:center">Reserviere deine Lounge: N1–N5 jedes Wochenende verfügbar.</p>
 
-    <!-- GALERIE -->
-    <section id="galleria">
-      <h2>Galerie</h2>
-
-      <img src="./Lounge-Afterlux.png" alt="Lounge-Plan Afterlux" loading="lazy"
-           style="width:min(30%,520px);max-width:1000px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
-      <p style="color:#FFD700;text-align:center">Reserviere deine Lounge: N1–N5 jedes Wochenende verfügbar.</p>
-
-      <!-- VIDEO CARD -->
-      <div class="cards" style="margin-top:18px">
-        <article class="card">
-          <video controls playsinline preload="metadata" poster="afterluxluna.png" loading="lazy"
-                 aria-label="Afterlux Club – Video Teaser">
-            <source src="video%20afterlux%20.mp4" type="video/mp4">
-          </video>
-          <div class="content">
-            <div class="pill">Highlight • Club Teaser</div>
-            <h3>Afterlux – Video</h3>
-            <p class="muted">Präsentation</p>
-            <div style="margin-top:8px">
-              <button class="btn" type="button" onclick="this.closest('.card').querySelector('video').play()">▶︎ Play</button>
-              <button class="btn ghost" type="button" onclick="this.closest('.card').querySelector('video').pause()">⏸︎ Pause</button>
+        <!-- VIDEO CARD -->
+        <div class="cards" style="margin-top:18px">
+          <article class="card">
+            <video controls playsinline preload="metadata" poster="afterluxluna.png" loading="lazy"
+                   aria-label="Afterlux Club – Video Teaser">
+              <source src="video%20afterlux%20.mp4" type="video/mp4">
+            </video>
+            <div class="content">
+              <div class="pill">Highlight • Club Teaser</div>
+              <h3>Afterlux – Video</h3>
+              <p class="muted">Präsentation</p>
+              <div style="margin-top:8px">
+                <button class="btn" type="button" onclick="this.closest('.card').querySelector('video').play()">▶︎ Play</button>
+                <button class="btn ghost" type="button" onclick="this.closest('.card').querySelector('video').pause()">⏸︎ Pause</button>
+              </div>
             </div>
-          </div>
-        </article>
-      </div>
+          </article>
+        </div>
 
-      <!-- PROMOTER -->
-      <div class="promoter-section" style="text-align:center;margin-top:40px">
-        <h3 style="color:#FFD700;font-size:1.8rem;margin-bottom:15px">Werde Afterlux Promoter</h3>
-        <img src="./promoter.jpg" alt="Afterlux Club Promoter" loading="lazy"
-             style="width:min(30%,520px);max-width:800px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
-        <p style="color:#FFD700;font-size:1rem;max-width:800px;margin:0 auto">
-          Du willst Teil vom Afterlux-Team werden? Schreib uns auf Instagram oder per E-Mail und sichere dir exklusive Vorteile.
-        </p><br>
-        <a href="https://www.instagram.com/afterlux_club/" target="_blank" rel="noopener"
-           style="background-color:#FFD700;color:#000;padding:10px 25px;border-radius:25px;text-decoration:none;font-weight:bold">
-          Kontaktiere uns auf Instagram
-        </a>
+        <!-- PROMOTER -->
+        <div class="promoter-section" style="text-align:center;margin-top:40px">
+          <h3 style="color:#FFD700;font-size:1.8rem;margin-bottom:15px">Werde Afterlux Promoter</h3>
+          <img src="./promoter.jpg" alt="Afterlux Club Promoter" loading="lazy"
+               style="width:min(30%,520px);max-width:800px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
+          <p style="color:#FFD700;font-size:1rem;max-width:800px;margin:0 auto">
+            Du willst Teil vom Afterlux-Team werden? Schreib uns auf Instagram oder per E-Mail und sichere dir exklusive Vorteile.
+          </p><br>
+          <a href="https://www.instagram.com/afterlux_club/" target="_blank" rel="noopener"
+             style="background-color:#FFD700;color:#000;padding:10px 25px;border-radius:25px;text-decoration:none;font-weight:bold">
+            Kontaktiere uns auf Instagram
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ü B E R  U N S  (accordion) -->
+    <section id="chi-siamo" class="acc" aria-expanded="false" style="margin-top:24px">
+      <h2 tabindex="0" aria-controls="chi-siamo-body" aria-label="Über uns öffnen/schließen">
+        <span class="chev">▶</span> Über uns
+      </h2>
+      <div id="chi-siamo-body" class="body">
+        <p><strong>Afterlux Club</strong> ist die Vision zweier junger Partner: <strong>Giuseppe Leocata</strong> und <strong>Luana Ferlito</strong>.</p>
+        <p>Unsere Mission: Wir bringen das Nachtleben in Lörrach nach vorn – mit einem Ort, an dem sich <em>alle</em> wohlfühlen. Bei uns laufen verschiedene Musikrichtungen, von House und Hip-Hop über Reggaeton bis Tech House, in einer offenen, inklusiven Atmosphäre.</p>
+        <p>Mit Motto-Nights, Shows und neuen Formaten schaffen wir regelmäßig frische, einzigartige Erlebnisse – damit jede Nacht in Erinnerung bleibt.</p>
       </div>
     </section>
   </main>
 
-  <!-- MODAL: DETTAGLI EVENTO -->
+  <!-- MODAL: DETTAGLI EVENTO (senza Tickets) -->
   <div id="event-detail" class="overlay" role="dialog" aria-modal="true" aria-labelledby="detail-title">
     <div class="modal">
       <div class="modal-head"><h3 id="detail-title" style="margin:0">Event-Details</h3></div>
@@ -227,7 +239,7 @@
     </div>
   </div>
 
-  <!-- MODAL: PRENOTAZIONI (apre SOLO al clic) -->
+  <!-- MODAL: PRENOTAZIONI (apre SOLO al clic dalle card) -->
   <div id="prenotazioni" class="overlay" role="dialog" aria-modal="true" aria-labelledby="pr-title" style="display:none">
     <div class="modal" style="max-width:720px">
       <div class="modal-head"><h3 id="pr-title" style="margin:0">Reservieren</h3></div>
@@ -299,7 +311,7 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    /* ========== DATI EVENTI ========== */
+    /* ====== DATI EVENTI ====== */
     const eventi = [
       { slug:'russian-beats-2025-10-11', name:'Russian Beats', dateISO:'2025-10-11T22:30:00+02:00', shortDate:'Sa 11 Okt', desc:'Beginn 22:30', lineup:'DJ Andy', prices:'—', cover:'serata russa 11.10.jpg' },
       { slug:'latin-night-2025-10-17', name:'Latin Night', dateISO:'2025-10-17T23:00:00+02:00', shortDate:'Fr 17 Okt', desc:'Start 23:00 • DJ Don-Maiky • Eintritt GRATIS', lineup:'DJ Don-Maiky', prices:'Eintritt GRATIS', cover:'Latin Night.jpg' },
@@ -315,39 +327,56 @@
       { slug:'karaoke-night', name:'Karaoke Night', when:'Jeden Donnerstag', time:'21:30 – 02:00', desc:'Eintritt frei • Die Bühne gehört dir!', lineup:'Open Mic • Host Afterlux', prices:'Free Entry', cover:'karaoke.jpg' },
     ];
 
-    /* ========== HELPERS ========== */
+    /* ====== HELPERS ====== */
     const $ = s => document.querySelector(s);
+    const $$ = s => [...document.querySelectorAll(s)];
+
+    /* ====== ACCORDION LOGIC (apri/chiudi, solo al clic) ====== */
+    function setSectionOpen(id, open){
+      const sec = document.getElementById(id);
+      if(!sec) return;
+      sec.setAttribute('aria-expanded', String(open));
+      if(open) sec.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+    // Toggle col titolo
+    $$('.acc h2').forEach(h=>{
+      h.addEventListener('click', ()=>{
+        const sec = h.parentElement;
+        const willOpen = sec.getAttribute('aria-expanded')!=='true';
+        // chiudi le altre
+        $$('.acc').forEach(s=>s.setAttribute('aria-expanded','false'));
+        // apri/chiudi la corrente
+        sec.setAttribute('aria-expanded', String(willOpen));
+        if(willOpen) sec.scrollIntoView({behavior:'smooth',block:'start'});
+      });
+      h.addEventListener('keydown', e=>{
+        if(e.key==='Enter' || e.key===' '){
+          e.preventDefault(); h.click();
+        }
+      });
+    });
+    // Click su nav: apre solo la sezione scelta (le altre si chiudono)
+    $$('nav a[data-open]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        e.preventDefault();
+        const id=a.dataset.open;
+        $$('.acc').forEach(s=>s.setAttribute('aria-expanded','false'));
+        setSectionOpen(id, true);
+        history.replaceState(null,'',`#${id}`);
+      });
+    });
+    // Apri da hash se presente
+    if(location.hash){
+      const id = location.hash.replace('#','');
+      if (document.getElementById(id)?.classList.contains('acc')){
+        setSectionOpen(id, true);
+      }
+    }
+
+    /* ====== RICERCA/FILTRI EVENTI ====== */
     const cards = $('#event-cards');
     const recWrap = $('#recurring-cards');
 
-    /* ========== CONTATTI: logica a scomparsa ========== */
-    (function(){
-      const cont = document.getElementById('contatti');
-      const title = cont.querySelector('h2');
-      const body = document.getElementById('contatti-body');
-      const chev = title.querySelector('.chev') || title.firstElementChild;
-
-      function setOpen(open){
-        cont.setAttribute('aria-expanded', String(open));
-        body.style.display = open ? 'block' : 'none';
-        if (chev) chev.style.transform = open ? 'rotate(90deg)' : 'none';
-      }
-      function toggle(){ setOpen(cont.getAttribute('aria-expanded')!=='true'); }
-
-      title.addEventListener('click', toggle);
-      title.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); toggle(); } });
-
-      // dal nav "Kontakt"
-      document.getElementById('nav-contatti').addEventListener('click', (e)=>{
-        e.preventDefault(); setOpen(true); cont.scrollIntoView({behavior:'smooth',block:'start'});
-        history.replaceState(null,'','#contatti');
-      });
-
-      // auto-apri se hash #contatti
-      if (location.hash==='#contatti') setOpen(true);
-    })();
-
-    /* ========== RICERCA/FILTRI ========== */
     (function(){ 
       const months = [...new Set(eventi.map(e =>
         new Date(e.dateISO).toLocaleString('de-DE',{month:'long',year:'numeric'})
@@ -408,7 +437,7 @@
     $('#q').addEventListener('input', filter);
     $('#month').addEventListener('change', filter);
 
-    /* ========== COUNTDOWN ========== */
+    /* ====== COUNTDOWN ====== */
     (function(){
       const cdWrap = document.getElementById('countdown');
       if (!upcoming.length) return;
@@ -424,7 +453,7 @@
       }; tick(); setInterval(tick,1000); cdWrap.hidden=false;
     })();
 
-    /* ========== MODAL EVENTI ========== */
+    /* ====== MODAL EVENTI ====== */
     let currentDetailSlug = null;
     const overlayDetail = document.getElementById('event-detail');
 
@@ -470,14 +499,12 @@
     handleHash();
     window.addEventListener('hashchange', handleHash);
 
-    /* ========== PRENOTAZIONI: come MODAL (apre SOLO al clic) ========== */
+    /* ====== PRENOTAZIONI (solo dal pulsante nelle card) ====== */
     const overlayRes = document.getElementById('prenotazioni');
 
     function ensureEventSelectOptions(){
       const sel = document.getElementById('pr-event');
-      if (!sel) return;
-      // popola una sola volta
-      if (sel.dataset.filled==='1') return;
+      if (!sel || sel.dataset.filled==='1') return;
       const list = [...upcoming.map(e=>e.name), ...recurring.map(e=>e.name+' (wiederkehrend)')];
       (list.length?list:['Karaoke Night (wiederkehrend)']).forEach(n=>{
         const o=document.createElement('option'); o.value=n; o.textContent=n; sel.appendChild(o);
@@ -513,14 +540,9 @@
       openBooking(currentDetailSlug);
     });
 
-    // Click fuori chiude
+    // Click fuori chiude prenotazioni
     overlayRes.addEventListener('click', e=>{ if(e.target===overlayRes) closeBooking(); });
     window.addEventListener('keydown', e=>{ if(e.key==='Escape') closeBooking(); });
-
-    // Dal nav "Reservieren"
-    document.getElementById('nav-res').addEventListener('click', (e)=>{
-      e.preventDefault(); openBooking(null); history.replaceState(null,'','#reservieren');
-    });
 
     // Validazione + salvataggio auto + invii
     function isValid(){
