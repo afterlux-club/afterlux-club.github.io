@@ -16,7 +16,7 @@
 
   <!-- Open Graph -->
   <meta property="og:title" content="Afterlux Club – Events & Reservierungen">
-  <meta property="og:description" content="Scopri i prossimi eventi e prenota la tua lounge a Lörrach.">
+  <meta property="og:description" content="Entdecke die nächsten Events und reserviere deine Lounge in Lörrach.">
   <meta property="og:image" content="afterluxluna.png">
   <meta property="og:type" content="website">
 
@@ -102,16 +102,9 @@
       margin-top:12px;
     }
     #contatti.open .content-wrapper{ display:block; }
-    #contatti .toggle-hint{
-      font-size:12px;color:var(--muted);
-    }
-    #contatti h2{
-      display:flex;align-items:center;gap:10px;cursor:pointer;
-    }
-    #contatti h2 .chev{
-      transition:transform .2s ease;
-      display:inline-block;
-    }
+    #contatti .toggle-hint{ font-size:12px;color:var(--muted); }
+    #contatti h2{ display:flex;align-items:center;gap:10px;cursor:pointer; }
+    #contatti h2 .chev{ transition:transform .2s ease; display:inline-block; }
     #contatti.open h2 .chev{ transform:rotate(90deg); }
   </style>
 </head>
@@ -120,7 +113,7 @@
     <div class="logo"><img src="afterluxluna.png" alt="Afterlux Club Logo" loading="eager" decoding="async"></div>
     <nav aria-label="Hauptnavigation">
       <a href="#eventi">Events</a>
-      <a href="#chi-siamo">Chi siamo?</a>
+      <a href="#chi-siamo">Über uns</a>
       <a href="#galleria">Galerie</a>
       <a href="#contatti" id="nav-contatti">Kontakt</a>
     </nav>
@@ -154,12 +147,12 @@
       <div id="recurring-cards" class="cards"></div>
     </section>
 
-    <!-- CHI SIAMO – spostata in alto prima di Galleria/Contatti -->
+    <!-- CHI SIAMO – tradotto in tedesco e in alto -->
     <section id="chi-siamo" style="margin-top:42px">
       <h2>Über uns</h2>
-      <p><strong>Afterlux Club</strong> ist die Vision von zwei jungen Partnern, <strong>Giuseppe Leocata</strong> und <strong>Luana Ferlito</strong>.</p>
-      <p>Unsere Mission: Lörrachs Nachtleben pushen – mit einem Ort, an dem sich <em>jede*r</em> wohlfühlt. Wir mixen verschiedene Musikgenres, von House bis Hip-Hop, Reggaeton bis Tech House, und schaffen eine offene, inklusive Atmosphäre.</p>
-      <p>Mit Motto-Nights, Shows und frischen Formaten sorgen wir für neue, einzigartige Erlebnisse – jede Nacht soll in Erinnerung bleiben.</p>
+      <p><strong>Afterlux Club</strong> ist die Vision zweier junger Partner: <strong>Giuseppe Leocata</strong> und <strong>Luana Ferlito</strong>.</p>
+      <p>Unsere Mission: Wir bringen das Nachtleben in Lörrach nach vorn – mit einem Ort, an dem sich <em>alle</em> wohlfühlen. Bei uns laufen verschiedene Musikrichtungen, von House und Hip-Hop über Reggaeton bis Tech House, in einer offenen, inklusiven Atmosphäre.</p>
+      <p>Mit Motto-Nights, Shows und neuen Formaten schaffen wir regelmäßig frische, einzigartige Erlebnisse – damit jede Nacht in Erinnerung bleibt.</p>
     </section>
 
     <!-- GALERIE -->
@@ -170,7 +163,7 @@
            style="width:min(30%,520px);max-width:1000px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
       <p style="color:#FFD700;text-align:center">Reserviere deine Lounge: N1–N5 jedes Wochenende verfügbar.</p>
 
-      <!-- GALLERIA · VIDEO CARD -->
+      <!-- VIDEO CARD -->
       <div class="cards" style="margin-top:18px">
         <article class="card">
           <video controls playsinline preload="metadata" poster="afterluxluna.png" loading="lazy"
@@ -197,9 +190,23 @@
           </script>
         </article>
       </div>
+
+      <!-- PROMOTER (riaggiunto) -->
+      <div class="promoter-section" style="text-align:center;margin-top:40px">
+        <h3 style="color:#FFD700;font-size:1.8rem;margin-bottom:15px">Werde Afterlux Promoter</h3>
+        <img src="./promoter.jpg" alt="Afterlux Club Promoter" loading="lazy"
+             style="width:min(30%,520px);max-width:800px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
+        <p style="color:#FFD700;font-size:1rem;max-width:800px;margin:0 auto">
+          Du willst Teil vom Afterlux-Team werden? Schreib uns auf Instagram oder per E-Mail und sichere dir exklusive Vorteile.
+        </p><br>
+        <a href="https://www.instagram.com/afterlux_club/" target="_blank" rel="noopener"
+           style="background-color:#FFD700;color:#000;padding:10px 25px;border-radius:25px;text-decoration:none;font-weight:bold">
+          Kontaktiere uns auf Instagram
+        </a>
+      </div>
     </section>
 
-    <!-- CONTATTI – a scomparsa; include la MAPPA all'interno -->
+    <!-- CONTATTI – a scomparsa (apri/chiudi) + MAPPA -->
     <section id="contatti" aria-expanded="false" style="margin-top:42px">
       <h2 tabindex="0" aria-controls="contatti-body" aria-label="Kontakt öffnen/schließen">
         <span class="chev">▶</span> Kontakt
@@ -621,10 +628,6 @@
         addLD(ld);
       });
     })();
-  </script>
-</body>
-</html>
-
   </script>
 </body>
 </html>
