@@ -14,6 +14,12 @@
   <title>Afterlux Club — Events & Reservierungen</title>
   <link rel="icon" type="image/png" href="afterluxluna.png" />
 
+  <!-- Open Graph -->
+  <meta property="og:title" content="Afterlux Club – Events & Reservierungen">
+  <meta property="og:description" content="Entdecke die nächsten Events und reserviere deine Lounge in Lörrach.">
+  <meta property="og:image" content="afterluxluna.png">
+  <meta property="og:type" content="website">
+
   <meta name="color-scheme" content="dark" />
   <style>
     :root{
@@ -40,7 +46,7 @@
     h1,h2,h3{color:var(--gold);margin:0 0 12px}
     .container{max-width:1100px;margin:0 auto}
 
-    /* LOGO */
+    /* LOGO (reattivo) */
     .logo{display:flex;justify-content:center;align-items:center;margin:4px 0 8px}
     .logo img{height:clamp(140px,22vw,360px);max-width:100%;display:block}
 
@@ -71,7 +77,7 @@
     /* MAP */
     .map{width:100%;height:300px;border:0;border-radius:12px}
 
-    /* OVERLAY / MODALS */
+    /* MODAL */
     .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
     .overlay.show{display:flex}
     .modal{max-width:900px;width:100%;background:#0a0a0a;border:1px solid var(--border);border-radius:16px;overflow:hidden}
@@ -83,27 +89,33 @@
 
     footer{border-top:1px solid var(--border);text-align:center;color:var(--muted);padding-bottom:28px}
 
-    /* ACCORDION SECTIONS (chiuse di default) */
-    .acc h2{
-      display:flex;align-items:center;gap:10px;cursor:pointer;
-    }
-    .acc .chev{transition:transform .2s ease;display:inline-block}
-    .acc .body{display:none;margin-top:12px}
-    .acc[aria-expanded="true"] .body{display:block}
-    .acc[aria-expanded="true"] .chev{transform:rotate(90deg)}
+    /* Prenotazioni nascosta all'avvio */
+    #prenotazioni{display:none !important;}
+    nav a.btn{display:none;}
 
-    /* Nascondi per sempre "Tickets" nel modal dettagli (resta esterno sulle card) */
+    /* Nascondi per sempre "Tickets" nel modal */
     #buy-tickets{display:none !important;}
+
+    /* ► CONTATTI A SCOMPARSA */
+    #contatti .content-wrapper{
+      display:none;
+      margin-top:12px;
+    }
+    #contatti.open .content-wrapper{ display:block; }
+    #contatti .toggle-hint{ font-size:12px;color:var(--muted); }
+    #contatti h2{ display:flex;align-items:center;gap:10px;cursor:pointer; }
+    #contatti h2 .chev{ transition:transform .2s ease; display:inline-block; }
+    #contatti.open h2 .chev{ transform:rotate(90deg); }
   </style>
 </head>
 <body>
   <header class="container">
     <div class="logo"><img src="afterluxluna.png" alt="Afterlux Club Logo" loading="eager" decoding="async"></div>
     <nav aria-label="Hauptnavigation">
-      <a href="#contatti" data-open="contatti">Kontakt</a>
-      <a href="#eventi" data-open="eventi">Events</a>
-      <a href="#galleria" data-open="galleria">Galerie</a>
-      <a href="#chi-siamo" data-open="chi-siamo">Über uns</a>
+      <a href="#eventi">Events</a>
+      <a href="#chi-siamo">Über uns</a>
+      <a href="#galleria">Galerie</a>
+      <a href="#contatti" id="nav-contatti">Kontakt</a>
     </nav>
     <div id="countdown" class="container" hidden style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
       <span class="pill"><b id="cd-d">--</b> Tage</span>
@@ -114,13 +126,93 @@
   </header>
 
   <main class="container">
-    <!-- K O N T A K T  (accordion) -->
-    <section id="contatti" class="acc" aria-expanded="false">
+    <!-- EVENTS -->
+    <section id="eventi">
+      <h2>Kommende Events</h2>
+
+      <!-- Ricerca + filtro mese -->
+      <div class="card" style="padding:12px;display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+        <input id="q" placeholder="Suchen… (z.B. Latin, Halloween)" aria-label="Events suchen"
+               style="flex:1;min-width:200px;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+        <select id="month" aria-label="Nach Monat filtern"
+                style="padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+          <option value="">Alle Monate</option>
+        </select>
+        <button class="btn ghost" type="button" id="clr">Zurücksetzen</button>
+      </div>
+
+      <div id="event-cards" class="cards"></div>
+
+      <h3 style="margin-top:26px">Wiederkehrende Events</h3>
+      <div id="recurring-cards" class="cards"></div>
+    </section>
+
+    <!-- CHI SIAMO – tradotto in tedesco e in alto -->
+    <section id="chi-siamo" style="margin-top:42px">
+      <h2>Über uns</h2>
+      <p><strong>Afterlux Club</strong> ist die Vision zweier junger Partner: <strong>Giuseppe Leocata</strong> und <strong>Luana Ferlito</strong>.</p>
+      <p>Unsere Mission: Wir bringen das Nachtleben in Lörrach nach vorn – mit einem Ort, an dem sich <em>alle</em> wohlfühlen. Bei uns laufen verschiedene Musikrichtungen, von House und Hip-Hop über Reggaeton bis Tech House, in einer offenen, inklusiven Atmosphäre.</p>
+      <p>Mit Motto-Nights, Shows und neuen Formaten schaffen wir regelmäßig frische, einzigartige Erlebnisse – damit jede Nacht in Erinnerung bleibt.</p>
+    </section>
+
+    <!-- GALERIE -->
+    <section id="galleria">
+      <h2>Galerie</h2>
+
+      <img src="./Lounge-Afterlux.png" alt="Lounge-Plan Afterlux" loading="lazy"
+           style="width:min(30%,520px);max-width:1000px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
+      <p style="color:#FFD700;text-align:center">Reserviere deine Lounge: N1–N5 jedes Wochenende verfügbar.</p>
+
+      <!-- VIDEO CARD -->
+      <div class="cards" style="margin-top:18px">
+        <article class="card">
+          <video controls playsinline preload="metadata" poster="afterluxluna.png" loading="lazy"
+                 aria-label="Afterlux Club – Video Teaser"></video>
+          <div class="content">
+            <div class="pill">Highlight • Club Teaser</div>
+            <h3>Afterlux – Video</h3>
+            <p class="muted">Präsentation</p>
+            <div style="margin-top:8px">
+              <button class="btn" type="button"
+                onclick="this.closest('.card').querySelector('video').play()">▶︎ Play</button>
+              <button class="btn ghost" type="button"
+                onclick="this.closest('.card').querySelector('video').pause()">⏸︎ Pause</button>
+            </div>
+          </div>
+          <script>
+            (function(){
+              const v=document.currentScript.previousElementSibling.previousElementSibling;
+              if(v && !v.querySelector('source')){
+                const s=document.createElement('source');
+                s.src='video%20afterlux%20.mp4'; s.type='video/mp4'; v.appendChild(s);
+              }
+            })();
+          </script>
+        </article>
+      </div>
+
+      <!-- PROMOTER (riaggiunto) -->
+      <div class="promoter-section" style="text-align:center;margin-top:40px">
+        <h3 style="color:#FFD700;font-size:1.8rem;margin-bottom:15px">Werde Afterlux Promoter</h3>
+        <img src="./promoter.jpg" alt="Afterlux Club Promoter" loading="lazy"
+             style="width:min(30%,520px);max-width:800px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
+        <p style="color:#FFD700;font-size:1rem;max-width:800px;margin:0 auto">
+          Du willst Teil vom Afterlux-Team werden? Schreib uns auf Instagram oder per E-Mail und sichere dir exklusive Vorteile.
+        </p><br>
+        <a href="https://www.instagram.com/afterlux_club/" target="_blank" rel="noopener"
+           style="background-color:#FFD700;color:#000;padding:10px 25px;border-radius:25px;text-decoration:none;font-weight:bold">
+          Kontaktiere uns auf Instagram
+        </a>
+      </div>
+    </section>
+
+    <!-- CONTATTI – a scomparsa (apri/chiudi) + MAPPA -->
+    <section id="contatti" aria-expanded="false" style="margin-top:42px">
       <h2 tabindex="0" aria-controls="contatti-body" aria-label="Kontakt öffnen/schließen">
         <span class="chev">▶</span> Kontakt
-        <span class="muted" style="font-size:12px">(klicken zum Anzeigen)</span>
+        <span class="toggle-hint">(klicken zum Anzeigen)</span>
       </h2>
-      <div id="contatti-body" class="body">
+      <div id="contatti-body" class="content-wrapper">
         <div class="cards">
           <div class="card"><div class="content">
             <p><strong>Telefon:</strong> <a href="tel:+4915738465393">+49 1573 8465393</a></p>
@@ -136,89 +228,69 @@
       </div>
     </section>
 
-    <!-- E V E N T S  (accordion) -->
-    <section id="eventi" class="acc" aria-expanded="false" style="margin-top:24px">
-      <h2 tabindex="0" aria-controls="eventi-body" aria-label="Events öffnen/schließen">
-        <span class="chev">▶</span> Events
-      </h2>
-      <div id="eventi-body" class="body">
-        <!-- Suche + Filter -->
-        <div class="card" style="padding:12px;display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
-          <input id="q" placeholder="Suchen… (z.B. Latin, Halloween)" aria-label="Events suchen"
-                 style="flex:1;min-width:200px;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-          <select id="month" aria-label="Nach Monat filtern"
-                  style="padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-            <option value="">Alle Monate</option>
-          </select>
-          <button class="btn ghost" type="button" id="clr">Zurücksetzen</button>
+    <!-- PRENOTAZIONI -->
+    <section id="prenotazioni">
+      <h2>Reservieren</h2>
+      <p class="muted">Schreib uns direkt: Event & Lounge wählen und dann per WhatsApp oder E-Mail senden.</p>
+
+      <div class="card" style="padding:16px;display:grid;gap:12px">
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+          <label><div class="muted">Vor- und Nachname</div>
+            <input id="pr-nome" type="text" placeholder="Dein Name"
+              style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+          </label>
+          <label><div class="muted">Telefon</div>
+            <input id="pr-tel" type="tel" placeholder="+49 ..."
+              style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+          </label>
         </div>
 
-        <div id="event-cards" class="cards"></div>
-
-        <h3 style="margin-top:26px">Wiederkehrende Events</h3>
-        <div id="recurring-cards" class="cards"></div>
-      </div>
-    </section>
-
-    <!-- G A L E R I E  (accordion) -->
-    <section id="galleria" class="acc" aria-expanded="false" style="margin-top:24px">
-      <h2 tabindex="0" aria-controls="galleria-body" aria-label="Galerie öffnen/schließen">
-        <span class="chev">▶</span> Galerie
-      </h2>
-      <div id="galleria-body" class="body">
-        <img src="./Lounge-Afterlux.png" alt="Lounge-Plan Afterlux" loading="lazy"
-             style="width:min(30%,520px);max-width:1000px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
-        <p style="color:#FFD700;text-align:center">Reserviere deine Lounge: N1–N5 jedes Wochenende verfügbar.</p>
-
-        <!-- VIDEO CARD -->
-        <div class="cards" style="margin-top:18px">
-          <article class="card">
-            <video controls playsinline preload="metadata" poster="afterluxluna.png" loading="lazy"
-                   aria-label="Afterlux Club – Video Teaser">
-              <source src="video%20afterlux%20.mp4" type="video/mp4">
-            </video>
-            <div class="content">
-              <div class="pill">Highlight • Club Teaser</div>
-              <h3>Afterlux – Video</h3>
-              <p class="muted">Präsentation</p>
-              <div style="margin-top:8px">
-                <button class="btn" type="button" onclick="this.closest('.card').querySelector('video').play()">▶︎ Play</button>
-                <button class="btn ghost" type="button" onclick="this.closest('.card').querySelector('video').pause()">⏸︎ Pause</button>
-              </div>
-            </div>
-          </article>
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+          <label><div class="muted">E-Mail</div>
+            <input id="pr-email" type="email" placeholder="name@email.com"
+              style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+          </label>
+          <label><div class="muted">Datum (bei datiertem Event)</div>
+            <input id="pr-data" type="date"
+              style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+          </label>
         </div>
 
-        <!-- PROMOTER -->
-        <div class="promoter-section" style="text-align:center;margin-top:40px">
-          <h3 style="color:#FFD700;font-size:1.8rem;margin-bottom:15px">Werde Afterlux Promoter</h3>
-          <img src="./promoter.jpg" alt="Afterlux Club Promoter" loading="lazy"
-               style="width:min(30%,520px);max-width:800px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
-          <p style="color:#FFD700;font-size:1rem;max-width:800px;margin:0 auto">
-            Du willst Teil vom Afterlux-Team werden? Schreib uns auf Instagram oder per E-Mail und sichere dir exklusive Vorteile.
-          </p><br>
-          <a href="https://www.instagram.com/afterlux_club/" target="_blank" rel="noopener"
-             style="background-color:#FFD700;color:#000;padding:10px 25px;border-radius:25px;text-decoration:none;font-weight:bold">
-            Kontaktiere uns auf Instagram
-          </a>
-        </div>
-      </div>
-    </section>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px">
+          <label><div class="muted">Event</div>
+            <select id="pr-event" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+              <option value="">— Event auswählen —</option>
+            </select>
+          </label>
 
-    <!-- Ü B E R  U N S  (accordion) -->
-    <section id="chi-siamo" class="acc" aria-expanded="false" style="margin-top:24px">
-      <h2 tabindex="0" aria-controls="chi-siamo-body" aria-label="Über uns öffnen/schließen">
-        <span class="chev">▶</span> Über uns
-      </h2>
-      <div id="chi-siamo-body" class="body">
-        <p><strong>Afterlux Club</strong> ist die Vision zweier junger Partner: <strong>Giuseppe Leocata</strong> und <strong>Luana Ferlito</strong>.</p>
-        <p>Unsere Mission: Wir bringen das Nachtleben in Lörrach nach vorn – mit einem Ort, an dem sich <em>alle</em> wohlfühlen. Bei uns laufen verschiedene Musikrichtungen, von House und Hip-Hop über Reggaeton bis Tech House, in einer offenen, inklusiven Atmosphäre.</p>
-        <p>Mit Motto-Nights, Shows und neuen Formaten schaffen wir regelmäßig frische, einzigartige Erlebnisse – damit jede Nacht in Erinnerung bleibt.</p>
+          <label><div class="muted">Lounge</div>
+            <select id="pr-lounge" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+              <option>N0</option><option>N1</option><option>N2</option><option>N3</option><option>N4</option><option>N5</option>
+            </select>
+          </label>
+
+          <label><div class="muted">Personen</div>
+            <select id="pr-persone" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+              <option>2</option><option>4</option><option>6</option><option>8</option><option>10</option>
+            </select>
+          </label>
+        </div>
+
+        <label><div class="muted">Notizen (optional)</div>
+          <textarea id="pr-note" rows="3" placeholder="z. B. Geburtstag, Wünsche…"
+            style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff"></textarea>
+        </label>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" type="button" id="btn-wa">Per WhatsApp senden</button>
+          <button class="btn ghost" type="button" id="btn-mail">Per E-Mail senden</button>
+          <a class="btn ghost" href="tel:+4915738465393">Anrufen</a>
+        </div>
       </div>
     </section>
   </main>
 
-  <!-- MODAL: DETTAGLI EVENTO (senza Tickets) -->
+  <!-- MODAL -->
   <div id="event-detail" class="overlay" role="dialog" aria-modal="true" aria-labelledby="detail-title">
     <div class="modal">
       <div class="modal-head"><h3 id="detail-title" style="margin:0">Event-Details</h3></div>
@@ -234,74 +306,8 @@
       </div>
       <div class="modal-foot">
         <button id="open-booking" class="btn" type="button">Jetzt reservieren</button>
-        <button class="btn ghost" type="button" onclick="document.getElementById('event-detail').classList.remove('show')">Schließen</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: PRENOTAZIONI (apre SOLO al clic dalle card) -->
-  <div id="prenotazioni" class="overlay" role="dialog" aria-modal="true" aria-labelledby="pr-title" style="display:none">
-    <div class="modal" style="max-width:720px">
-      <div class="modal-head"><h3 id="pr-title" style="margin:0">Reservieren</h3></div>
-      <div class="modal-body" style="display:block">
-        <p class="muted">Schreib uns direkt: Event & Lounge wählen und dann per WhatsApp oder E-Mail senden.</p>
-        <div class="card" style="padding:16px;display:grid;gap:12px;border:none;background:transparent">
-          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
-            <label><div class="muted">Vor- und Nachname</div>
-              <input id="pr-nome" type="text" placeholder="Dein Name"
-                style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-            </label>
-            <label><div class="muted">Telefon</div>
-              <input id="pr-tel" type="tel" placeholder="+49 ..."
-                style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-            </label>
-          </div>
-
-          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
-            <label><div class="muted">E-Mail</div>
-              <input id="pr-email" type="email" placeholder="name@email.com"
-                style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-            </label>
-            <label><div class="muted">Datum (bei datiertem Event)</div>
-              <input id="pr-data" type="date"
-                style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-            </label>
-          </div>
-
-          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px">
-            <label><div class="muted">Event</div>
-              <select id="pr-event" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-                <option value="">— Event auswählen —</option>
-              </select>
-            </label>
-
-            <label><div class="muted">Lounge</div>
-              <select id="pr-lounge" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-                <option>N0</option><option>N1</option><option>N2</option><option>N3</option><option>N4</option><option>N5</option>
-              </select>
-            </label>
-
-            <label><div class="muted">Personen</div>
-              <select id="pr-persone" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-                <option>2</option><option>4</option><option>6</option><option>8</option><option>10</option>
-              </select>
-            </label>
-          </div>
-
-          <label><div class="muted">Notizen (optional)</div>
-            <textarea id="pr-note" rows="3" placeholder="z. B. Geburtstag, Wünsche…"
-              style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff"></textarea>
-          </label>
-
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn" type="button" id="btn-wa">Per WhatsApp senden</button>
-            <button class="btn ghost" type="button" id="btn-mail">Per E-Mail senden</button>
-            <a class="btn ghost" href="tel:+4915738465393">Anrufen</a>
-          </div>
-        </div>
-      </div>
-      <div class="modal-foot">
-        <button class="btn ghost" type="button" onclick="document.getElementById('prenotazioni').classList.remove('show')">Schließen</button>
+        <a id="buy-tickets" class="btn ghost" href="#" target="_blank" rel="noopener" style="display:none">Tickets kaufen</a>
+        <button id="add-calendar" class="btn ghost" type="button">In den Kalender</button>
       </div>
     </div>
   </div>
@@ -311,7 +317,7 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    /* ====== DATI EVENTI ====== */
+    /* ========== DATI EVENTI ========== */
     const eventi = [
       { slug:'russian-beats-2025-10-11', name:'Russian Beats', dateISO:'2025-10-11T22:30:00+02:00', shortDate:'Sa 11 Okt', desc:'Beginn 22:30', lineup:'DJ Andy', prices:'—', cover:'serata russa 11.10.jpg' },
       { slug:'latin-night-2025-10-17', name:'Latin Night', dateISO:'2025-10-17T23:00:00+02:00', shortDate:'Fr 17 Okt', desc:'Start 23:00 • DJ Don-Maiky • Eintritt GRATIS', lineup:'DJ Don-Maiky', prices:'Eintritt GRATIS', cover:'Latin Night.jpg' },
@@ -327,57 +333,13 @@
       { slug:'karaoke-night', name:'Karaoke Night', when:'Jeden Donnerstag', time:'21:30 – 02:00', desc:'Eintritt frei • Die Bühne gehört dir!', lineup:'Open Mic • Host Afterlux', prices:'Free Entry', cover:'karaoke.jpg' },
     ];
 
-    /* ====== HELPERS ====== */
+    /* ========== HELPERS ========== */
     const $ = s => document.querySelector(s);
-    const $$ = s => [...document.querySelectorAll(s)];
-
-    /* ====== ACCORDION LOGIC (apri/chiudi, solo al clic) ====== */
-    function setSectionOpen(id, open){
-      const sec = document.getElementById(id);
-      if(!sec) return;
-      sec.setAttribute('aria-expanded', String(open));
-      if(open) sec.scrollIntoView({behavior:'smooth',block:'start'});
-    }
-    // Toggle col titolo
-    $$('.acc h2').forEach(h=>{
-      h.addEventListener('click', ()=>{
-        const sec = h.parentElement;
-        const willOpen = sec.getAttribute('aria-expanded')!=='true';
-        // chiudi le altre
-        $$('.acc').forEach(s=>s.setAttribute('aria-expanded','false'));
-        // apri/chiudi la corrente
-        sec.setAttribute('aria-expanded', String(willOpen));
-        if(willOpen) sec.scrollIntoView({behavior:'smooth',block:'start'});
-      });
-      h.addEventListener('keydown', e=>{
-        if(e.key==='Enter' || e.key===' '){
-          e.preventDefault(); h.click();
-        }
-      });
-    });
-    // Click su nav: apre solo la sezione scelta (le altre si chiudono)
-    $$('nav a[data-open]').forEach(a=>{
-      a.addEventListener('click', e=>{
-        e.preventDefault();
-        const id=a.dataset.open;
-        $$('.acc').forEach(s=>s.setAttribute('aria-expanded','false'));
-        setSectionOpen(id, true);
-        history.replaceState(null,'',`#${id}`);
-      });
-    });
-    // Apri da hash se presente
-    if(location.hash){
-      const id = location.hash.replace('#','');
-      if (document.getElementById(id)?.classList.contains('acc')){
-        setSectionOpen(id, true);
-      }
-    }
-
-    /* ====== RICERCA/FILTRI EVENTI ====== */
     const cards = $('#event-cards');
     const recWrap = $('#recurring-cards');
 
-    (function(){ 
+    /* ========== RICERCA/FILTRI ========== */
+    (()=>{ 
       const months = [...new Set(eventi.map(e =>
         new Date(e.dateISO).toLocaleString('de-DE',{month:'long',year:'numeric'})
       ))];
@@ -437,10 +399,9 @@
     $('#q').addEventListener('input', filter);
     $('#month').addEventListener('change', filter);
 
-    /* ====== COUNTDOWN ====== */
-    (function(){
-      const cdWrap = document.getElementById('countdown');
-      if (!upcoming.length) return;
+    /* ========== COUNTDOWN ========== */
+    const cdWrap = document.getElementById('countdown');
+    if (upcoming.length){
       const target = new Date(upcoming[0].dateISO).getTime();
       const dEl = document.getElementById('cd-d'), hEl=document.getElementById('cd-h'), mEl=document.getElementById('cd-m'), sEl=document.getElementById('cd-s');
       const tick=()=>{
@@ -451,11 +412,11 @@
         dEl.textContent=d; hEl.textContent=String(h).padStart(2,'0');
         mEl.textContent=String(m).padStart(2,'0'); sEl.textContent=String(s).padStart(2,'0');
       }; tick(); setInterval(tick,1000); cdWrap.hidden=false;
-    })();
+    }
 
-    /* ====== MODAL EVENTI ====== */
+    /* ========== MODAL EVENTI ========== */
     let currentDetailSlug = null;
-    const overlayDetail = document.getElementById('event-detail');
+    const overlay = document.getElementById('event-detail');
 
     const findAny = slug =>
       upcoming.find(e=>e.slug===slug) ||
@@ -474,19 +435,20 @@
       document.getElementById('detail-cover').style.backgroundImage = ev.cover ? `url(${encodeURI(ev.cover)})` : '';
     };
 
+    // Nessun bottone "Tickets" nel modal
     function openDetail(slug){
       const ev = findAny(slug);
       if (!ev) return;
       currentDetailSlug = slug;
       fillDetail(ev);
-      overlayDetail.classList.add('show');
+      overlay.classList.add('show');
     }
-    function closeDetail(){ overlayDetail.classList.remove('show'); }
+    const closeDetail = ()=> overlay.classList.remove('show');
 
     document.addEventListener('click', e=>{
       const a = e.target.closest('.event-detail-link, .recurring-detail-link');
       if(a){ e.preventDefault(); openDetail(a.getAttribute('data-slug')); }
-      if(e.target===overlayDetail) closeDetail();
+      if(e.target===overlay) closeDetail();
     });
     window.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDetail(); });
 
@@ -499,29 +461,27 @@
     handleHash();
     window.addEventListener('hashchange', handleHash);
 
-    /* ====== PRENOTAZIONI (solo dal pulsante nelle card) ====== */
-    const overlayRes = document.getElementById('prenotazioni');
-
+    /* ========== PRENOTAZIONI ========== */
     function ensureEventSelectOptions(){
       const sel = document.getElementById('pr-event');
-      if (!sel || sel.dataset.filled==='1') return;
+      if (!sel) return;
+      if (sel.options.length > 1) return;
       const list = [...upcoming.map(e=>e.name), ...recurring.map(e=>e.name+' (wiederkehrend)')];
       (list.length?list:['Karaoke Night (wiederkehrend)']).forEach(n=>{
         const o=document.createElement('option'); o.value=n; o.textContent=n; sel.appendChild(o);
       });
-      sel.dataset.filled='1';
     }
 
-    function openBooking(slug){
+    function showBookingSectionFrom(slug){
+      const ev = findAny(slug);
+      const sec = document.getElementById('prenotazioni');
+      if (!sec) return;
+      sec.style.setProperty('display','block','important');
       ensureEventSelectOptions();
-      const ev = slug ? findAny(slug) : null;
-      const sel = document.getElementById('pr-event');
-      const dateInput = document.getElementById('pr-data');
 
-      if (sel){
-        if (ev){ sel.value = ev.dateISO ? ev.name : `${ev.name} (wiederkehrend)`; }
-        else { sel.value = ''; }
-      }
+      const sel = document.getElementById('pr-event');
+      if (sel && ev){ sel.value = ev.dateISO ? ev.name : `${ev.name} (wiederkehrend)`; }
+      const dateInput = document.getElementById('pr-data');
       if (dateInput){
         if (ev && ev.dateISO){
           const d = new Date(ev.dateISO);
@@ -529,22 +489,42 @@
           dateInput.value = `${yyyy}-${mm}-${dd}`;
         } else { dateInput.value = ''; }
       }
-      overlayRes.classList.add('show');
-    }
-    function closeBooking(){ overlayRes.classList.remove('show'); }
-
-    // Pulsante nel modal eventi
-    document.getElementById('open-booking').addEventListener('click', ()=>{
-      if (!currentDetailSlug) return;
       closeDetail();
-      openBooking(currentDetailSlug);
+      sec.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+
+    document.addEventListener('click', e=>{
+      if (e.target && e.target.id === 'open-booking'){
+        showBookingSectionFrom(currentDetailSlug);
+      }
     });
 
-    // Click fuori chiude prenotazioni
-    overlayRes.addEventListener('click', e=>{ if(e.target===overlayRes) closeBooking(); });
-    window.addEventListener('keydown', e=>{ if(e.key==='Escape') closeBooking(); });
+    // Add to Calendar (ICS)
+    document.getElementById('add-calendar').addEventListener('click', ()=>{
+      if(!currentDetailSlug) return;
+      const ev = findAny(currentDetailSlug); if(!ev) return;
+      const start = new Date(ev.dateISO);
+      const end = new Date(start.getTime()+3*3600e3); // +3h
+      const dt = d=>d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+      const ics = [
+        'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Afterlux//Events//DE',
+        'BEGIN:VEVENT',
+        `UID:${ev.slug}@afterlux`,
+        `DTSTAMP:${dt(new Date())}`,
+        `DTSTART:${dt(start)}`,
+        `DTEND:${dt(end)}`,
+        `SUMMARY:${ev.name}`,
+        `DESCRIPTION:${(ev.desc||'').replace(/\n/g,'\\n')}`,
+        'LOCATION:Afterlux Club, Teicherstrasse 14, 79539 Lörrach',
+        'END:VEVENT','END:VCALENDAR'
+      ].join('\r\n');
+      const blob = new Blob([ics], {type:'text/calendar'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download=`${ev.slug}.ics`; a.click();
+      URL.revokeObjectURL(url);
+    });
 
-    // Validazione + salvataggio auto + invii
+    // Validazione + salvataggio auto
     function isValid(){
       const n=document.getElementById('pr-nome').value.trim();
       const t=document.getElementById('pr-tel').value.trim();
@@ -583,6 +563,71 @@
       if(!isValid()) return;
       location.href = `mailto:afterlux.loerrach@gmail.com?subject=${encodeURIComponent('Lounge-Reservierung - Afterlux')}&body=${encodeURIComponent(buildMsg())}`;
     });
+
+    /* ========== CONTATTI: logica a scomparsa ========== */
+    const contatti = document.getElementById('contatti');
+    const navContatti = document.getElementById('nav-contatti');
+    function openContatti(){
+      contatti.classList.add('open');
+      contatti.setAttribute('aria-expanded','true');
+      contatti.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+    function toggleContatti(){
+      const willOpen = !contatti.classList.contains('open');
+      contatti.classList.toggle('open', willOpen);
+      contatti.setAttribute('aria-expanded', String(willOpen));
+      if (willOpen) contatti.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+    // click su nav "Kontakt"
+    navContatti.addEventListener('click', (e)=>{
+      e.preventDefault();
+      openContatti();
+      history.replaceState(null,'','#contatti');
+    });
+    // click su titolo h2
+    contatti.querySelector('h2').addEventListener('click', toggleContatti);
+    contatti.querySelector('h2').addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); toggleContatti(); } });
+
+    /* ========== JSON-LD SEO ========== */
+    (function(){
+      const base = new URL('.', location.href).href;
+      const abs = p => { try { return new URL(p, base).href; } catch(e){ return p; } };
+      const addLD = obj => { const s=document.createElement('script'); s.type='application/ld+json'; s.textContent = JSON.stringify(obj); document.head.appendChild(s); };
+
+      addLD({
+        "@context":"https://schema.org","@type":"Organization","name":"Afterlux Club",
+        "url": location.origin + location.pathname,
+        "logo": abs("afterluxluna.png"),
+        "sameAs":["https://www.instagram.com/afterlux_club/"],
+        "address":{"@type":"PostalAddress","streetAddress":"Teicherstrasse 14","postalCode":"79539","addressLocality":"Lörrach","addressCountry":"DE"},
+        "telephone":"+49 1573 8465393"
+      });
+
+      const FREE_RE = /(gratis|free)/i;
+      function buildOffers(ev){
+        const prices = ev.prices || ev.desc || '';
+        if (FREE_RE.test(prices)) {
+          const o={"@type":"Offer","price":"0","priceCurrency":"EUR","availability":"https://schema.org/InStock","isAccessibleForFree":true};
+          if (ev.ticketUrl) o.url = ev.ticketUrl;
+          return o;
+        }
+        const matches=(prices.match(/(\d+[.,]?\d*)\s*€/g)||[]).map(x=>x.replace(/[^\d.,]/g,'').replace(',','.'));
+        if (matches.length===0 && ev.ticketUrl){ return {"@type":"Offer","priceCurrency":"EUR","availability":"https://schema.org/InStock","url":ev.ticketUrl}; }
+        if (matches.length===1){ return {"@type":"Offer","price":matches[0],"priceCurrency":"EUR","availability":"https://schema.org/InStock","url":ev.ticketUrl||location.href}; }
+        return matches.map(p=>({"@type":"Offer","price":p,"priceCurrency":"EUR","availability":"https://schema.org/InStock","url":ev.ticketUrl||location.href}));
+      }
+      eventi.forEach(ev=>{
+        const ld={"@context":"https://schema.org","@type":"Event","name":ev.name,"startDate":ev.dateISO,
+          "eventStatus":"https://schema.org/EventScheduled","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode",
+          "image":[ abs(encodeURI(ev.cover)) ],"description":ev.desc||"",
+          "location":{"@type":"Place","name":"Afterlux Club","address":{"@type":"PostalAddress","streetAddress":"Teicherstrasse 14","addressLocality":"Lörrach","postalCode":"79539","addressCountry":"DE"}},
+          "organizer":{"@type":"Organization","name":"Afterlux Club","url": location.origin + location.pathname}
+        };
+        const offers=buildOffers(ev); if(offers) ld.offers=offers;
+        if (ev.lineup && ev.lineup!=='—'){ ld.performer=[{"@type":"PerformingGroup","name":ev.lineup}]; }
+        addLD(ld);
+      });
+    })();
   </script>
 </body>
 </html>
