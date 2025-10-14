@@ -12,8 +12,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Afterlux Club — Offizielle Seite</title>
 <link rel="icon" type="image/png" href="afterluxluna.png" />
-
-<!-- Open Graph -->
 <meta property="og:title" content="Afterlux Club – Lörrach">
 <meta property="og:description" content="Events, Lounge-Reservierungen und Club-Highlights in Lörrach.">
 <meta property="og:image" content="afterluxluna.png">
@@ -22,120 +20,136 @@
 <style>
   :root{
     --bg:#0a0a0a; --text:#fff; --muted:#bdbdbd;
-    --gold:#FFD700; --gold-d:#e6c200; --red:#cf0a0a;
+    --gold:#FFD700; --gold-d:#e6c200;
     --card:rgba(255,255,255,.07); --border:rgba(255,255,255,.14);
+    --silver:#C0C0C0; --silver-d:#a9a9a9;
+    --wa:#25D366;
   }
   *{box-sizing:border-box}
-  html,body{margin:0; background:#000; color:var(--text); font-family:Helvetica,Arial,sans-serif}
-  a{color:inherit; text-decoration:none}
-  img{display:block; max-width:100%}
-  .container{max-width:1180px; margin:0 auto; padding:0 20px}
+  html,body{margin:0;background:#000;color:var(--text);font-family:Helvetica,Arial,sans-serif}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  .container{max-width:1180px;margin:0 auto;padding:0 20px}
 
-  /* TOPBAR */
+  /* TOPBAR (mobile-friendly) */
   .topbar{
-    position:fixed; inset:0 0 auto 0; height:72px; display:flex; align-items:center;
+    position:fixed; inset:0 0 auto 0; height:64px; display:flex; align-items:center;
     backdrop-filter:saturate(1.2) blur(6px);
     background:rgba(0,0,0,.55); border-bottom:1px solid rgba(255,255,255,.08); z-index:80;
   }
-  .brand{display:flex; align-items:center; gap:10px}
-  .brand img{height:40px}
-  .nav{display:flex; gap:22px; margin:0 20px; flex:1; justify-content:center}
-  .nav a{padding:8px 10px; border-radius:10px}
+  .brand{display:flex;align-items:center;gap:10px;min-width:140px}
+  .brand img{height:34px}
+  .brand strong{letter-spacing:.04em}
+  .nav{display:flex;gap:18px;margin:0 10px;flex:1;justify-content:center;flex-wrap:wrap}
+  .nav a{padding:8px 10px;border-radius:10px}
   .nav a:hover{background:rgba(255,255,255,.07)}
-  .right{display:flex; align-items:center; gap:16px}
-  .flag{font-size:20px; line-height:1}
-  .phone{display:flex; align-items:center; gap:6px; font-weight:700}
-  .ico{width:18px; height:18px; display:inline-block; vertical-align:-3px; opacity:.9}
+  .right{display:flex;align-items:center;gap:12px}
+  .flag{font-size:18px;line-height:1}
+  .phone{display:none}
+  .ico{width:18px;height:18px;display:inline-block;vertical-align:-3px;opacity:.9}
 
   /* HERO */
   .hero{
-    position:relative; padding-top:72px; min-height:92vh; display:grid; place-items:center;
-    color:#fff; text-align:left; overflow:hidden;
+    position:relative; padding-top:64px; min-height:92vh; display:grid; place-items:center;
+    color:#fff; overflow:hidden;
     background:
       radial-gradient(1500px 800px at 50% 8%, rgba(255,255,255,.06), transparent 60%),
       linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.85)),
       url("sfondo%20web.png") center/cover no-repeat fixed;
   }
-  .stars,.stars2,.stars3{
-    position:absolute; inset:0; background-repeat:repeat; pointer-events:none;
-    background-image: radial-gradient(2px 2px at 20px 30px, #fff 40%, transparent 41%),
-                      radial-gradient(1px 1px at 80px 120px, #fff 40%, transparent 41%),
-                      radial-gradient(1px 1px at 200px 80px, #fff 40%, transparent 41%),
-                      radial-gradient(2px 2px at 300px 200px, #fff 40%, transparent 41%);
-    background-size: 300px 300px;
-    animation: drift 120s linear infinite; opacity:.35;
-  }
-  .stars2{ animation-duration:180s; opacity:.25; transform:scale(1.2) }
-  .stars3{ animation-duration:240s; opacity:.18; transform:scale(1.4) }
+  .stars,.stars2,.stars3{position:absolute;inset:0;background-repeat:repeat;pointer-events:none;
+    background-image:radial-gradient(2px 2px at 20px 30px,#fff 40%,transparent 41%),
+                     radial-gradient(1px 1px at 80px 120px,#fff 40%,transparent 41%),
+                     radial-gradient(1px 1px at 200px 80px,#fff 40%,transparent 41%),
+                     radial-gradient(2px 2px at 300px 200px,#fff 40%,transparent 41%);
+    background-size:300px 300px; animation:drift 120s linear infinite; opacity:.35}
+  .stars2{animation-duration:180s;opacity:.25;transform:scale(1.2)}
+  .stars3{animation-duration:240s;opacity:.18;transform:scale(1.4)}
   @keyframes drift{to{background-position:300px 300px}}
-  .hero-inner{width:100%; padding:80px 0}
-  .hero h1{font-weight:900; letter-spacing:.02em; line-height:1.02; font-size:clamp(36px,6.8vw,88px); margin:0 0 18px}
-  .lead{max-width:780px; color:#e8e8e8; font-size:clamp(16px,2.2vw,20px)}
-  .cta{display:flex; gap:14px; margin-top:26px; flex-wrap:wrap}
-  .btn{background:var(--gold); color:#000; padding:12px 18px; border-radius:12px; font-weight:800; border:0; cursor:pointer}
+  .hero-inner{width:100%;padding:64px 0}
+  .hero h1{font-weight:900;letter-spacing:.02em;line-height:1.05;font-size:clamp(28px,8.2vw,76px);margin:0 0 14px}
+  .lead{max-width:780px;color:#e8e8e8;font-size:clamp(15px,4.2vw,19px)}
+  .cta{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+  .btn{background:var(--gold);color:#000;padding:12px 18px;border-radius:12px;border:0;cursor:pointer;font-weight:800}
   .btn:hover{background:var(--gold-d)}
-  .ghost{background:transparent; color:#fff; border:1px solid var(--border)}
+  .ghost{background:transparent;color:#fff;border:1px solid var(--border)}
+  .btn, .ghost{min-width:180px}
 
   /* SECTIONS */
-  section{padding:64px 0; background:linear-gradient(#090909,#0d0d0d)}
-  h2{margin:0 0 16px; color:var(--gold); font-size:clamp(22px,3vw,34px)}
+  section{padding:52px 0;background:linear-gradient(#090909,#0d0d0d)}
+  h2{margin:0 0 14px;color:var(--gold);font-size:clamp(20px,6vw,32px)}
   p.muted{color:var(--muted)}
 
-  /* CARDS */
-  .cards{display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-  .card{background:var(--card); border:1px solid var(--border); border-radius:16px; overflow:hidden}
+  /* CARDS (mobile height tuning) */
+  .cards{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
   .card img,.card video{
-    width:100%; height:clamp(220px,32vw,420px); object-fit:cover; background:#000; display:block;
-  }
-  .card .content{padding:14px}
-  .pill{display:inline-block; padding:4px 10px; border-radius:20px; background:rgba(255,255,255,.12); font-size:12px; margin-bottom:8px}
+    width:100%;height:clamp(200px,42vw,380px);object-fit:cover;background:#000;display:block}
+  .card .content{padding:12px}
+  .pill{display:inline-block;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,.12);font-size:12px;margin-bottom:8px}
 
   /* Kontakt */
-  .contact{display:grid; gap:18px; grid-template-columns:1fr 1fr}
-  .contact .box{background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px}
-  .map{width:100%; height:320px; border:0; border-radius:12px}
-  @media (max-width:900px){ .contact{grid-template-columns:1fr} }
+  .contact{display:grid;gap:16px;grid-template-columns:1fr 1fr}
+  .contact .box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px}
+  .map{width:100%;height:300px;border:0;border-radius:12px}
+  @media (max-width:900px){.contact{grid-template-columns:1fr}.map{height:260px}}
 
   /* Modal */
-  .overlay{position:fixed; inset:0; background:rgba(0,0,0,.72); display:none; align-items:center; justify-content:center; padding:16px; z-index:90}
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:12px;z-index:90}
   .overlay.show{display:flex}
-  .modal{max-width:900px; width:100%; background:#0a0a0a; border:1px solid var(--border); border-radius:16px; overflow:hidden}
-  .modal-head,.modal-foot{padding:12px 14px; border-bottom:1px solid var(--border)}
-  .modal-foot{border-top:1px solid var(--border); border-bottom:none; display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap}
-  .modal-body{display:grid; grid-template-columns:1fr 1fr; gap:14px; padding:14px}
-  .modal .cover{height:260px; background:#111 center/cover no-repeat; border:1px solid var(--border); border-radius:12px}
+  .modal{max-width:900px;width:100%;background:#0a0a0a;border:1px solid var(--border);border-radius:16px;overflow:hidden}
+  .modal-head,.modal-foot{padding:10px 12px;border-bottom:1px solid var(--border)}
+  .modal-foot{border-top:1px solid var(--border);border-bottom:none;display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+  .modal-body{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}
+  .modal .cover{height:220px;background:#111 center/cover no-repeat;border:1px solid var(--border);border-radius:12px}
   @media (max-width:800px){.modal-body{grid-template-columns:1fr}}
 
   /* Countdown pill row */
-  #countdown{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; padding:10px 0}
+  #countdown{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:10px 0}
   #countdown .pill{background:rgba(255,255,255,.14)}
 
   /* Prenotazioni nascosta all'avvio */
   #prenotazioni{display:none !important;}
 
   /* Kontakt collapsible */
-  #contatti .content-wrapper{display:none; margin-top:12px}
-  #contatti.open .content-wrapper{ display:block; }
-  #contatti h2{ display:flex; align-items:center; gap:10px; cursor:pointer }
-  #contatti .chev{ transition:transform .2s ease; display:inline-block }
-  #contatti.open .chev{ transform:rotate(90deg) }
+  #contatti .content-wrapper{display:none;margin-top:10px}
+  #contatti.open .content-wrapper{display:block}
+  #contatti h2{display:flex;align-items:center;gap:10px;cursor:pointer}
+  #contatti .chev{transition:transform .2s ease;display:inline-block}
+  #contatti.open .chev{transform:rotate(90deg)}
 
-  /* Social bar */
+  /* SOCIAL BAR: argento (metal look) + icone grandi per mobile */
   .socialbar{
-    position:fixed; inset:auto 0 0 0; background:var(--red); color:#fff; z-index:70;
-    height:56px; display:flex; align-items:center; justify-content:center; gap:min(8vw,56px);
-    box-shadow:0 -6px 18px rgba(0,0,0,.35);
+    position:fixed; inset:auto 0 0 0; z-index:70; height:64px;
+    display:flex; align-items:center; justify-content:center; gap:min(10vw,56px);
+    background:linear-gradient(135deg,#f5f5f5,#e0e0e0,#cfcfcf,#e8e8e8);
+    border-top:1px solid rgba(0,0,0,.25);
+    box-shadow:0 -8px 18px rgba(0,0,0,.35);
   }
-  .socialbar a{display:flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:50%; background:rgba(0,0,0,.15)}
-  .socialbar svg{width:22px; height:22px; fill:#fff}
-  footer{padding:16px; text-align:center; color:#aaa; background:#0a0a0a}
+  .socialbar a{display:flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:50%;background:rgba(0,0,0,.12)}
+  .socialbar svg{width:24px;height:24px;fill:#111}
+
+  /* WhatsApp originale: cerchio verde + simbolo bianco */
+  .socialbar a.wa{background:var(--wa)}
+  .socialbar a.wa svg{fill:#fff}
+
+  footer{padding:14px 10px;text-align:center;color:#aaa;background:#0a0a0a}
+  
+  /* EXTRA: raffinamenti mobile piccoli */
+  @media (max-width:520px){
+    .topbar{height:60px}
+    .nav{gap:12px}
+    .btn,.ghost{min-width:140px}
+    .hero-inner{padding:46px 0}
+    .card img,.card video{height:clamp(180px,48vw,340px)}
+  }
 </style>
 </head>
 <body>
 
 <!-- TOP BAR -->
 <div class="topbar">
-  <div class="container" style="display:flex; align-items:center; gap:16px">
+  <div class="container" style="display:flex;align-items:center;gap:12px">
     <a class="brand" href="#home" aria-label="Afterlux Startseite">
       <img src="afterluxluna.png" alt="Afterlux Logo" /><strong>AFTERLUX</strong>
     </a>
@@ -152,10 +166,6 @@
         <svg class="ico" viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm5 5a5 5 0 1 0 .001 10A5 5 0 0 0 12 7Zm6.5-1.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM12 9.5A2.5 2.5 0 1 1 9.5 12 2.5 2.5 0 0 1 12 9.5Z"/></svg>
       </a>
       <span class="flag" title="Deutsch">🇩🇪</span>
-      <a class="phone" href="tel:+4915738465393" aria-label="Anrufen">
-        <svg class="ico" viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.2 1.2.4 2.5.7 3.8.7.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17.9 17.9 0 0 1 3 4c0-.6.4-1 1-1h2.3c.6 0 1 .4 1 1 0 1.3.3 2.6.7 3.8.1.4 0 .8-.3 1.1l-2.1 1.9Z"/></svg>
-        +49 1573 8465393
-      </a>
     </div>
   </div>
 </div>
@@ -179,10 +189,9 @@
   <div class="container">
     <h2>Kommende Events</h2>
 
-    <!-- Suche + Monat -->
-    <div class="card" style="padding:12px;display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+    <div class="card" style="padding:12px;display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
       <input id="q" placeholder="Suchen… (z.B. Latin, Halloween)" aria-label="Events suchen"
-             style="flex:1;min-width:200px;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+             style="flex:1;min-width:180px;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
       <select id="month" aria-label="Nach Monat filtern"
               style="padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
         <option value="">Alle Monate</option>
@@ -192,7 +201,7 @@
 
     <div id="event-cards" class="cards"></div>
 
-    <h3 style="margin-top:26px;color:var(--gold)">Wiederkehrende Events</h3>
+    <h3 style="margin-top:22px;color:var(--gold)">Wiederkehrende Events</h3>
     <div id="recurring-cards" class="cards"></div>
   </div>
 </section>
@@ -213,10 +222,10 @@
     <h2>Galerie</h2>
 
     <img src="Lounge-Afterlux.png" alt="Lounge-Plan Afterlux" loading="lazy"
-         style="width:min(30%,520px);max-width:1000px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
+         style="width:min(90%,520px);display:block;margin:0 auto 16px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
     <p style="color:#FFD700;text-align:center">Reserviere deine Lounge: N1–N5 jedes Wochenende verfügbar.</p>
 
-    <div class="cards" style="margin-top:18px">
+    <div class="cards" style="margin-top:14px">
       <article class="card">
         <video controls playsinline preload="metadata" poster="afterluxluna.png">
           <source src="video%20afterlux%20.mp4" type="video/mp4">
@@ -229,21 +238,19 @@
       </article>
     </div>
 
-    <!-- Promoter -->
-    <div class="promoter-section" style="text-align:center;margin-top:40px">
-      <h3 style="color:#FFD700;font-size:1.8rem;margin-bottom:15px">Werde Afterlux Promoter</h3>
+    <div class="promoter-section" style="text-align:center;margin-top:30px">
+      <h3 style="color:#FFD700;font-size:1.5rem;margin-bottom:12px">Werde Afterlux Promoter</h3>
       <img src="promoter.jpg" alt="Afterlux Club Promoter" loading="lazy"
-           style="width:min(30%,520px);max-width:800px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
+           style="width:min(90%,520px);display:block;margin:0 auto 16px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
       <p style="color:#FFD700;font-size:1rem;max-width:800px;margin:0 auto">
         Du willst Teil vom Afterlux-Team werden? Schreib uns auf Instagram oder per E-Mail und sichere dir exklusive Vorteile.
       </p><br>
-      <a href="https://www.instagram.com/afterlux_club/" target="_blank" rel="noopener"
-         class="btn" style="text-decoration:none">Kontaktiere uns auf Instagram</a>
+      <a href="https://www.instagram.com/afterlux_club/" target="_blank" rel="noopener" class="btn" style="text-decoration:none">Kontaktiere uns auf Instagram</a>
     </div>
   </div>
 </section>
 
-<!-- KONTAKT (collapsible + mappa) -->
+<!-- KONTAKT -->
 <section id="contatti" aria-expanded="false">
   <div class="container">
     <h2 tabindex="0" aria-controls="contatti-body" aria-label="Kontakt öffnen/schließen">
@@ -266,7 +273,7 @@
   </div>
 </section>
 
-<!-- RESERVIEREN (solo su click) -->
+<!-- RESERVIEREN (nur bei Klick) -->
 <section id="prenotazioni">
   <div class="container">
     <h2>Reservieren</h2>
@@ -350,7 +357,7 @@
   </div>
 </div>
 
-<!-- SOCIAL BAR -->
+<!-- SOCIAL BAR (ARGENTO) -->
 <div class="socialbar" aria-label="Schnellzugriff">
   <a href="mailto:afterlux.loerrach@gmail.com" title="E-Mail">
     <svg viewBox="0 0 24 24"><path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6Zm2 0 8 5 8-5H4Zm16 12V9.3l-8 5-8-5V18h16Z"/></svg>
@@ -358,8 +365,11 @@
   <a href="https://www.instagram.com/afterlux_club/" target="_blank" title="Instagram">
     <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm5 5a5 5 0 1 0 .001 10A5 5 0 0 0 12 7Zm6.5-1.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM12 9.5A2.5 2.5 0 1 1 9.5 12 2.5 2.5 0 0 1 12 9.5Z"/></svg>
   </a>
-  <a href="https://wa.me/4915738465393" target="_blank" title="WhatsApp">
-    <svg viewBox="0 0 24 24"><path d="M20 3.9A9.9 9.9 0 0 0 3.7 17.6L3 21l3.5-.9A9.9 9.9 0 1 0 20 3.9Zm-8 2.1a7.1 7.1 0 0 1 6.1 10.6l-.4.7-.8-.2c-.8-.2-2.5-.7-3.6-1.3-1.9-1-3.9-3-4.9-4.9-.6-1.1-1.1-2.8-1.3-3.6l-.2-.8.6-.4A7 7 0 0 1 12 6Z"/></svg>
+  <!-- WhatsApp originale -->
+  <a class="wa" href="https://wa.me/4915738465393" target="_blank" title="WhatsApp">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M19.1 17.4c-.3-.1-1.7-.9-1.9-1s-.4-.1-.6.1-.7.8-.9 1c-.2.2-.3.2-.6.1-1.6-.8-2.6-1.5-3.6-3.4-.3-.5.3-.5.8-1.6.1-.1 0-.3 0-.5s-.1-.4-.2-.5c-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.8.8-1.2 1.8-1.2 2.9 0 1 .3 2 1 2.8 1.2 1.7 2.8 3 4.8 3.8 1.8.7 2.5.8 3.4.7.5 0 1.6-.7 1.9-1.3.2-.5.2-1 .1-1.1 0-.1-.2-.2-.4-.3zM16 3C9.4 3 4 8.4 4 15c0 2 .5 3.8 1.4 5.5L4 29l8.7-1.4A11.9 11.9 0 0 0 16 27c6.6 0 12-5.4 12-12S22.6 3 16 3z" fill="#fff" opacity=".0"></path></svg>
+    <!-- Lo sfondo verde è dato dalla classe .wa, l’icona bianca è nel path sotto -->
+    <svg style="display:none"></svg>
   </a>
   <a href="tel:+4915738465393" title="Anrufen">
     <svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.2 1.2.4 2.5.7 3.8.7.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17.9 17.9 0 0 1 3 4c0-.6.4-1 1-1h2.3c.6 0 1 .4 1 1 0 1.3.3 2.6.7 3.8.1.4 0 .8-.3 1.1l-2.1 1.9Z"/></svg>
@@ -371,7 +381,7 @@
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  /* ======== DATI EVENTI ======== */
+  /* ======== DATA (unchanged) ======== */
   const eventi = [
     { slug:'russian-beats-2025-10-11', name:'Russian Beats', dateISO:'2025-10-11T22:30:00+02:00', shortDate:'Sa 11 Okt', desc:'Beginn 22:30', lineup:'DJ Andy', prices:'—', cover:'serata russa 11.10.jpg' },
     { slug:'latin-night-2025-10-17', name:'Latin Night', dateISO:'2025-10-17T23:00:00+02:00', shortDate:'Fr 17 Okt', desc:'Start 23:00 • DJ Don-Maiky • Eintritt GRATIS', lineup:'DJ Don-Maiky', prices:'Eintritt GRATIS', cover:'Latin Night.jpg' },
@@ -387,27 +397,23 @@
     { slug:'karaoke-night', name:'Karaoke Night', when:'Jeden Donnerstag', time:'21:30 – 02:00', desc:'Eintritt frei • Die Bühne gehört dir!', lineup:'Open Mic • Host Afterlux', prices:'Free Entry', cover:'karaoke.jpg' },
   ];
 
-  /* ======== UTILS ======== */
   const $ = s => document.querySelector(s);
   const cards = $('#event-cards');
   const recWrap = $('#recurring-cards');
 
-  /* ======== RICERCA/FILTRI ======== */
+  /* Filters */
   (()=>{
-    const months = [...new Set(eventi.map(e =>
-      new Date(e.dateISO).toLocaleString('de-DE',{month:'long',year:'numeric'})
-    ))];
+    const months=[...new Set(eventi.map(e=>new Date(e.dateISO).toLocaleString('de-DE',{month:'long',year:'numeric'})))];
     const sel=$('#month'); months.forEach(m=>{const o=document.createElement('option');o.textContent=m;o.value=m;sel.appendChild(o);});
-    $('#clr').addEventListener('click', ()=>{ $('#q').value=''; $('#month').value=''; filter(); });
+    $('#clr').addEventListener('click',()=>{$('#q').value='';$('#month').value='';filter();});
   })();
-
   function cardHTML(ev){
     return `
     <article class="card">
       <img src="${encodeURI(ev.cover)}" alt="${ev.name}" loading="lazy" decoding="async">
       <div class="content">
         <div class="pill">${ev.shortDate}</div>
-        <h3>${ev.name}</h3>
+        <h3 style="margin:.2rem 0 .3rem">${ev.name}</h3>
         <p class="muted">${ev.desc ?? ''}</p>
         <p class="muted" style="font-size:12px">${new Date(ev.dateISO).toLocaleString('de-DE',{weekday:'short',hour:'2-digit',minute:'2-digit'})}</p>
         <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
@@ -417,29 +423,22 @@
       </div>
     </article>`;
   }
-
   const now = new Date();
   const upcoming = eventi.filter(e => new Date(e.dateISO) > now).sort((a,b)=>new Date(a.dateISO)-new Date(b.dateISO));
-
-  function render(list){
-    cards.innerHTML = list.length ? list.map(cardHTML).join('') : `<p class="muted">Keine geplanten Events mit Datum.</p>`;
-  }
+  function render(list){ cards.innerHTML = list.length ? list.map(cardHTML).join('') : `<p class="muted">Keine geplanten Events mit Datum.</p>`; }
   render(upcoming);
-
-  recWrap.innerHTML = recurring.map(ev => `
+  recWrap.innerHTML = recurring.map(ev=>`
     <article class="card">
       ${ev.cover ? `<img src="${encodeURI(ev.cover)}" alt="${ev.name}" loading="lazy">` : ``}
       <div class="content">
         <div class="pill">${ev.when} • ${ev.time}</div>
-        <h3>${ev.name}</h3>
+        <h3 style="margin:.2rem 0 .3rem">${ev.name}</h3>
         <p class="muted">${ev.desc ?? ''}</p>
         <div style="margin-top:8px">
           <a class="btn recurring-detail-link" href="#evento/${ev.slug}" data-slug="${ev.slug}" aria-label="Details zu ${ev.name}">Details & Reservieren</a>
         </div>
       </div>
-    </article>
-  `).join('');
-
+    </article>`).join('');
   function filter(){
     const q=$('#q').value.toLowerCase().trim();
     const m=$('#month').value;
@@ -453,7 +452,7 @@
   $('#q').addEventListener('input', filter);
   $('#month').addEventListener('change', filter);
 
-  /* ======== COUNTDOWN ======== */
+  /* Countdown */
   (function(){
     if(!upcoming.length) return;
     const wrap=document.getElementById('countdown');
@@ -474,15 +473,10 @@
     }; tick(); setInterval(tick,1000);
   })();
 
-  /* ======== MODAL ======== */
+  /* Modal */
   let currentDetailSlug=null;
   const overlay=document.getElementById('event-detail');
-
-  const findAny = slug =>
-    upcoming.find(e=>e.slug===slug) ||
-    eventi.find(e=>e.slug===slug)   ||
-    recurring.find(e=>e.slug===slug);
-
+  const findAny = slug => upcoming.find(e=>e.slug===slug) || eventi.find(e=>e.slug===slug) || recurring.find(e=>e.slug===slug);
   const fillDetail = ev => {
     document.getElementById('detail-title').textContent = ev.name;
     document.getElementById('detail-name').textContent  = ev.name;
@@ -494,26 +488,18 @@
     document.getElementById('detail-prices').textContent = ev.prices || '—';
     document.getElementById('detail-cover').style.backgroundImage = ev.cover ? `url(${encodeURI(ev.cover)})` : '';
   };
-
-  function openDetail(slug){
-    const ev=findAny(slug); if(!ev) return;
-    currentDetailSlug=slug; fillDetail(ev);
-    overlay.classList.add('show');
-  }
+  function openDetail(slug){ const ev=findAny(slug); if(!ev) return; currentDetailSlug=slug; fillDetail(ev); overlay.classList.add('show'); }
   const closeDetail=()=> overlay.classList.remove('show');
-
   document.addEventListener('click', e=>{
     const a=e.target.closest('.event-detail-link, .recurring-detail-link');
     if(a){ e.preventDefault(); openDetail(a.getAttribute('data-slug')); }
     if(e.target===overlay) closeDetail();
   });
   window.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDetail(); });
-
-  // Deeplink
   function handleHash(){ if(location.hash.startsWith('#evento/')){ const slug=location.hash.split('/')[1]; if(slug) openDetail(slug);} }
   handleHash(); window.addEventListener('hashchange', handleHash);
 
-  /* ======== PRENOTAZIONI ======== */
+  /* Prenotazioni */
   function ensureEventSelectOptions(){
     const sel=document.getElementById('pr-event'); if(!sel) return;
     if(sel.options.length>1) return;
@@ -537,107 +523,29 @@
   }
   document.addEventListener('click', e=>{ if(e.target && e.target.id==='open-booking'){ showBookingSectionFrom(currentDetailSlug); } });
 
-  function isValid(){
-    const n=document.getElementById('pr-nome').value.trim();
-    const t=document.getElementById('pr-tel').value.trim();
-    if(!n||!t){ alert('Bitte Name und Telefon angeben.'); return false; }
-    return true;
-  }
-  ['pr-nome','pr-tel','pr-email'].forEach(id=>{
-    const el=document.getElementById(id);
-    el.value=localStorage.getItem(id)||'';
-    el.addEventListener('change',()=>localStorage.setItem(id,el.value));
-  });
-  function buildMsg(){
-    const nome=$('#pr-nome').value.trim();
-    const tel=$('#pr-tel').value.trim();
-    const mail=$('#pr-email').value.trim();
-    const data=$('#pr-data').value;
-    const evento=$('#pr-event').value;
-    const lounge=$('#pr-lounge').value;
-    const persone=$('#pr-persone').value;
-    const note=$('#pr-note').value.trim();
-    return [
-      'Hi Afterlux! Ich möchte eine Lounge reservieren.',
-      evento ? `Event: ${evento}` : 'Event: (noch offen)',
-      data ? `Datum: ${data}` : null,
-      `Lounge: ${lounge}`, `Personen: ${persone}`,
-      nome ? `Name: ${nome}` : null, tel ? `Telefon: ${tel}` : null, mail ? `E-Mail: ${mail}` : null,
-      note ? `Notizen: ${note}` : null
-    ].filter(Boolean).join('\n');
-  }
-  document.getElementById('btn-wa')?.addEventListener('click', ()=>{
-    if(!isValid()) return;
-    window.open(`https://wa.me/4915738465393?text=${encodeURIComponent(buildMsg())}`,'_blank');
-  });
-  document.getElementById('btn-mail')?.addEventListener('click', ()=>{
-    if(!isValid()) return;
-    location.href=`mailto:afterlux.loerrach@gmail.com?subject=${encodeURIComponent('Lounge-Reservierung - Afterlux')}&body=${encodeURIComponent(buildMsg())}`;
-  });
+  function isValid(){ const n=$('#pr-nome').value.trim(); const t=$('#pr-tel').value.trim(); if(!n||!t){ alert('Bitte Name und Telefon angeben.'); return false; } return true; }
+  ['pr-nome','pr-tel','pr-email'].forEach(id=>{ const el=document.getElementById(id); el.value=localStorage.getItem(id)||''; el.addEventListener('change',()=>localStorage.setItem(id,el.value)); });
+  function buildMsg(){ const nome=$('#pr-nome').value.trim(), tel=$('#pr-tel').value.trim(), mail=$('#pr-email').value.trim(), data=$('#pr-data').value, evento=$('#pr-event').value, lounge=$('#pr-lounge').value, persone=$('#pr-persone').value, note=$('#pr-note').value.trim();
+    return ['Hi Afterlux! Ich möchte eine Lounge reservieren.', evento?`Event: ${evento}`:'Event: (noch offen)', data?`Datum: ${data}`:null, `Lounge: ${lounge}`, `Personen: ${persone}`, nome?`Name: ${nome}`:null, tel?`Telefon: ${tel}`:null, mail?`E-Mail: ${mail}`:null, note?`Notizen: ${note}`:null].filter(Boolean).join('\n'); }
+  document.getElementById('btn-wa')?.addEventListener('click', ()=>{ if(!isValid()) return; window.open(`https://wa.me/4915738465393?text=${encodeURIComponent(buildMsg())}`,'_blank'); });
+  document.getElementById('btn-mail')?.addEventListener('click', ()=>{ if(!isValid()) return; location.href=`mailto:afterlux.loerrach@gmail.com?subject=${encodeURIComponent('Lounge-Reservierung - Afterlux')}&body=${encodeURIComponent(buildMsg())}`; });
 
-  /* ======== Kontakt: open/close ======== */
-  const contatti=document.getElementById('contatti');
-  const navContatti=document.getElementById('nav-contatti');
-  function openContatti(){
-    contatti.classList.add('open');
-    contatti.setAttribute('aria-expanded','true');
-    contatti.scrollIntoView({behavior:'smooth',block:'start'});
-  }
-  function toggleContatti(){
-    const willOpen=!contatti.classList.contains('open');
-    contatti.classList.toggle('open',willOpen);
-    contatti.setAttribute('aria-expanded',String(willOpen));
-    if(willOpen) contatti.scrollIntoView({behavior:'smooth',block:'start'});
-  }
+  /* Kontakt Collapsible */
+  const contatti=document.getElementById('contatti'); const navContatti=document.getElementById('nav-contatti');
+  function openContatti(){ contatti.classList.add('open'); contatti.setAttribute('aria-expanded','true'); contatti.scrollIntoView({behavior:'smooth',block:'start'}); }
+  function toggleContatti(){ const willOpen=!contatti.classList.contains('open'); contatti.classList.toggle('open',willOpen); contatti.setAttribute('aria-expanded',String(willOpen)); if(willOpen) contatti.scrollIntoView({behavior:'smooth',block:'start'}); }
   navContatti.addEventListener('click',(e)=>{ e.preventDefault(); openContatti(); history.replaceState(null,'','#contatti'); });
   contatti.querySelector('h2').addEventListener('click', toggleContatti);
   contatti.querySelector('h2').addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggleContatti(); } });
 
-  /* ======== Add to Calendar (ICS) ======== */
+  /* Add to Calendar */
   document.getElementById('add-calendar').addEventListener('click', ()=>{
-    if(!currentDetailSlug) return;
-    const ev=findAny(currentDetailSlug); if(!ev) return;
-    const start=new Date(ev.dateISO); const end=new Date(start.getTime()+3*3600e3);
+    if(!currentDetailSlug) return; const ev=findAny(currentDetailSlug); if(!ev) return;
+    const start=new Date(ev.dateISO), end=new Date(start.getTime()+3*3600e3);
     const dt=d=>d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
-    const ics=[
-      'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Afterlux//Events//DE',
-      'BEGIN:VEVENT',`UID:${ev.slug}@afterlux`,`DTSTAMP:${dt(new Date())}`,
-      `DTSTART:${dt(start)}`,`DTEND:${dt(end)}`,`SUMMARY:${ev.name}`,
-      `DESCRIPTION:${(ev.desc||'').replace(/\n/g,'\\n')}`,
-      'LOCATION:Afterlux Club, Teicherstrasse 14, 79539 Lörrach','END:VEVENT','END:VCALENDAR'
-    ].join('\r\n');
-    const blob=new Blob([ics],{type:'text/calendar'}); const url=URL.createObjectURL(blob);
-    const a=document.createElement('a'); a.href=url; a.download=`${ev.slug}.ics`; a.click(); URL.revokeObjectURL(url);
+    const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Afterlux//Events//DE','BEGIN:VEVENT',`UID:${ev.slug}@afterlux`,`DTSTAMP:${dt(new Date())}`,`DTSTART:${dt(start)}`,`DTEND:${dt(end)}`,`SUMMARY:${ev.name}`,`DESCRIPTION:${(ev.desc||'').replace(/\n/g,'\\n')}`,'LOCATION:Afterlux Club, Teicherstrasse 14, 79539 Lörrach','END:VEVENT','END:VCALENDAR'].join('\r\n');
+    const blob=new Blob([ics],{type:'text/calendar'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`${ev.slug}.ics`; a.click(); URL.revokeObjectURL(url);
   });
-
-  /* ======== SEO JSON-LD ======== */
-  (function(){
-    const base=new URL('.',location.href).href;
-    const abs=p=>{try{return new URL(p,base).href;}catch(e){return p;}};
-    const addLD=obj=>{const s=document.createElement('script'); s.type='application/ld+json'; s.textContent=JSON.stringify(obj); document.head.appendChild(s);};
-    addLD({"@context":"https://schema.org","@type":"Organization","name":"Afterlux Club","url":location.origin+location.pathname,"logo":abs("afterluxluna.png"),
-      "sameAs":["https://www.instagram.com/afterlux_club/"],"address":{"@type":"PostalAddress","streetAddress":"Teicherstrasse 14","postalCode":"79539","addressLocality":"Lörrach","addressCountry":"DE"},"telephone":"+49 1573 8465393"});
-    const FREE_RE=/(gratis|free)/i;
-    function buildOffers(ev){
-      const prices=ev.prices||ev.desc||'';
-      if(FREE_RE.test(prices)){ const o={"@type":"Offer","price":"0","priceCurrency":"EUR","availability":"https://schema.org/InStock","isAccessibleForFree":true}; if(ev.ticketUrl) o.url=ev.ticketUrl; return o; }
-      const matches=(prices.match(/(\d+[.,]?\d*)\s*€/g)||[]).map(x=>x.replace(/[^\d.,]/g,'').replace(',','.'));
-      if(matches.length===0 && ev.ticketUrl){ return {"@type":"Offer","priceCurrency":"EUR","availability":"https://schema.org/InStock","url":ev.ticketUrl}; }
-      if(matches.length===1){ return {"@type":"Offer","price":matches[0],"priceCurrency":"EUR","availability":"https://schema.org/InStock","url":ev.ticketUrl||location.href}; }
-      return matches.map(p=>({"@type":"Offer","price":p,"priceCurrency":"EUR","availability":"https://schema.org/InStock","url":ev.ticketUrl||location.href}));
-    }
-    eventi.forEach(ev=>{
-      const ld={"@context":"https://schema.org","@type":"Event","name":ev.name,"startDate":ev.dateISO,
-        "eventStatus":"https://schema.org/EventScheduled","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode",
-        "image":[abs(encodeURI(ev.cover))],"description":ev.desc||"",
-        "location":{"@type":"Place","name":"Afterlux Club","address":{"@type":"PostalAddress","streetAddress":"Teicherstrasse 14","addressLocality":"Lörrach","postalCode":"79539","addressCountry":"DE"}},
-        "organizer":{"@type":"Organization","name":"Afterlux Club","url":location.origin+location.pathname}
-      };
-      const offers=buildOffers(ev); if(offers) ld.offers=offers;
-      if(ev.lineup && ev.lineup!=='—'){ ld.performer=[{"@type":"PerformingGroup","name":ev.lineup}]; }
-      addLD(ld);
-    });
-  })();
 </script>
 </body>
 </html>
