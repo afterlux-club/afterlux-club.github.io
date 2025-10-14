@@ -28,9 +28,10 @@
     body{
       font-family: Helvetica, Arial, sans-serif;
       color:var(--text);
+      /* 🔄 NUOVO SFONDO */
       background:
         linear-gradient(rgba(0,0,0,.62), rgba(0,0,0,.72)),
-        url("Neuer%C3%B6ffnung%20Afterlux%20L%C3%B6rrach%20A6.png") center/cover fixed no-repeat #000;
+        url("sfondo%20web.png") center/cover fixed no-repeat #000;
       min-height:100vh;
       line-height:1.45;
     }
@@ -116,36 +117,30 @@
       <img src="./Lounge-Afterlux.png" alt="Lounge-Plan Afterlux" loading="lazy"
            style="width:30%;max-width:1000px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
       <p style="color:#FFD700;text-align:center">Reserviere deine Lounge: N1–N5 jedes Wochenende verfügbar.</p>
-<!-- GALLERIA · VIDEO CARD -->
-<div class="cards" style="margin-top:18px">
-  <article class="card">
-    <!-- media con le stesse dimensioni delle cover -->
-    <video
-      controls
-      playsinline
-      preload="metadata"
-      poster="afterluxluna.png"
-      style="width:100%;height:360px;object-fit:cover;display:block;background:#000"
-      aria-label="Afterlux Club – Video Teaser"
-    >
-      <source src="video%20afterlux%20.mp4" type="video/mp4">
-      <!-- se rinomini il file: <source src="video-afterlux.mp4" type="video/mp4"> -->
-      Il tuo browser non supporta il video.
-    </video>
 
-    <div class="content">
-      <div class="pill">Highlight • Club Teaser</div>
-      <h3>Afterlux – Video</h3>
-      <p class="muted">Präsentation </p>
-      <div style="margin-top:8px">
-        <button class="btn" type="button"
-          onclick="this.closest('.card').querySelector('video').play()">▶︎ Play</button>
-        <button class="btn ghost" type="button"
-          onclick="this.closest('.card').querySelector('video').pause()">⏸︎ Pause</button>
+      <!-- GALLERIA · VIDEO CARD -->
+      <div class="cards" style="margin-top:18px">
+        <article class="card">
+          <video
+            controls playsinline preload="metadata" poster="afterluxluna.png"
+            style="width:100%;height:360px;object-fit:cover;display:block;background:#000"
+            aria-label="Afterlux Club – Video Teaser">
+            <source src="video%20afterlux%20.mp4" type="video/mp4">
+            Il tuo browser non supporta il video.
+          </video>
+          <div class="content">
+            <div class="pill">Highlight • Club Teaser</div>
+            <h3>Afterlux – Video</h3>
+            <p class="muted">Präsentation</p>
+            <div style="margin-top:8px">
+              <button class="btn" type="button"
+                onclick="this.closest('.card').querySelector('video').play()">▶︎ Play</button>
+              <button class="btn ghost" type="button"
+                onclick="this.closest('.card').querySelector('video').pause()">⏸︎ Pause</button>
+            </div>
+          </div>
+        </article>
       </div>
-    </div>
-  </article>
-</div>
 
       <div class="promoter-section" style="text-align:center;margin-top:40px">
         <h3 style="color:#FFD700;font-size:1.8rem;margin-bottom:15px">Werde Afterlux Promoter</h3>
@@ -299,7 +294,6 @@
       { slug:'karaoke-night', name:'Karaoke Night', when:'Jeden Donnerstag', time:'21:30 – 02:00', desc:'Eintritt frei • Die Bühne gehört dir!', lineup:'Open Mic • Host Afterlux', prices:'Free Entry', cover:'karaoke.jpg' },
     ];
 
-    
     // CARDS RENDERN
     const now = new Date();
     const upcoming = eventi.filter(e => new Date(e.dateISO) > now).sort((a,b)=>new Date(a.dateISO)-new Date(b.dateISO));
@@ -472,3 +466,4 @@
   </script>
 </body>
 </html>
+
