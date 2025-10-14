@@ -115,7 +115,7 @@
 
       <img src="./Lounge-Afterlux.png" alt="Lounge-Plan Afterlux" loading="lazy"
            style="width:30%;max-width:1000px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
-      <p style="color:#FFD700;text-align:center">Reserviere deine Lounge: N1–N5 jedes Wochenende verfügbar.</p>
+      <p style="color:#FFD700;text-align:center">Reserviere deine Lounge: L1–L5 jedes Wochenende verfügbar.</p>
 
       <div class="promoter-section" style="text-align:center;margin-top:40px">
         <h3 style="color:#FFD700;font-size:1.8rem;margin-bottom:15px">Werde Afterlux Promoter</h3>
@@ -185,13 +185,13 @@
 
           <label><div class="muted">Lounge</div>
             <select id="pr-lounge" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-              <option>N0</option><option>N1</option><option>N2</option><option>N3</option><option>N4</option><option>N5</option>
+              <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
             </select>
           </label>
 
           <label><div class="muted">Personen</div>
             <select id="pr-persone" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-              <option>2</option><option>4</option><option>6</option><option>8</option><option>10</option><option>+10</option>
+              <option>2</option><option>4</option><option>6</option><option>8</option><option>10</option>
             </select>
           </label>
         </div>
@@ -246,14 +246,17 @@
 
     // EVENTS MIT DATUM
     const eventi = [
-      { slug:'russian-beats-2025-10-11', name:'Russian Beats', dateISO:'2025-10-11T22:30:00+02:00', shortDate:'Sa 11 Okt', desc:'Beginn 22:30', lineup:'DJ Andy', prices:'—', cover:'serata russa 11.10.jpg' },
-      { slug:'rhythms-of-world-2025-10-18', name:'Rhythms of World', dateISO:'2025-10-18T23:00:00+02:00', shortDate:'Sa 18 Okt', desc:'Start 23:00', lineup:'David Costa', prices:'Eintritt GRATIS & ein GRATIS-SHOT', cover:'david costa 18.10.jpg',
-        ticketUrl:'https://eventfrog.de/de/p/party/disco/rhythms-of-world-?not-provided.html' }, /* se non esiste il link, puoi cancellare questa riga */
+      { slug:'russian-beats-2025-10-11', name:'Russian Beats', dateISO:'2025-10-11T22:30:00+02:00', shortDate:'Sab 11 Ott', desc:'Beginn 22:30', lineup:'DJ Andy', prices:'—', cover:'serata russa 11.10.jpg' },
 
-      { slug:'la-noche-brasilena-2025-10-25', name:'La noche brasileña', dateISO:'2025-10-25T23:00:00+02:00', shortDate:'Sa 25 Okt', desc:'Start 23:00', lineup:'Salese', prices:'Eintritt 5€ & ein GRATIS-SHOT', cover:'dj salese 25.10.jpg',
+      /* NEW: Latin Night */
+      { slug:'latin-night-2025-10-17', name:'Latin Night', dateISO:'2025-10-17T23:00:00+02:00', shortDate:'Ven 17 Ott', desc:'Start 23:00 • DJ Don-Maiky • Eintritt GRATIS', lineup:'DJ Don-Maiky', prices:'Eintritt GRATIS', cover:'Latin Night.jpg' },
+
+      { slug:'rhythms-of-world-2025-10-18', name:'Rhythms of World', dateISO:'2025-10-18T23:00:00+02:00', shortDate:'Sab 18 Ott', desc:'Start 23:00', lineup:'David Costa', prices:'Eintritt GRATIS & ein GRATIS-SHOT', cover:'david costa 18.10.jpg' },
+
+      { slug:'la-noche-brasilena-2025-10-25', name:'La noche brasileña', dateISO:'2025-10-25T23:00:00+02:00', shortDate:'Sab 25 Ott', desc:'Start 23:00', lineup:'Salese', prices:'Eintritt 5€ & ein GRATIS-SHOT', cover:'dj salese 25.10.jpg',
         ticketUrl:'https://eventfrog.de/de/p/party/disco/la-noche-brasilena-7381417087799956339.html' },
 
-      { slug:'halloween-party-2025-10-31', name:'Halloween Party', dateISO:'2025-10-31T23:00:00+01:00', shortDate:'Fr 31 Okt', desc:'Latin Mix • Costume Contest', lineup:'DJ Pepe', prices:'Vorverkauf 5€ • Abendkasse 10€', cover:'hallowe 31.10.jpg',
+      { slug:'halloween-party-2025-10-31', name:'Halloween Party', dateISO:'2025-10-31T23:00:00+01:00', shortDate:'Ven 31 Ott', desc:'Latin Mix • Costume Contest', lineup:'DJ Pepe', prices:'Vorverkauf 5€ • Abendkasse 10€', cover:'hallowe 31.10.jpg',
         ticketUrl:'https://eventfrog.de/de/p/party/disco/halloween-party-7381430034773332317.html' },
 
       /* NUOVO EVENTO INSERITO */
