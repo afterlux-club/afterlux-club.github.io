@@ -247,7 +247,19 @@
       { slug:'russian-beats-2025-10-11', name:'Russian Beats', dateISO:'2025-10-11T22:30:00+02:00', shortDate:'Sab 11 Ott', desc:'Beginn 22:30', lineup:'DJ Andy', prices:'—', cover:'serata russa 11.10.jpg' },
       { slug:'rhythms-of-world-2025-10-18', name:'Rhythms of World', dateISO:'2025-10-18T23:00:00+02:00', shortDate:'Sab 18 Ott', desc:'Start 23:00', lineup:'David Costa', prices:'Eintritt GRATIS & ein GRATIS-SHOT', cover:'david costa 18.10.jpg' },
       { slug:'la-noche-brasilena-2025-10-25', name:'La noche brasileña', dateISO:'2025-10-25T23:00:00+02:00', shortDate:'Sab 25 Ott', desc:'Start 23:00', lineup:'Salese', prices:'Eintritt 5€ & ein GRATIS-SHOT', cover:'dj salese 25.10.jpg' },
-      { slug:'halloween-party-2025-10-31', name:'Halloween Party', dateISO:'2025-10-31T23:00:00+01:00', shortDate:'Ven 31 Ott', desc:'Latin Mix • Costume Contest', lineup:'DJ Pepe', prices:'Vorverkauf 5€ • Abendkasse 10€', cover:'hallowe 31.10.jpg' }
+      { slug:'halloween-party-2025-10-31', name:'Halloween Party', dateISO:'2025-10-31T23:00:00+01:00', shortDate:'Ven 31 Ott', desc:'Latin Mix • Costume Contest', lineup:'DJ Pepe', prices:'Vorverkauf 5€ • Abendkasse 10€', cover:'hallowe 31.10.jpg' },
+
+      /* NUOVO EVENTO INSERITO */
+      { 
+        slug:'last-school-day-2025-12-19',
+        name:'Last School Day 2025 – Spendenparty Abi 2026 (FES)',
+        dateISO:'2025-12-19T22:00:00+01:00',
+        shortDate:'Fr 19 Dez',
+        desc:'Spendenaktion des Abi-Jahrgangs 2026 der FES • Einlass 22:00',
+        lineup:'—',
+        prices:'Ticket 7€ • Mindestalter 16',
+        cover:'last-school-day-2025.jpg'
+      }
     ];
 
     // WIEDERKEHRENDE EVENTS
@@ -417,168 +429,3 @@
 </body>
 </html>
 
-aggiungi in modo funzionale questo comando. <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-RN07E4K7GL">
-</script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-RN07E4K7GL');
-</script>.  inserci questo evento
-<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Afterlux Club — Events & Reservierungen</title>
-  <link rel="icon" type="image/png" href="afterluxluna.png" />
-  <meta name="color-scheme" content="dark" />
-  
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RN07E4K7GL"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-RN07E4K7GL');
-  </script>
-
-  <style>
-    :root{
-      --gold:#FFD700; --gold-d:#e6c200;
-      --text:#fff; --muted:#bbbbbb;
-      --card:rgba(255,255,255,.06);
-      --border:rgba(255,215,0,.28);
-      --radius:16px;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0}
-    body{
-      font-family: Helvetica, Arial, sans-serif;
-      color:var(--text);
-      background:
-        linear-gradient(rgba(0,0,0,.62), rgba(0,0,0,.72)),
-        url("Neuer%C3%B6ffnung%20Afterlux%20L%C3%B6rrach%20A6.png") center/cover fixed no-repeat #000;
-      min-height:100vh;
-      line-height:1.45;
-    }
-    a{color:var(--gold);text-decoration:none}
-    a:hover{text-decoration:underline}
-    header, section, footer{padding:22px}
-    h1,h2,h3{color:var(--gold);margin:0 0 12px}
-    .container{max-width:1100px;margin:0 auto}
-
-    .logo{display:flex;justify-content:center;align-items:center;margin:4px 0 8px}
-    .logo img{height:360px;max-width:100%;display:block}
-    @media (max-width:680px){.logo img{height:180px}}
-
-    nav{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:18px}
-    nav a{padding:8px 12px;border-radius:12px;border:1px solid transparent}
-    nav a:hover{background:var(--card);border-color:var(--border)}
-
-    .btn{display:inline-block;background:var(--gold);color:#000;padding:10px 16px;border-radius:12px;border:none;font-weight:700;cursor:pointer}
-    .btn:hover{background:var(--gold-d)}
-    .ghost{background:transparent;color:var(--gold);border:1px solid var(--border)}
-
-    .cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-    .card img{width:100%;height:360px;object-fit:cover;display:block}
-    .card .content{padding:14px}
-    .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.1);font-size:12px;margin-bottom:8px}
-    .muted{color:var(--muted)}
-
-    .map{width:100%;height:300px;border:0;border-radius:12px}
-
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
-    .overlay.show{display:flex}
-    .modal{max-width:900px;width:100%;background:#0a0a0a;border:1px solid var(--border);border-radius:16px;overflow:hidden}
-    .modal-head,.modal-foot{padding:12px 14px;border-bottom:1px solid var(--border)}
-    .modal-foot{border-top:1px solid var(--border);border-bottom:none;display:flex;justify-content:flex-end}
-    .modal-body{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:14px}
-    .modal .cover{height:260px;background:#111 center/cover no-repeat;border:1px solid var(--border);border-radius:12px}
-    @media (max-width:800px){.modal-body{grid-template-columns:1fr}}
-
-    footer{border-top:1px solid var(--border);text-align:center;color:var(--muted);padding-bottom:28px}
-
-    #prenotazioni{display:none !important;}
-    nav a.btn{display:none;}
-  </style>
-</head>
-
-<body>
-  <header class="container">
-    <div class="logo"><img src="afterluxluna.png" alt="Afterlux Club Logo" loading="lazy"></div>
-    <nav aria-label="Hauptnavigation">
-      <a href="#eventi">Events</a>
-      <a href="#galleria">Galerie</a>
-      <a href="#contatti">Kontakt</a>
-    </nav>
-    <div id="countdown" class="container" hidden style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-      <span class="pill"><b id="cd-d">--</b> Tage</span>
-      <span class="pill"><b id="cd-h">--</b> Std</span>
-      <span class="pill"><b id="cd-m">--</b> Min</span>
-      <span class="pill"><b id="cd-s">--</b> Sek</span>
-    </div>
-  </header>
-
-  <main class="container">
-    <section id="eventi">
-      <h2>Kommende Events</h2>
-      <div id="event-cards" class="cards"></div>
-
-      <h3 style="margin-top:26px">Wiederkehrende Events</h3>
-      <div id="recurring-cards" class="cards"></div>
-    </section>
-
-    <section id="galleria">
-      <h2>Galerie</h2>
-      <img src="./Lounge-Afterlux.png" alt="Lounge-Plan Afterlux" loading="lazy"
-           style="width:30%;max-width:1000px;display:block;margin:0 auto 20px;border-radius:12px;box-shadow:0 0 20px rgba(255,215,0,.3)">
-      <p style="color:#FFD700;text-align:center">Reserviere deine Lounge: L1–L5 jedes Wochenende verfügbar.</p>
-    </section>
-
-    <section id="contatti">
-      <h2>Kontakt</h2>
-      <div class="cards">
-        <div class="card"><div class="content">
-          <p><strong>Telefon:</strong> <a href="tel:+4915738465393">+49 1573 8465393</a></p>
-          <p><strong>E-Mail:</strong> <a href="mailto:afterlux.loerrach@gmail.com">afterlux.loerrach@gmail.com</a></p>
-          <p><strong>Instagram:</strong> <a target="_blank" rel="noopener" href="https://www.instagram.com/afterlux_club">@afterlux_club</a></p>
-          <p><strong>Adresse:</strong> Teicherstrasse 14, 79539 Lörrach (DE)</p>
-        </div></div>
-      </div>
-    </section>
-
-    <section id="prenotazioni">
-      <h2>Reservieren</h2>
-      <p class="muted">Schreib uns direkt: Event & Lounge wählen und dann per WhatsApp oder E-Mail senden.</p>
-      <div class="card" style="padding:16px;display:grid;gap:12px">
-        <!-- FORM -->
-      </div>
-    </section>
-  </main>
-
-  <footer><div class="container">© <span id="year"></span> Afterlux Club • Alle Rechte vorbehalten</div></footer>
-
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    const eventi = [
-      { slug:'russian-beats-2025-10-11', name:'Russian Beats', dateISO:'2025-10-11T22:30:00+02:00', shortDate:'Sab 11 Ott', desc:'Beginn 22:30', lineup:'DJ Andy', prices:'—', cover:'serata russa 11.10.jpg' },
-      { slug:'rhythms-of-world-2025-10-18', name:'Rhythms of World', dateISO:'2025-10-18T23:00:00+02:00', shortDate:'Sab 18 Ott', desc:'Start 23:00', lineup:'David Costa', prices:'Eintritt GRATIS & ein GRATIS-SHOT', cover:'david costa 18.10.jpg' },
-      { slug:'la-noche-brasilena-2025-10-25', name:'La noche brasileña', dateISO:'2025-10-25T23:00:00+02:00', shortDate:'Sab 25 Ott', desc:'Start 23:00', lineup:'Salese', prices:'Eintritt 5€ & ein GRATIS-SHOT', cover:'dj salese 25.10.jpg' },
-      { slug:'halloween-party-2025-10-31', name:'Halloween Party', dateISO:'2025-10-31T23:00:00+01:00', shortDate:'Ven 31 Ott', desc:'Latin Mix • Costume Contest', lineup:'DJ Pepe', prices:'Vorverkauf 5€ • Abendkasse 10€', cover:'hallowe 31.10.jpg' },
-      
-      /* 🔥 NUOVO EVENTO INSERITO 🔥 */
-      { slug:'last-school-day-2025-12-19', name:'Last School Day 2025 – Spendenparty Abi 2026 (FES)', dateISO:'2025-12-19T22:00:00+01:00', shortDate:'Fr 19 Dez', desc:'Spendenaktion des Abi-Jahrgangs 2026 der FES • Einlass 22:00', lineup:'—', prices:'Ticket 7€ • Mindestalter 16', cover:'last-school-day-2025.jpg' }
-    ];
-
-    const recurring = [
-      { slug:'karaoke-night', name:'Karaoke Night', when:'Jeden Donnerstag', time:'21:30 – 02:00', desc:'Eintritt frei • Die Bühne gehört dir!', lineup:'Open Mic • Host Afterlux', prices:'Free Entry', cover:'karaoke.jpg' },
-      { slug:'kinder-disco', name:'Kinderdisco', when:'Jeden Sonntag', time:'14:00 – 18:00', desc:'Nachmittagsdisco für Kids – mit Spaß & Musik!', lineup:'Animation & DJ-Set für Kinder', prices:'Eintritt frei', cover:'kinderdisco.jpg' }
-    ];
-  </script>
-</body>
-</html>
