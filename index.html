@@ -5,7 +5,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-RN07E4K7GL');
 </script>
 <!DOCTYPE html>
@@ -72,7 +71,7 @@
     .overlay.show{display:flex}
     .modal{max-width:900px;width:100%;background:#0a0a0a;border:1px solid var(--border);border-radius:16px;overflow:hidden}
     .modal-head,.modal-foot{padding:12px 14px;border-bottom:1px solid var(--border)}
-    .modal-foot{border-top:1px solid var(--border);border-bottom:none;display:flex;justify-content:flex-end}
+    .modal-foot{border-top:1px solid var(--border);border-bottom:none;display:flex;justify-content:flex-end;gap:10px}
     .modal-body{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:14px}
     .modal .cover{height:260px;background:#111 center/cover no-repeat;border:1px solid var(--border);border-radius:12px}
     @media (max-width:800px){.modal-body{grid-template-columns:1fr}}
@@ -233,7 +232,10 @@
           <div style="margin-top:10px"><strong>Info</strong><div class="muted" id="detail-prices">—</div></div>
         </div>
       </div>
-      <div class="modal-foot"><button id="open-booking" class="btn" type="button">Jetzt reservieren</button></div>
+      <div class="modal-foot">
+        <button id="open-booking" class="btn" type="button">Jetzt reservieren</button>
+        <a id="buy-tickets" class="btn ghost" href="#" target="_blank" rel="noopener" style="display:none">Tickets kaufen</a>
+      </div>
     </div>
   </div>
 
@@ -242,24 +244,21 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // EVENTS MIT DATUM (Dateinamen bleiben identisch)
+    // EVENTS MIT DATUM
     const eventi = [
       { slug:'russian-beats-2025-10-11', name:'Russian Beats', dateISO:'2025-10-11T22:30:00+02:00', shortDate:'Sab 11 Ott', desc:'Beginn 22:30', lineup:'DJ Andy', prices:'—', cover:'serata russa 11.10.jpg' },
-      { slug:'rhythms-of-world-2025-10-18', name:'Rhythms of World', dateISO:'2025-10-18T23:00:00+02:00', shortDate:'Sab 18 Ott', desc:'Start 23:00', lineup:'David Costa', prices:'Eintritt GRATIS & ein GRATIS-SHOT', cover:'david costa 18.10.jpg' },
-      { slug:'la-noche-brasilena-2025-10-25', name:'La noche brasileña', dateISO:'2025-10-25T23:00:00+02:00', shortDate:'Sab 25 Ott', desc:'Start 23:00', lineup:'Salese', prices:'Eintritt 5€ & ein GRATIS-SHOT', cover:'dj salese 25.10.jpg' },
-      { slug:'halloween-party-2025-10-31', name:'Halloween Party', dateISO:'2025-10-31T23:00:00+01:00', shortDate:'Ven 31 Ott', desc:'Latin Mix • Costume Contest', lineup:'DJ Pepe', prices:'Vorverkauf 5€ • Abendkasse 10€', cover:'hallowe 31.10.jpg' },
+      { slug:'rhythms-of-world-2025-10-18', name:'Rhythms of World', dateISO:'2025-10-18T23:00:00+02:00', shortDate:'Sab 18 Ott', desc:'Start 23:00', lineup:'David Costa', prices:'Eintritt GRATIS & ein GRATIS-SHOT', cover:'david costa 18.10.jpg',
+        ticketUrl:'https://eventfrog.de/de/p/party/disco/rhythms-of-world-?not-provided.html' }, /* se non esiste il link, puoi cancellare questa riga */
 
-     /* NUOVO EVENTO con immagine */
-{ 
-  slug:'last-school-day-2025-12-19',
-  name:'Last School Day 2025 – Spendenparty Abi 2026 (FES)',
-  dateISO:'2025-12-19T22:00:00+01:00',
-  shortDate:'Fr 19 Dez',
-  desc:'Spendenaktion des Abi-Jahrgangs 2026 der FES • Einlass 22:00',
-  lineup:'—',
-  prices:'Ticket 7€ • Mindestalter 16',
-  cover:'Black Party Night Club Dj Flyer.png'
-}
+      { slug:'la-noche-brasilena-2025-10-25', name:'La noche brasileña', dateISO:'2025-10-25T23:00:00+02:00', shortDate:'Sab 25 Ott', desc:'Start 23:00', lineup:'Salese', prices:'Eintritt 5€ & ein GRATIS-SHOT', cover:'dj salese 25.10.jpg',
+        ticketUrl:'https://eventfrog.de/de/p/party/disco/la-noche-brasilena-7381417087799956339.html' },
+
+      { slug:'halloween-party-2025-10-31', name:'Halloween Party', dateISO:'2025-10-31T23:00:00+01:00', shortDate:'Ven 31 Ott', desc:'Latin Mix • Costume Contest', lineup:'DJ Pepe', prices:'Vorverkauf 5€ • Abendkasse 10€', cover:'hallowe 31.10.jpg',
+        ticketUrl:'https://eventfrog.de/de/p/party/disco/halloween-party-7381430034773332317.html' },
+
+      /* NUOVO EVENTO INSERITO */
+      { slug:'last-school-day-2025-12-19', name:'Last School Day 2025 – Spendenparty Abi 2026 (FES)', dateISO:'2025-12-19T22:00:00+01:00', shortDate:'Fr 19 Dez', desc:'Spendenaktion des Abi-Jahrgangs 2026 der FES • Einlass 22:00', lineup:'—', prices:'Ticket 7€ • Mindestalter 16', cover:'Black Party Night Club Dj Flyer.png',
+        ticketUrl:'https://eventfrog.de/de/p/party/disco/last-school-day-2025-7383798159095412970.html' }
     ];
 
     // WIEDERKEHRENDE EVENTS
@@ -317,7 +316,7 @@
       }; tick(); setInterval(tick,1000); cdWrap.hidden=false;
     }
 
-    // MODAL + RESERVIEREN (mit !important-Fix)
+    // MODAL + RESERVIEREN
     let currentDetailSlug = null;
     const overlay = document.getElementById('event-detail');
 
@@ -343,6 +342,18 @@
       if (!ev) return;
       currentDetailSlug = slug;
       fillDetail(ev);
+
+      // set Eventfrog button visibility/link
+      const buy = document.getElementById('buy-tickets');
+      if (buy){
+        if (ev.ticketUrl){
+          buy.href = ev.ticketUrl;
+          buy.style.display = 'inline-block';
+        } else {
+          buy.style.display = 'none';
+        }
+      }
+
       overlay.classList.add('show');
     };
     const closeDetail = ()=> overlay.classList.remove('show');
@@ -428,4 +439,3 @@
   </script>
 </body>
 </html>
-
