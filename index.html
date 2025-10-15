@@ -52,9 +52,7 @@
     background:transparent;
     border-bottom:1px solid transparent;
     padding: env(safe-area-inset-top) 16px 10px;
-    pointer-events:auto;
   }
-  .topbar.scrolled{ background:transparent; border-bottom-color:transparent; }
   .topbar .row{ display:flex; align-items:center; justify-content:center; gap:12px; max-width:1100px; margin:0 auto; }
   .hamburger{
     position:absolute; left:14px; top:calc(8px + env(safe-area-inset-top));
@@ -65,21 +63,30 @@
   .hamburger span{display:block;width:20px;height:2px;background:#fff;position:relative}
   .hamburger span::before,.hamburger span::after{content:"";position:absolute;left:0;width:100%;height:2px;background:#fff}
   .hamburger span::before{top:-6px}.hamburger span::after{top:6px}
-  .logo-wrap{display:flex;justify-content:center;align-items:center}
-  /* LOGO raddoppiato (+100% rispetto alla versione precedente) */
   .logo{ height: clamp(192px, 38.4vw, 432px); max-width:100%; display:block; margin:0 auto; object-fit:contain; }
 
-  /* Drawer menù */
+  /* Drawer menù (locandina a sinistra) */
   .drawer{position:fixed; inset:0; z-index:93; display:none}
   .drawer.show{display:block}
   .drawer .shade{position:absolute;inset:0;background:rgba(0,0,0,.6)}
   .drawer .panel{
-    position:absolute; top:0; left:0; bottom:0; width:min(82vw,340px);
+    position:absolute; top:0; left:0; bottom:0; width:min(82vw,360px);
     background:#0b0b0b; border-right:1px solid var(--border);
     padding:16px; overflow:auto;
   }
-  .drawer a{display:block;padding:14px 10px;border-radius:10px;color:#fff}
-  .drawer a:hover{background:rgba(255,255,255,.08)}
+  .drawer h3, .drawer h4{color:#fff;margin:10px 0}
+  .drawer .navlink{display:block;padding:14px 10px;border-radius:10px;color:#fff}
+  .drawer .navlink:hover{background:rgba(255,255,255,.08)}
+  .drawer .sep{height:1px;background:rgba(255,255,255,.12);margin:12px 0}
+
+  /* Pulsanti social nel menù */
+  .socials{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .sbtn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 12px;border-radius:12px;border:1px solid var(--border);
+    color:#fff;background:transparent;text-decoration:none;font-weight:600
+  }
+  .sbtn svg{width:18px;height:18px;fill:#fff}
 
   /* BTN */
   .btn{display:inline-block;background:var(--gold);color:#000;padding:12px 18px;border-radius:14px;border:none;font-weight:700;cursor:pointer}
@@ -107,7 +114,7 @@
   .modal .cover{height:260px;background:#111 center/cover no-repeat;border:1px solid var(--border);border-radius:12px}
   @media (max-width:800px){.modal-body{grid-template-columns:1fr}}
 
-  footer{border-top:1px solid var(--border);text-align:center;color:var(--muted);padding-bottom:72px}
+  footer{border-top:1px solid var(--border);text-align:center;color:var(--muted);padding-bottom:28px}
 
   /* Prenotazioni nascosta all'avvio */
   #prenotazioni{display:none !important;}
@@ -119,23 +126,7 @@
   #contatti .chev{transition:transform .2s ease;display:inline-block}
   #contatti.open .chev{transform:rotate(90deg)}
 
-  /* ===== Barra inferiore: ORA TRASPARENTE + ICONE PIÙ PICCOLE ===== */
-  .dock{
-    position:fixed;left:0;right:0;bottom:0;z-index:91;
-    background:transparent;                 /* <<< trasparente */
-    padding:4px 8px;                        /* un po' più compatta */
-    display:flex;gap:8px;justify-content:space-around;align-items:center;
-    pointer-events:auto;
-  }
-  .dock .ico{
-    width:32px; height:32px;                /* <<< icone più piccole (prima 44px) */
-    border-radius:999px; border:2px solid #fff;
-    display:grid; place-items:center; color:#fff;
-    background:transparent;
-  }
-  .dock svg{ width:16px; height:16px; fill:#fff } /* <<< svg più piccoli (prima 20px) */
-
-  /* Lounge & Promoter grandi come card */
+  /* Immagini larghe per Lounge/Promoter */
   .wide-img{
     width:100%;height:clamp(220px,32vw,420px);
     object-fit:cover;display:block;margin:0 auto 20px;border-radius:12px;
@@ -149,21 +140,47 @@
 <div class="topbar" id="topbar">
   <div class="row">
     <button class="hamburger" id="open-menu" aria-label="Menü öffnen"><span></span></button>
-    <div class="logo-wrap">
-      <img src="afterluxluna.png" alt="Afterlux Club Logo" class="logo" id="main-logo" loading="eager" decoding="async">
-    </div>
+    <img src="afterluxluna.png" alt="Afterlux Club Logo" class="logo" id="main-logo" loading="eager" decoding="async">
   </div>
 </div>
 
-<!-- Drawer/Hamburger Menu -->
+<!-- Drawer/Hamburger Menu (locandina a sinistra) -->
 <div class="drawer" id="drawer" aria-hidden="true">
   <div class="shade" id="drawer-close" aria-label="Schließen"></div>
   <nav class="panel" aria-label="Seitennavigation">
-    <h3 style="margin-top:6px;color:#fff">Menü</h3>
-    <a href="#eventi" onclick="hideDrawer()">Events</a>
-    <a href="#galleria" onclick="hideDrawer()">Galerie</a>
-    <a href="#chi-siamo" onclick="hideDrawer()">Über uns</a>
-    <a href="#contatti" onclick="hideDrawer(); openContatti()">Kontakt</a>
+    <h3 style="margin-top:6px">Menü</h3>
+    <a class="navlink" href="#eventi" onclick="hideDrawer()">Events</a>
+    <a class="navlink" href="#galleria" onclick="hideDrawer()">Galerie</a>
+    <a class="navlink" href="#contatti" onclick="hideDrawer(); openContatti()">Kontakt</a>
+
+    <div class="sep"></div>
+    <h4 id="drawer-about">Über uns</h4>
+    <p class="muted" style="margin-top:6px">
+      <strong>Afterlux Club</strong> ist die Vision zweier junger Partner:
+      <strong>Giuseppe Leocata</strong> und <strong>Luana Ferlito</strong>.<br>
+      Wir pushen das Nachtleben in Lörrach – offen, inklusiv, mit House, Hip-Hop, Reggaeton & Tech House.
+      Motto-Nights, Shows & neue Formate für unvergessliche Nächte.
+    </p>
+
+    <div class="sep"></div>
+    <h4>Folge/Schreib uns</h4>
+    <div class="socials">
+      <a class="sbtn" href="mailto:afterlux.loerrach@gmail.com" aria-label="E-Mail">
+        <!-- Mail icon -->
+        <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        E-Mail
+      </a>
+      <a class="sbtn" href="https://www.instagram.com/afterlux_club/" target="_blank" rel="noopener" aria-label="Instagram">
+        <!-- Instagram icon -->
+        <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.5-.25a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>
+        Instagram
+      </a>
+      <a class="sbtn" href="https://wa.me/4915738465393" target="_blank" rel="noopener" aria-label="WhatsApp">
+        <!-- WhatsApp icon -->
+        <svg viewBox="0 0 32 32"><path d="M19.11 17.44a5.52 5.52 0 0 1-2.45-.62 10.63 10.63 0 0 1-3.33-2.62 7.17 7.17 0 0 1-1.48-2.66 3 3 0 0 1 .1-1.87c.22-.51.79-.73 1.28-.54a1.78 1.78 0 0 1 .64.45c.26.27.53.55.74.86.23.33.27.71.1 1.09-.14.32-.32.63-.48.95-.14.28-.12.54.07.79a6.83 6.83 0 0 0 1.77 1.76c.25.19.52.21.81.07.32-.16.63-.34.95-.48.39-.17.77-.13 1.1.11.32.22.61.49.89.76.19.19.35.4.43.67.16.56-.11 1.11-.61 1.28-.53.18-1.07.31-1.62.31ZM16 3a13 13 0 0 0-11.3 19.5L3 29l6.68-1.75A13 13 0 1 0 16 3Zm0 23.6c-2.19 0-4.21-.66-5.9-1.8l-.42-.28-3.93 1.03 1.06-3.8-.29-.44A10.6 10.6 0 1 1 26.6 16c0 5.86-4.74 10.6-10.6 10.6Z"/></svg>
+        WhatsApp
+      </a>
+    </div>
   </nav>
 </div>
 
@@ -187,7 +204,7 @@
     </p>
     <div style="display:flex;gap:14px;flex-wrap:wrap">
       <a class="btn" href="#eventi">Events ansehen</a>
-      <a class="btn ghost" href="#chi-siamo">Mehr erfahren</a>
+      <a class="btn ghost" href="javascript:void(0)" onclick="showDrawerAbout()">Mehr erfahren</a>
     </div>
   </section>
 
@@ -209,14 +226,6 @@
 
     <h3 style="margin-top:26px;color:#fff">Wiederkehrende Events</h3>
     <div id="recurring-cards" class="cards"></div>
-  </section>
-
-  <!-- ÜBER UNS -->
-  <section id="chi-siamo" style="margin-top:42px">
-    <h2>Über uns</h2>
-    <p><strong>Afterlux Club</strong> ist die Vision zweier junger Partner: <strong>Giuseppe Leocata</strong> und <strong>Luana Ferlito</strong>.</p>
-    <p>Unsere Mission: Wir bringen das Nachtleben in Lörrach nach vorn – mit einem Ort, an dem sich <em>alle</em> wohlfühlen. Bei uns laufen verschiedene Musikrichtungen, von House und Hip-Hop über Reggaeton bis Tech House, in einer offenen, inklusiven Atmosphäre.</p>
-    <p>Mit Motto-Nights, Shows und neuen Formaten schaffen wir regelmäßig frische, einzigartige Erlebnisse – damit jede Nacht in Erinnerung bleibt.</p>
   </section>
 
   <!-- GALERIE -->
@@ -373,19 +382,6 @@
 
 <footer><div class="container">© <span id="year"></span> Afterlux Club • Alle Rechte vorbehalten</div></footer>
 
-<!-- DOCK INFERIORE (fissa, TRASPARENTE, senza telefono) -->
-<div class="dock" aria-label="Schnellzugriff">
-  <a class="ico" href="mailto:afterlux.loerrach@gmail.com" aria-label="E-Mail">
-    <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
-  </a>
-  <a class="ico" href="https://www.instagram.com/afterlux_club/" target="_blank" rel="noopener" aria-label="Instagram">
-    <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.5-.25a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>
-  </a>
-  <a class="ico" href="https://wa.me/4915738465393" target="_blank" rel="noopener" aria-label="WhatsApp">
-    <svg viewBox="0 0 32 32"><path d="M19.11 17.44a5.52 5.52 0 0 1-2.45-.62 10.63 10.63 0 0 1-3.33-2.62 7.17 7.17 0 0 1-1.48-2.66 3 3 0 0 1 .1-1.87c.22-.51.79-.73 1.28-.54a1.78 1.78 0 0 1 .64.45c.26.27.53.55.74.86.23.33.27.71.1 1.09-.14.32-.32.63-.48.95-.14.28-.12.54.07.79a6.83 6.83 0 0 0 1.77 1.76c.25.19.52.21.81.07.32-.16.63-.34.95-.48.39-.17.77-.13 1.1.11.32.22.61.49.89.76.19.19.35.4.43.67.16.56-.11 1.11-.61 1.28-.53.18-1.07.31-1.62.31ZM16 3a13 13 0 0 0-11.3 19.5L3 29l6.68-1.75A13 13 0 1 0 16 3Zm0 23.6c-2.19 0-4.21-.66-5.9-1.8l-.42-.28-3.93 1.03 1.06-3.8-.29-.44A10.6 10.6 0 1 1 26.6 16c0 5.86-4.74 10.6-10.6 10.6Z"/></svg>
-  </a>
-</div>
-
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -397,8 +393,7 @@
       document.documentElement.style.setProperty('--toppad', h + 'px');
     }
     function onScroll(){
-      if(window.scrollY > 8) topbar.classList.add('scrolled');
-      else topbar.classList.remove('scrolled');
+      // manteniamo trasparente
     }
     window.addEventListener('load', setTopPad, {once:true});
     window.addEventListener('resize', setTopPad);
@@ -413,10 +408,11 @@
   const closeShade = document.getElementById('drawer-close');
   function showDrawer(){ drawer.classList.add('show'); drawer.setAttribute('aria-hidden','false'); }
   function hideDrawer(){ drawer.classList.remove('show'); drawer.setAttribute('aria-hidden','true'); }
+  function showDrawerAbout(){ showDrawer(); setTimeout(()=>document.getElementById('drawer-about')?.scrollIntoView({block:'start'}), 60); }
   openBtn.addEventListener('click', showDrawer);
   closeShade.addEventListener('click', hideDrawer);
 
-  /* Eventi + resto JS (immutato) */
+  /* ========== DATI EVENTI ========== */
   const eventi = [
     { slug:'russian-beats-2025-10-11', name:'Russian Beats', dateISO:'2025-10-11T22:30:00+02:00', shortDate:'Sa 11 Okt', desc:'Beginn 22:30', lineup:'DJ Andy', prices:'—', cover:'serata russa 11.10.jpg' },
     { slug:'latin-night-2025-10-17', name:'Latin Night', dateISO:'2025-10-17T23:00:00+02:00', shortDate:'Fr 17 Okt', desc:'Start 23:00 • DJ Don-Maiky • Eintritt GRATIS', lineup:'DJ Don-Maiky', prices:'Eintritt GRATIS', cover:'Latin Night.jpg' },
@@ -514,11 +510,6 @@
   /* MODAL */
   let currentDetailSlug = null;
   const overlay = document.getElementById('event-detail');
-
-  const findAny = slug =>
-    upcoming.find(e=>e.slug===slug) ||
-    eventi.find(e=>e.slug===slug)   ||
-    recurring.find(e=>e=>e.slug===slug);
 
   function findAny(slug){
     return upcoming.find(e=>e.slug===slug) || eventi.find(e=>e.slug===slug) || recurring.find(e=>e.slug===slug);
@@ -651,7 +642,7 @@
   contatti.querySelector('h2').addEventListener('click', toggleContatti);
   contatti.querySelector('h2').addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); toggleContatti(); } });
 
-  /* JSON-LD SEO */
+  /* JSON-LD SEO (immutato, nessuna sezione chi-siamo nel DOM) */
   (function(){
     const base = new URL('.', location.href).href;
     const abs = p => { try { return new URL(p, base).href; } catch(e){ return p; } };
