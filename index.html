@@ -1,782 +1,459 @@
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-RN07E4K7GL"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-RN07E4K7GL');
-</script>
+<!-- Afterlux – Single Page (mobile-first) -->
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Afterlux Club — Events & Reservierungen</title>
-<link rel="icon" type="image/png" href="afterluxluna.png" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Afterlux Club — Events & Reservierungen</title>
+  <link rel="icon" type="image/png" href="afterluxluna.png" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#000000" />
 
-<meta property="og:title" content="Afterlux Club – Events & Reservierungen">
-<meta property="og:description" content="Entdecke die nächsten Events und reserviere deine Lounge in Lörrach.">
-<meta property="og:image" content="afterluxluna.png">
-<meta property="og:type" content="website">
+  <style>
+    :root{
+      --gold:#FFD700; --gold-d:#e6c200;
+      --text:#fff; --muted:#BBBBBB;
+      --card:rgba(255,255,255,.06);
+      --border:rgba(255,215,0,.28);
+      --radius:16px;
+      --glass:rgba(0,0,0,.42);
+    }
+    *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+    html,body{margin:0}
+    body{
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color:var(--text);
+      background:
+        linear-gradient(rgba(0,0,0,.62), rgba(0,0,0,.72)),
+        url("sfondo%20web.png") center/cover fixed no-repeat #000;
+      min-height:100vh; line-height:1.45;
+      touch-action: manipulation;
+    }
+    a{color:var(--gold);text-decoration:none}
+    a:hover{text-decoration:underline}
+    header, section, footer{padding:20px}
+    h1,h2,h3{color:var(--gold);margin:0 0 12px}
+    .container{max-width:1100px;margin:0 auto}
 
-<meta name="color-scheme" content="dark" />
-<style>
-  :root{
-    --gold:#FFD700; --gold-d:#e6c200;
-    --text:#fff; --muted:#bbbbbb;
-    --card:rgba(255,255,255,.06);
-    --border:rgba(255,255,255,.18);
-    --radius:16px;
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0}
-  body{
-    font-family: Helvetica, Arial, sans-serif;
-    color:var(--text);
-    background:
-      linear-gradient(rgba(0,0,0,.62), rgba(0,0,0,.72)),
-      url("sfondo%20web.png") center/cover fixed no-repeat #000;
-    min-height:100vh;
-    line-height:1.45;
-    padding-top:var(--toppad, 160px);
-    -webkit-tap-highlight-color: transparent;
-  }
-  a{color:var(--gold);text-decoration:none}
-  a:hover{text-decoration:underline}
-  header, section, footer{padding:22px}
-  h1,h2,h3{color:#fff;margin:0 0 12px}
-  .container{max-width:1100px;margin:0 auto}
+    /* HEADER: sticky, trasparente, con hamburger a sx e logo centrale */
+    .topbar{
+      position:fixed; inset:0 0 auto 0; height:64px; z-index:100;
+      display:flex; align-items:center; justify-content:center;
+      padding:0 12px;
+      background:transparent; /* richiesto: trasparente mentre si scorre */
+      backdrop-filter: none;
+    }
+    .hamburger{
+      position:absolute; left:10px; top:50%; transform:translateY(-50%);
+      width:42px; height:42px; border-radius:12px; background:var(--glass);
+      border:1px solid var(--border); display:grid; place-items:center; cursor:pointer;
+    }
+    .hamburger span{display:block; width:20px; height:2px; background:#fff; position:relative}
+    .hamburger span::before,.hamburger span::after{content:""; position:absolute; left:0; width:20px; height:2px; background:#fff}
+    .hamburger span::before{top:-6px} .hamburger span::after{top:6px}
 
-  /* ===== TOPBAR fissa & trasparente ===== */
-  .topbar{
-    position:fixed; top:0; left:0; right:0; z-index:92;
-    background:transparent; border-bottom:1px solid transparent;
-    padding: env(safe-area-inset-top) 16px 10px;
-  }
-  .topbar .row{ display:flex; align-items:center; justify-content:center; gap:12px; max-width:1100px; margin:0 auto; }
-  .hamburger{
-    position:absolute; left:14px; top:calc(8px + env(safe-area-inset-top));
-    width:42px; height:42px; border-radius:12px;
-    display:grid; place-items:center; cursor:pointer;
-    border:1px solid var(--border); background:rgba(0,0,0,.35); backdrop-filter: blur(4px);
-  }
-  .hamburger span{display:block;width:20px;height:2px;background:#fff;position:relative}
-  .hamburger span::before,.hamburger span::after{content:"";position:absolute;left:0;width:100%;height:2px;background:#fff}
-  .hamburger span::before{top:-6px}.hamburger span::after{top:6px}
+    .logoWrap{
+      pointer-events:none; transition:opacity .25s ease, transform .25s ease;
+      display:flex; align-items:center; gap:10px;
+    }
+    .logoWrap img{
+      /* LOGO molto grande (x2 rispetto a prima) e centrato */
+      height: clamp(64px, 12vw, 130px);
+      filter: drop-shadow(0 0 12px rgba(255,255,255,.18));
+    }
+    .logoWrap.hide{opacity:0; transform:translateY(-12px)}
 
-  .logo{
-    height: clamp(192px, 38.4vw, 432px); /* HERO: grande */
-    max-width:100%; display:block; margin:0 auto; object-fit:contain;
-    transition:opacity .25s ease, transform .25s ease;
-  }
-  .logo.is-hidden{opacity:0; transform:translateY(-18px); pointer-events:none}
+    /* Drawer sinistro */
+    .drawer{
+      position:fixed; inset:0 40% 0 -100%; z-index:110; transition:transform .25s ease;
+      background:rgba(0,0,0,.86); backdrop-filter: blur(6px);
+      border-right:1px solid var(--border); padding:16px; overflow:auto;
+    }
+    .drawer.show{transform:translateX(100%)}
+    .drawer h3{margin:6px 0 10px}
+    .navlist a{
+      display:block; padding:12px 10px; border-radius:10px; color:#fff; border:1px solid transparent;
+    }
+    .navlist a:hover{background:rgba(255,255,255,.06); border-color:var(--border)}
+    .drawer .muted{color:var(--muted); font-size:14px}
 
-  /* Drawer (menù a sinistra) */
-  .drawer{position:fixed; inset:0; z-index:93; display:none}
-  .drawer.show{display:block}
-  .drawer .shade{position:absolute;inset:0;background:rgba(0,0,0,.6)}
-  .drawer .panel{
-    position:absolute; top:0; left:0; bottom:0; width:min(82vw,360px);
-    background:#0b0b0b; border-right:1px solid var(--border);
-    padding:16px; overflow:auto;
-  }
-  .drawer h3, .drawer h4{color:#fff;margin:10px 0}
-  .drawer .navlink{display:block;padding:14px 10px;border-radius:10px;color:#fff}
-  .drawer .navlink:hover{background:rgba(255,255,255,.08)}
-  .drawer .sep{height:1px;background:rgba(255,255,255,.12);margin:12px 0}
-  .about-toggle{ display:flex;align-items:center;gap:8px;cursor:pointer; padding:10px;border-radius:10px; }
-  .about-toggle:hover{background:rgba(255,255,255,.08)}
-  .about-chev{transition:transform .2s ease;display:inline-block}
-  .about-open .about-chev{transform:rotate(90deg)}
-  #about-desc{display:none;color:#ddd;margin:8px 2px 0 2px}
-  .about-open #about-desc{display:block}
+    /* “Über uns” nel menu: testo nascosto finché non clicchi */
+    .aboutBox{margin-top:10px}
+    .aboutText{display:none; margin-top:6px; color:var(--muted); font-size:14px; line-height:1.5}
+    .aboutBox.open .aboutText{display:block}
 
-  .socials{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
-  .sbtn{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:10px 12px;border-radius:12px;border:1px solid var(--border);
-    color:#fff;background:transparent;text-decoration:none;font-weight:600
-  }
-  .sbtn svg{width:18px;height:18px;fill:#fff}
+    /* HERO spazio extra sotto il logo */
+    .heroPad{height:clamp(80px, 18vw, 160px)}
 
-  /* BTN */
-  .btn{display:inline-block;background:var(--gold);color:#000;padding:12px 18px;border-radius:14px;border:none;font-weight:700;cursor:pointer}
-  .btn:active{transform:translateY(1px)}
-  .btn:hover{background:var(--gold-d)}
-  .ghost{background:transparent;color:#fff;border:1px solid var(--border)}
+    /* BTN */
+    .btn{display:inline-block;background:var(--gold);color:#000;padding:10px 16px;border-radius:12px;border:none;font-weight:700;cursor:pointer}
+    .btn:hover{background:var(--gold-d)}
+    .ghost{background:transparent;color:var(--gold);border:1px solid var(--border)}
 
-  /* CARDS */
-  .cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-  .card img,.card video{ width:100%;height:clamp(220px,32vw,420px);object-fit:cover;display:block;background:#000 }
-  .card .content{padding:14px}
-  .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.10);font-size:12px;margin-bottom:8px;color:#fff}
-  .muted{color:var(--muted)}
+    /* Pill */
+    .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.1);font-size:12px;margin-bottom:6px}
 
-  /* Disponibilità / Calendario */
-  .cal-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:12px}
-  .cal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
-  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-  .cal-cell{
-    border:1px solid var(--border);border-radius:10px;padding:8px;min-height:64px;background:#0b0b0b;display:flex;flex-direction:column;gap:6px
-  }
-  .cal-day{font-size:12px;color:#bbb}
-  .free-badge{font-size:12px;background:rgba(0,255,100,.12);border:1px solid rgba(0,255,100,.35);color:#c8ffd9;padding:3px 6px;border-radius:999px;width:max-content}
-  .full-badge{font-size:12px;background:rgba(255,0,0,.12);border:1px solid rgba(255,0,0,.35);color:#ffd0d0;padding:3px 6px;border-radius:999px;width:max-content;display:none}
-  .list-mini{font-size:11px;color:#aaa;line-height:1.25}
+    /* CARDS */
+    .cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+    .card .content{padding:14px}
+    .muted{color:var(--muted)}
 
-  /* MAP */
-  .map{width:100%;height:300px;border:0;border-radius:12px}
+    /* Immagini card/galleria – responsive con stessa altezza */
+    .media{
+      width:100%;
+      height: clamp(220px, 40vw, 420px);
+      object-fit: cover; display: block; background:#000;
+    }
 
-  footer{border-top:1px solid var(--border);text-align:center;color:#fff;padding-bottom:28px}
+    /* Countdown pills */
+    .countdown{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-start;margin:0 0 14px}
 
-  /* Immagini grandi per Lounge/Promoter */
-  .wide-img{
-    width:100%;height:clamp(220px,32vw,420px);
-    object-fit:cover;display:block;margin:0 auto 20px;border-radius:12px;
-    box-shadow:0 0 20px rgba(255,255,255,.2)
-  }
+    /* Calendario disponibilità (ridotto) */
+    .calWrap{
+      margin-top:14px; background:var(--card); border:1px solid var(--border);
+      border-radius:12px; padding:10px;
+    }
+    .calHead{display:flex; align-items:center; justify-content:space-between; margin-bottom:8px}
+    .calHead button{background:transparent; color:var(--gold); border:1px solid var(--border); border-radius:10px; padding:6px 10px}
+    .grid{
+      display:grid; grid-template-columns: repeat(7, 1fr); gap:6px;
+      font-size:12px;
+    }
+    .grid div{
+      border:1px solid rgba(255,255,255,.12); border-radius:8px; padding:8px 6px;
+      text-align:center; background:rgba(0,0,0,.28);
+    }
+    .grid .booked{background:rgba(255,0,0,.18); border-color:rgba(255,0,0,.38)}
+    .legend{display:flex; gap:10px; align-items:center; font-size:12px; color:var(--muted); margin-top:8px}
+    .legend span{display:inline-block; width:14px; height:14px; border-radius:4px; margin-right:4px; border:1px solid rgba(255,255,255,.28)}
+    .legend .l-booked{background:rgba(255,0,0,.18); border-color:rgba(255,0,0,.38)}
 
-  /* ====== OVERLAY: Reservieren & Kontakt ====== */
-  #reserve-page,#contact-page{
-    position:fixed; inset:0; z-index:95; display:none;
-    height:calc(var(--vh, 1vh) * 100);
-    background:rgba(0,0,0,.88); backdrop-filter: blur(6px);
-  }
-  #reserve-page.show,#contact-page.show{display:block}
-  .reserve-wrap{height:100%; width:100%; padding: env(safe-area-inset-top) 12px env(safe-area-inset-bottom); display:flex; align-items:stretch; justify-content:center;}
-  .reserve-card{width:100%; max-width:960px; height:100%; display:flex; flex-direction:column; background:#0a0a0a; border:1px solid var(--border); border-radius:18px; overflow:hidden;}
-  .reserve-head{flex:0 0 auto; position:sticky; top:0; z-index:2; padding:14px 16px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; background:rgba(10,10,10,.96); backdrop-filter: blur(6px); border-bottom:1px solid var(--border);}
-  .reserve-body{flex:1 1 auto; overflow:auto; -webkit-overflow-scrolling:touch; padding:16px; display:grid; grid-template-columns:1fr 1fr; gap:14px;}
-  @media (max-width:800px){ .reserve-body{ grid-template-columns:1fr; } }
-  .reserve-foot{flex:0 0 auto; position:sticky; bottom:0; z-index:2; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; background:rgba(10,10,10,.96); backdrop-filter: blur(6px); border-top:1px solid var(--border);}
-  .reserve-cover{height:clamp(220px, 45svh, 360px); border:1px solid var(--border); border-radius:12px; background:#111 center/cover no-repeat;}
-  .reserve-form label{ display:block; font-size:12px; color:var(--muted); margin-bottom:6px }
-  .reserve-form input,.reserve-form select,.reserve-form textarea{ width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); background:#0b0b0b; color:#fff; font-size:16px;}
-  .close-x{ appearance:none; border:1px solid var(--border); background:transparent; color:#fff; border-radius:12px; padding:10px 12px; cursor:pointer;}
+    /* MODAL prenotazione (full-screen mobile) */
+    .overlay{position:fixed; inset:0; background:rgba(0,0,0,.78); display:none; align-items:center; justify-content:center; padding:16px; z-index:120}
+    .overlay.show{display:flex}
+    .modal{max-width:900px; width:100%; max-height:90vh; overflow:auto; background:#0b0b0b; border:1px solid var(--border); border-radius:16px}
+    .modal-head,.modal-foot{padding:12px 14px;border-bottom:1px solid var(--border)}
+    .modal-foot{border-top:1px solid var(--border); border-bottom:none; display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap}
+    .modal-body{padding:14px}
 
-  /* Overlay contatti */
-  .contact-card{width:100%; max-width:760px; height:100%; display:flex; flex-direction:column; background:#0a0a0a; border:1px solid var(--border); border-radius:18px; overflow:auto;}
-  .contact-body{padding:16px}
-</style>
+    /* Footer */
+    footer{border-top:1px solid var(--border);text-align:center;color:var(--muted);padding-bottom:28px}
+
+    /* Evita zoom su input */
+    input,select,textarea,button{font-size:16px}
+
+    /* Piccoli miglioramenti spaziatura */
+    .mb-12{margin-bottom:12px}
+  </style>
 </head>
 <body>
-
-<!-- ===== TOPBAR ===== -->
-<div class="topbar" id="topbar">
-  <div class="row">
-    <button class="hamburger" id="open-menu" aria-label="Menü öffnen"><span></span></button>
-    <img src="afterluxluna.png" alt="Afterlux Club Logo" class="logo" id="main-logo" loading="eager" decoding="async">
+  <!-- HEADER -->
+  <div class="topbar">
+    <button class="hamburger" id="btnMenu" aria-label="Menü öffnen"><span></span></button>
+    <div class="logoWrap" id="logoWrap">
+      <img src="afterluxluna.png" alt="Afterlux Club Logo">
+    </div>
   </div>
-</div>
 
-<!-- Drawer (menù sinistro) -->
-<div class="drawer" id="drawer" aria-hidden="true">
-  <div class="shade" id="drawer-close" aria-label="Schließen"></div>
-  <nav class="panel" aria-label="Seitennavigation" id="drawer-panel">
-    <h3 style="margin-top:6px">Menü</h3>
-    <a class="navlink" href="#eventi" onclick="hideDrawer()">Events</a>
-    <a class="navlink" href="#galleria" onclick="hideDrawer()">Galerie</a>
-    <a class="navlink" href="#" onclick="hideDrawer(); openContact()">Kontakt</a>
+  <!-- DRAWER / Hamburger -->
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <h3>Menü</h3>
+    <nav class="navlist">
+      <a href="#eventi" onclick="closeDrawer()">Events</a>
+      <a href="#galleria" onclick="closeDrawer()">Galerie</a>
 
-    <div class="sep"></div>
-    <div id="about-box">
-      <div class="about-toggle" id="about-toggle" role="button" aria-expanded="false" aria-controls="about-desc">
-        <span class="about-chev">▶</span>
-        <span>Über uns</span>
+      <div class="aboutBox" id="aboutBox">
+        <a href="javascript:void(0)" onclick="toggleAbout()">Über uns ▸</a>
+        <div class="aboutText">
+          <p><strong>Afterlux Club</strong> ist die Vision zweier junger Partner: <strong>Giuseppe Leocata</strong> und <strong>Luana Ferlito</strong>.</p>
+          <p>Unsere Mission: Wir pushen Lörrachs Nachtleben – verschiedene Musikgenres (House, Hip-Hop, Reggaeton, Tech House) in einer offenen, inklusiven Atmosphäre.</p>
+          <p>Mit Motto-Nights, Shows und frischen Formaten sorgen wir für unvergessliche Erlebnisse – jede Nacht soll in Erinnerung bleiben.</p>
+        </div>
       </div>
-      <p id="about-desc">
-        <strong>Afterlux Club</strong> ist die Vision zweier junger Partner:
-        <strong>Giuseppe Leocata</strong> und <strong>Luana Ferlito</strong>.<br>
-        Wir pushen das Nachtleben in Lörrach – offen, inklusiv, mit House, Hip-Hop, Reggaeton & Tech House.
-        Motto-Nights, Shows & neue Formate für unvergessliche Nächte.
+
+      <h3 style="margin-top:16px">Kontakt</h3>
+      <a href="mailto:afterlux.loerrach@gmail.com">E-Mail</a>
+      <a href="https://www.instagram.com/afterlux_club/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://wa.me/4915738465393" target="_blank" rel="noopener">WhatsApp</a>
+    </nav>
+    <p class="muted" style="margin-top:16px">Teicherstrasse 14, 79539 Lörrach</p>
+  </aside>
+
+  <main class="container">
+    <div class="heroPad" aria-hidden="true"></div>
+
+    <!-- INTRO -->
+    <section id="intro" class="mb-12">
+      <h1 style="font-size: clamp(26px,6.2vw,44px); margin:0 0 8px">
+        THE ORIGINAL NIGHT EXPERIENCE<br>IN LÖRRACH — AFTERLUX
+      </h1>
+      <p class="muted" style="margin:0 0 12px">
+        House, Hip-Hop, Reggaeton & mehr: moderne Party-Vibes mit goldener Eleganz – für Nächte, die in Erinnerung bleiben.
       </p>
-    </div>
-
-    <div class="sep"></div>
-    <h4>Folge/Schreib uns</h4>
-    <div class="socials">
-      <a class="sbtn" href="mailto:afterlux.loerrach@gmail.com" aria-label="E-Mail">
-        <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
-        E-Mail
-      </a>
-      <a class="sbtn" href="https://www.instagram.com/afterlux_club/" target="_blank" rel="noopener" aria-label="Instagram">
-        <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.5-.25a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>
-        Instagram
-      </a>
-      <a class="sbtn" href="https://wa.me/4915738465393" target="_blank" rel="noopener" aria-label="WhatsApp">
-        <svg viewBox="0 0 32 32"><path d="M19.11 17.44a5.52 5.52 0 0 1-2.45-.62 10.63 10.63 0 0 1-3.33-2.62 7.17 7.17 0 0 1-1.48-2.66 3 3 0 0 1 .1-1.87c.22-.51.79-.73 1.28-.54a1.78 1.78 0 0 1 .64.45c.26.27.53.55.74.86.23.33.27.71.1 1.09-.14.32-.32.63-.48.95-.14.28-.12.54.07.79a6.83 6.83 0 0 0 1.77 1.76c.25.19.52.21.81.07.32-.16.63-.34.95-.48.39-.17.77-.13 1.1.11.32.22.61.49.89.76.19.19.35.4.43.67.16.56-.11 1.11-.61 1.28-.53.18-1.07.31-1.62.31ZM16 3a13 13 0 0 0-11.3 19.5L3 29l6.68-1.75A13 13 0 1 0 16 3Zm0 23.6c-2.19 0-4.21-.66-5.9-1.8l-.42-.28-3.93 1.03 1.06-3.8-.29-.44A10.6 10.6 0 1 1 26.6 16c0 5.86-4.74 10.6-10.6 10.6Z"/></svg>
-        WhatsApp
-      </a>
-    </div>
-  </nav>
-</div>
-
-<!-- HERO -->
-<header id="hero" class="container" style="padding-top:8px">
-  <h1 style="font-size:clamp(28px,6.8vw,56px);line-height:1.1;color:#fff;margin-top:6px">
-    THE ORIGINAL NIGHT<br>EXPERIENCE IN<br>LÖRRACH — AFTERLUX
-  </h1>
-  <p style="font-size:clamp(16px,3.6vw,22px);color:#ddd;max-width:900px">
-    House, Hip-Hop, Reggaeton & mehr: moderne Party-Vibes mit goldener Eleganz – für Nächte, die in Erinnerung bleiben.
-  </p>
-</header>
-
-<main class="container">
-  <!-- COUNTDOWN sopra a “Kommende Events” -->
-  <div id="countdown" hidden style="display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 2px 0">
-    <span class="pill"><b id="cd-d">--</b> Tage</span>
-    <span class="pill"><b id="cd-h">--</b> Std</span>
-    <span class="pill"><b id="cd-m">--</b> Min</span>
-    <span class="pill"><b id="cd-s">--</b> Sek</span>
-  </div>
-
-  <!-- EVENTS -->
-  <section id="eventi" style="margin-top:10px">
-    <h2 style="color:#fff">Kommende Events</h2>
-
-    <div class="card" style="padding:12px;display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
-      <input id="q" placeholder="Suchen… (z.B. Latin, Halloween)" aria-label="Events suchen"
-            style="flex:1;min-width:200px;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-      <select id="month" aria-label="Nach Monat filtern"
-              style="padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-        <option value="">Alle Monate</option>
-      </select>
-      <button class="btn ghost" type="button" id="clr">Zurücksetzen</button>
-    </div>
-
-    <div id="event-cards" class="cards"></div>
-
-    <h3 style="margin-top:26px;color:#fff">Wiederkehrende Events</h3>
-    <div id="recurring-cards" class="cards"></div>
-  </section>
-
-  <!-- DISPONIBILITÀ LOUNGE -->
-  <section id="availability" style="margin-top:28px">
-    <h2 style="color:#fff">Lounge-Verfügbarkeit</h2>
-    <div class="cal-wrap">
-      <div class="cal-head">
-        <button class="btn ghost" id="cal-prev" type="button">«</button>
-        <div id="cal-title" style="font-weight:700;color:#fff">—</div>
-        <button class="btn ghost" id="cal-next" type="button">»</button>
+      <div class="countdown" id="countdown" hidden>
+        <span class="pill"><b id="cd-d">--</b> Tage</span>
+        <span class="pill"><b id="cd-h">--</b> Std</span>
+        <span class="pill"><b id="cd-m">--</b> Min</span>
+        <span class="pill"><b id="cd-s">--</b> Sek</span>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:6px;color:#bbb;font-size:12px">
-        <div>Mo</div><div>Di</div><div>Mi</div><div>Do</div><div>Fr</div><div>Sa</div><div>So</div>
+    </section>
+
+    <!-- EVENTS -->
+    <section id="eventi">
+      <h2>Kommende Events</h2>
+
+      <div id="event-cards" class="cards"></div>
+
+      <!-- Calendario disponibilità Lounge (ridotto) -->
+      <div class="calWrap" id="calWrap">
+        <div class="calHead">
+          <button type="button" id="prevCal">◀</button>
+          <div id="calTitle" class="muted">Kalender</div>
+          <button type="button" id="nextCal">▶</button>
+        </div>
+        <div class="grid" id="calGrid" aria-live="polite"></div>
+        <div class="legend"><span class="l-booked"></span> Gebucht</div>
       </div>
-      <div class="cal-grid" id="cal-grid"></div>
-      <div style="margin-top:10px;color:#bbb;font-size:12px">
-        <span class="free-badge" style="margin-right:8px">frei</span> zeigt freie Lounges (0–6). Tippe auf einen Tag für Details.
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- GALERIE -->
-  <section id="galleria" style="margin-top:28px">
-    <h2>Galerie</h2>
+    <!-- GALERIE -->
+    <section id="galleria" style="margin-top:28px">
+      <h2>Galerie</h2>
 
-    <img src="./Lounge-Afterlux.png" alt="Lounge-Plan Afterlux" class="wide-img" loading="lazy">
-    <p style="color:#FFD700;text-align:center;margin-top:-8px">Reserviere deine Lounge: N1–N5 jedes Wochenende verfügbar.</p>
-
-    <div class="cards" style="margin-top:18px">
+      <!-- Lounge immagine card dimensione card -->
       <article class="card">
-        <video controls playsinline preload="metadata" poster="afterluxluna.png" loading="lazy"
-              aria-label="Afterlux Club – Video Teaser"></video>
+        <picture>
+          <source srcset="afterlux_exports/lounge_card_portrait_1200x1600.webp" type="image/webp">
+          <img class="media" src="afterlux_exports/lounge_card_portrait_1200x1600.jpg" alt="Afterlux Lounge – Prenota" loading="lazy" decoding="async">
+        </picture>
         <div class="content">
-          <div class="pill">Highlight • Club Teaser</div>
-          <h3 style="color:#fff">Afterlux – Video</h3>
-          <p class="muted">Präsentation</p>
-          <div style="margin-top:8px">
-            <button class="btn" type="button"
-              onclick="this.closest('.card').querySelector('video').play()">▶︎ Play</button>
-            <button class="btn ghost" type="button"
-              onclick="this.closest('.card').querySelector('video').pause()">⏸︎ Pause</button>
+          <h3>Lounge-Plan</h3>
+          <p class="muted">Prenota la tua Lounge (N1–N5) ogni weekend.</p>
+        </div>
+      </article>
+
+      <!-- Promoter immagine card dimensione card -->
+      <article class="card" style="margin-top:18px">
+        <picture>
+          <source srcset="afterlux_exports/promoter_card_portrait_1200x1600.webp" type="image/webp">
+          <img class="media" src="afterlux_exports/promoter_card_portrait_1200x1600.jpg" alt="Diventa Promoter Afterlux" loading="lazy" decoding="async">
+        </picture>
+        <div class="content">
+          <h3>Werde Afterlux Promoter</h3>
+          <p class="muted">Scrivici su Instagram o via email e ottieni vantaggi esclusivi.</p>
+          <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+            <a class="btn" target="_blank" rel="noopener" href="https://www.instagram.com/afterlux_club/">Instagram</a>
+            <a class="btn ghost" href="mailto:afterlux.loerrach@gmail.com">E-Mail</a>
           </div>
         </div>
-        <script>
-          (function(){
-            const v=document.currentScript.previousElementSibling.previousElementSibling;
-            if(v && !v.querySelector('source')){
-              const s=document.createElement('source');
-              s.src='video%20afterlux%20.mp4'; s.type='video/mp4'; v.appendChild(s);
-            }
-          })();
-        </script>
       </article>
-    </div>
+    </section>
+  </main>
 
-    <div class="promoter-section" style="text-align:center;margin-top:28px">
-      <h3 style="color:#fff;font-size:1.8rem;margin-bottom:15px">Werde Afterlux Promoter</h3>
-      <img src="./promoter.jpg" alt="Afterlux Club Promoter" class="wide-img" loading="lazy" style="max-width:1000px">
-      <p style="color:#FFD700;font-size:1rem;max-width:800px;margin:8px auto 0">
-        Du willst Teil vom Afterlux-Team werden? Schreib uns auf Instagram oder per E-Mail und sichere dir exklusive Vorteile.
-      </p><br>
-      <a href="https://www.instagram.com/afterlux_club/" target="_blank" rel="noopener"
-        style="background-color:#FFD700;color:#000;padding:10px 25px;border-radius:25px;text-decoration:none;font-weight:bold">
-        Kontaktiere uns auf Instagram
-      </a>
-    </div>
-  </section>
-</main>
-
-<!-- ====== OVERLAY: Reservieren ====== -->
-<div id="reserve-page" aria-hidden="true">
-  <div class="reserve-wrap">
-    <div class="reserve-card">
-      <div class="reserve-head">
-        <h3 style="margin:0;color:#fff">Reservieren</h3>
-        <button class="close-x" id="reserve-close" aria-label="Schließen">Schließen ✕</button>
+  <!-- MODAL PRENOTAZIONE -->
+  <div class="overlay" id="bookOverlay" role="dialog" aria-modal="true" aria-labelledby="bookTitle">
+    <div class="modal">
+      <div class="modal-head"><h3 id="bookTitle" style="margin:0">Reservieren</h3></div>
+      <div class="modal-body" id="bookBody"><!-- filled by JS --></div>
+      <div class="modal-foot">
+        <button class="btn ghost" type="button" onclick="closeBooking()">Schließen ✕</button>
       </div>
+    </div>
+  </div>
 
-      <div class="reserve-body">
-        <div>
-          <div id="reserve-cover" class="reserve-cover" aria-label="Event-Cover"></div>
-        </div>
-        <div class="reserve-form">
-          <div class="pill" id="reserve-date">—</div>
-          <h3 id="reserve-title" style="margin:8px 0 6px;color:#fff">—</h3>
+  <footer><div class="container">© <span id="year"></span> Afterlux Club • Alle Rechte vorbehalten</div></footer>
 
-          <label>Vor- und Nachname
-            <input id="pr-nome" type="text" placeholder="Dein Name" autocomplete="name" inputmode="text">
-          </label>
-          <label>Telefon
-            <input id="pr-tel" type="tel" placeholder="+49 ..." autocomplete="tel" inputmode="tel">
-          </label>
-          <label>E-Mail
-            <input id="pr-email" type="email" placeholder="name@email.com" autocomplete="email" inputmode="email">
-          </label>
+  <script>
+    /* Year */
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px">
-            <label>Datum (bei datiertem Event)
-              <input id="pr-data" type="date" autocomplete="off">
+    /* Drawer */
+    const drawer = document.getElementById('drawer');
+    const btnMenu = document.getElementById('btnMenu');
+    function openDrawer(){ drawer.classList.add('show'); drawer.setAttribute('aria-hidden','false'); }
+    function closeDrawer(){ drawer.classList.remove('show'); drawer.setAttribute('aria-hidden','true'); }
+    btnMenu.addEventListener('click', ()=> drawer.classList.contains('show') ? closeDrawer() : openDrawer());
+    function toggleAbout(){ document.getElementById('aboutBox').classList.toggle('open'); }
+
+    /* Logo visibile solo sopra alla sezione Event */
+    const logoWrap = document.getElementById('logoWrap');
+    const eventiSec = document.getElementById('eventi');
+    function updateLogo(){
+      const top = eventiSec.getBoundingClientRect().top + window.scrollY;
+      if (window.scrollY > (top - 40)) logoWrap.classList.add('hide');
+      else logoWrap.classList.remove('hide');
+    }
+    updateLogo();
+    window.addEventListener('scroll', updateLogo);
+
+    /* DATI EVENTI (dettagli in vista + bottone prenota) */
+    const eventi = [
+      { slug:'latin-night-2025-10-17', name:'Latin Night', dateISO:'2025-10-17T23:00:00+02:00', shortDate:'Fr 17 Okt', desc:'Start 23:00 • DJ Don-Maiky • Eintritt GRATIS', lineup:'DJ Don-Maiky', prices:'Eintritt GRATIS', cover:'Latin Night.jpg' },
+      { slug:'rhythms-of-world-2025-10-18', name:'Rhythms of World', dateISO:'2025-10-18T23:00:00+02:00', shortDate:'Sa 18 Okt', desc:'Start 23:00', lineup:'David Costa', prices:'—', cover:'david costa 18.10.jpg' },
+      { slug:'la-noche-brasilena-2025-10-25', name:'La noche brasileña', dateISO:'2025-10-25T23:00:00+02:00', shortDate:'Sa 25 Okt', desc:'Start 23:00', lineup:'Salese', prices:'Eintritt 5€ & ein GRATIS-SHOT', cover:'dj salese 25.10.jpg',
+        ticketUrl:'https://eventfrog.de/de/p/party/disco/la-noche-brasilena-7381417087799956339.html' },
+      { slug:'halloween-party-2025-10-31', name:'Halloween Party', dateISO:'2025-10-31T23:00:00+01:00', shortDate:'Fr 31 Okt', desc:'Latin Mix • Costume Contest', lineup:'DJ Pepe', prices:'Vorverkauf 5€ • Abendkasse 10€', cover:'hallowe 31.10.jpg',
+        ticketUrl:'https://eventfrog.de/de/p/party/disco/halloween-party-7381430034773332317.html' },
+      { slug:'last-school-day-2025-12-19', name:'Last School Day 2025 – Spendenparty Abi 2026 (FES)', dateISO:'2025-12-19T22:00:00+01:00', shortDate:'Fr 19 Dez', desc:'Spendenaktion des Abi-Jahrgangs 2026 der FES • Einlass 22:00', lineup:'—', prices:'Ticket 7€ • Mindestalter 16', cover:'Black Party Night Club Dj Flyer.png',
+        ticketUrl:'https://eventfrog.de/de/p/party/disco/last-school-day-2025-7383798159095412970.html' }
+    ];
+
+    const now = new Date();
+    const upcoming = eventi.filter(e => new Date(e.dateISO) > now).sort((a,b)=>new Date(a.dateISO)-new Date(b.dateISO));
+    const cards = document.getElementById('event-cards');
+
+    function cardHTML(ev){
+      const when = new Date(ev.dateISO).toLocaleString('de-DE',{weekday:'short', day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'});
+      return `
+        <article class="card">
+          <img class="media" src="${encodeURI(ev.cover)}" alt="${ev.name}" loading="lazy" decoding="async">
+          <div class="content">
+            <div class="pill">${ev.shortDate}</div>
+            <h3 style="margin:6px 0 4px">${ev.name}</h3>
+            <p class="muted" style="margin:0 0 4px">${ev.desc ?? ''}</p>
+            <p class="muted" style="font-size:12px;margin:0 0 10px">${when}</p>
+
+            <div style="display:grid;gap:6px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
+              ${ev.ticketUrl ? `<a class="btn ghost" href="${ev.ticketUrl}" target="_blank" rel="noopener">Tickets</a>` : ``}
+              <button class="btn" type="button" onclick="openBooking('${ev.slug}')">Jetzt reservieren</button>
+            </div>
+
+            <div style="margin-top:10px;font-size:13px;color:var(--muted)">
+              <div><strong>Line-up:</strong> ${ev.lineup || '—'}</div>
+              <div><strong>Info:</strong> ${ev.prices || '—'}</div>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+    cards.innerHTML = upcoming.length ? upcoming.map(cardHTML).join('') : `<p class="muted">Keine geplanten Events.</p>`;
+
+    /* COUNTDOWN */
+    (function(){
+      const wrap = document.getElementById('countdown');
+      if (!upcoming.length) return;
+      const target = new Date(upcoming[0].dateISO).getTime();
+      const dEl = document.getElementById('cd-d'), hEl=document.getElementById('cd-h'), mEl=document.getElementById('cd-m'), sEl=document.getElementById('cd-s');
+      function tick(){
+        const t = target - Date.now();
+        if (t<=0){dEl.textContent='0';hEl.textContent='00';mEl.textContent='00';sEl.textContent='00'; return;}
+        const d=Math.floor(t/86400000), h=Math.floor((t%86400000)/3600000),
+              m=Math.floor((t%3600000)/60000), s=Math.floor((t%60000)/1000);
+        dEl.textContent=d; hEl.textContent=String(h).padStart(2,'0'); mEl.textContent=String(m).padStart(2,'0'); sEl.textContent=String(s).padStart(2,'0');
+      }
+      tick(); setInterval(tick,1000); wrap.hidden=false;
+    })();
+
+    /* PRENOTAZIONE – apertura immediata del modulo (no scroll) */
+    const overlay = document.getElementById('bookOverlay');
+    function findAny(slug){ return eventi.find(e=>e.slug===slug) || upcoming.find(e=>e.slug===slug); }
+    function openBooking(slug){
+      const ev = findAny(slug); if(!ev) return;
+      const when = new Date(ev.dateISO).toLocaleString('de-DE',{weekday:'long', day:'2-digit', month:'long', hour:'2-digit', minute:'2-digit'});
+      const body = document.getElementById('bookBody');
+      body.innerHTML = `
+        <img src="${encodeURI(ev.cover)}" alt="${ev.name}" style="width:100%;height:auto;border-radius:12px;border:1px solid var(--border);margin-bottom:10px">
+        <div class="pill" style="margin:0 0 8px">${when}</div>
+        <h3 style="margin:0 0 10px">${ev.name}</h3>
+
+        <div class="mb-12"><strong>Line-up:</strong> ${ev.lineup||'—'}</div>
+        <div class="mb-12"><strong>Info:</strong> ${ev.prices||'—'}</div>
+
+        <div style="display:grid;gap:10px">
+          <label><div class="muted">Vor- und Nachname</div>
+            <input id="pr-nome" type="text" placeholder="Dein Name" style="width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+          </label>
+          <label><div class="muted">Telefon</div>
+            <input id="pr-tel" type="tel" placeholder="+49 ..." style="width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+          </label>
+          <label><div class="muted">E-Mail</div>
+            <input id="pr-email" type="email" placeholder="name@email.com" style="width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+          </label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <label><div class="muted">Lounge</div>
+              <select id="pr-lounge" style="width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+                <option>N1</option><option>N2</option><option>N3</option><option>N4</option><option>N5</option>
+              </select>
             </label>
-            <label>Personen
-              <select id="pr-persone">
+            <label><div class="muted">Personen</div>
+              <select id="pr-persone" style="width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
                 <option>2</option><option>4</option><option>6</option><option>8</option><option>10</option>
               </select>
             </label>
           </div>
-
-          <label style="margin-top:8px">Lounge
-            <select id="pr-lounge">
-              <option>N0</option><option>N1</option><option>N2</option><option>N3</option><option>N4</option><option>N5</option>
-            </select>
+          <label><div class="muted">Notizen</div>
+            <textarea id="pr-note" rows="3" placeholder="z. B. Geburtstag, Wünsche…" style="width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff"></textarea>
           </label>
 
-          <label style="margin-top:8px">Notizen (optional)
-            <textarea id="pr-note" rows="3" placeholder="z. B. Geburtstag, Wünsche…"></textarea>
-          </label>
-        </div>
-      </div>
-
-      <div class="reserve-foot">
-        <div class="muted">Sende deine Anfrage über WhatsApp oder E-Mail</div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn" type="button" id="btn-wa">Per WhatsApp senden</button>
-          <button class="btn ghost" type="button" id="btn-mail">Per E-Mail senden</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ====== OVERLAY: Kontakt ====== -->
-<div id="contact-page" aria-hidden="true">
-  <div class="reserve-wrap">
-    <div class="contact-card">
-      <div class="reserve-head">
-        <h3 style="margin:0;color:#fff">Kontakt</h3>
-        <button class="close-x" id="contact-close" aria-label="Schließen">Schließen ✕</button>
-      </div>
-      <div class="contact-body">
-        <div class="cards">
-          <div class="card"><div class="content">
-            <p><strong>Telefon:</strong> <a href="tel:+4915738465393">+49 1573 8465393</a></p>
-            <p><strong>E-Mail:</strong> <a href="mailto:afterlux.loerrach@gmail.com">afterlux.loerrach@gmail.com</a></p>
-            <p><strong>Instagram:</strong> <a target="_blank" rel="noopener" href="https://www.instagram.com/afterlux_club?igsh=cWU0emo2ZHZyYjZp">@afterlux_club</a></p>
-            <p><strong>Adresse:</strong> Teicherstrasse 14, 79539 Lörrach (DE)</p>
-            <p class="muted">Öffnungszeiten: Mo–Mi geschlossen · Do 21:30–02:00 · Fr 23:00–05:00 · Sa 23:00–05:00 · So 14:00–18:00</p>
-          </div></div>
-          <div class="card">
-            <iframe class="map" src="https://www.google.com/maps?q=Teicherstrasse%2014%2079539%20L%C3%B6rrach&output=embed" loading="lazy" allowfullscreen></iframe>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn" type="button" onclick="sendWA('${ev.name}')">Per WhatsApp senden</button>
+            <button class="btn ghost" type="button" onclick="sendMail('${ev.name}')">Per E-Mail senden</button>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<footer><div class="container">© <span id="year"></span> Afterlux Club • Alle Rechte vorbehalten</div></footer>
-
-<script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  /* Viewport unit mobile fix */
-  function setVhUnit(){ document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px'); }
-  setVhUnit(); window.addEventListener('resize', setVhUnit);
-
-  /* Header fisso + padding + logo visibile solo nella zona HERO */
-  (function(){
-    const topbar = document.getElementById('topbar');
-    const logo = document.getElementById('main-logo');
-    const hero = document.getElementById('hero');
-
-    function setTopPad(){
-      document.documentElement.style.setProperty('--toppad', topbar.offsetHeight + 'px');
-      updateLogo();
+      `;
+      overlay.classList.add('show');
     }
-    function updateLogo(){
-      const heroBottom = hero.getBoundingClientRect().bottom + window.scrollY;
-      const show = window.scrollY + 1 < heroBottom; // valido dalla sezione “THE ORIGINAL”
-      logo.classList.toggle('is-hidden', !show);
+    function closeBooking(){ overlay.classList.remove('show'); }
+    overlay.addEventListener('click', (e)=>{ if(e.target===overlay) closeBooking(); });
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeBooking(); });
+
+    function buildMsg(eventName){
+      const nome = document.getElementById('pr-nome').value.trim();
+      const tel  = document.getElementById('pr-tel').value.trim();
+      const mail = document.getElementById('pr-email').value.trim();
+      const lounge = document.getElementById('pr-lounge').value;
+      const persone= document.getElementById('pr-persone').value;
+      const note   = document.getElementById('pr-note').value.trim();
+      return [
+        'Hi Afterlux! Ich möchte eine Lounge reservieren.',
+        `Event: ${eventName}`,
+        `Lounge: ${lounge}`, `Personen: ${persone}`,
+        nome ? `Name: ${nome}` : null, tel ? `Telefon: ${tel}` : null, mail ? `E-Mail: ${mail}` : null,
+        note ? `Notizen: ${note}` : null
+      ].filter(Boolean).join('\n');
     }
-    window.addEventListener('load', setTopPad, {once:true});
-    window.addEventListener('resize', setTopPad);
-    window.addEventListener('scroll', updateLogo, {passive:true});
-    setTimeout(setTopPad, 120);
-  })();
-
-  /* Drawer */
-  const drawer = document.getElementById('drawer');
-  const openBtn = document.getElementById('open-menu');
-  const closeShade = document.getElementById('drawer-close');
-  function showDrawer(){ drawer.classList.add('show'); drawer.setAttribute('aria-hidden','false'); }
-  function hideDrawer(){ drawer.classList.remove('show'); drawer.setAttribute('aria-hidden','true'); }
-  openBtn.addEventListener('click', showDrawer);
-  closeShade.addEventListener('click', hideDrawer);
-
-  // Über uns toggle
-  (function(){
-    const box = document.getElementById('about-box');
-    const tog = document.getElementById('about-toggle');
-    if(!box || !tog) return;
-    tog.addEventListener('click', ()=>{
-      const open = box.classList.toggle('about-open');
-      tog.setAttribute('aria-expanded', String(open));
-    });
-  })();
-
-  // Overlay contatti
-  const contactPage = document.getElementById('contact-page');
-  function openContact(){ contactPage.classList.add('show'); contactPage.setAttribute('aria-hidden','false'); }
-  function closeContact(){ contactPage.classList.remove('show'); contactPage.setAttribute('aria-hidden','true'); }
-  document.getElementById('contact-close').addEventListener('click', closeContact);
-
-  /* ====== DATI EVENTI ====== */
-  const eventiData = [
-    { slug:'russian-beats-2025-10-11', name:'Russian Beats', dateISO:'2025-10-11T22:30:00+02:00', shortDate:'Sa 11 Okt', desc:'Beginn 22:30', lineup:'DJ Andy', prices:'—', cover:'serata russa 11.10.jpg' },
-    { slug:'latin-night-2025-10-17', name:'Latin Night', dateISO:'2025-10-17T23:00:00+02:00', shortDate:'Fr 17 Okt', desc:'Start 23:00 • DJ Don-Maiky • Eintritt GRATIS', lineup:'DJ Don-Maiky', prices:'Eintritt GRATIS', cover:'Latin Night.jpg' },
-    { slug:'rhythms-of-world-2025-10-18', name:'Rhythms of World', dateISO:'2025-10-18T23:00:00+02:00', shortDate:'Sa 18 Okt', desc:'Start 23:00', lineup:'David Costa', prices:'Eintritt GRATIS & ein GRATIS-SHOT', cover:'david costa 18.10.jpg' },
-    { slug:'la-noche-brasilena-2025-10-25', name:'La noche brasileña', dateISO:'2025-10-25T23:00:00+02:00', shortDate:'Sa 25 Okt', desc:'Start 23:00', lineup:'Salese', prices:'Eintritt 5€ & ein GRATIS-SHOT', cover:'dj salese 25.10.jpg',
-      ticketUrl:'https://eventfrog.de/de/p/party/disco/la-noche-brasilena-7381417087799956339.html' },
-    { slug:'halloween-party-2025-10-31', name:'Halloween Party', dateISO:'2025-10-31T23:00:00+01:00', shortDate:'Fr 31 Okt', desc:'Latin Mix • Costume Contest', lineup:'DJ Pepe', prices:'Vorverkauf 5€ • Abendkasse 10€', cover:'hallowe 31.10.jpg',
-      ticketUrl:'https://eventfrog.de/de/p/party/disco/halloween-party-7381430034773332317.html' },
-    { slug:'last-school-day-2025-12-19', name:'Last School Day 2025 – Spendenparty Abi 2026 (FES)', dateISO:'2025-12-19T22:00:00+01:00', shortDate:'Fr 19 Dez', desc:'Spendenaktion des Abi-Jahrgangs 2026 der FES • Einlass 22:00', lineup:'—', prices:'Ticket 7€ • Mindestalter 16', cover:'Black Party Night Club Dj Flyer.png',
-      ticketUrl:'https://eventfrog.de/de/p/party/disco/last-school-day-2025-7383798159095412970.html' }
-  ];
-  const recurring = [
-    { slug:'karaoke-night', name:'Karaoke Night', when:'Jeden Donnerstag', time:'21:30 – 02:00', desc:'Eintritt frei • Die Bühne gehört dir!', lineup:'Open Mic • Host Afterlux', prices:'Free Entry', cover:'karaoke.jpg' },
-  ];
-
-  const $ = s => document.querySelector(s);
-  const cards = $('#event-cards');
-  const recWrap = $('#recurring-cards');
-
-  (function fillMonths(){
-    const months = [...new Set(eventiData.map(e =>
-      new Date(e.dateISO).toLocaleString('de-DE',{month:'long',year:'numeric'})
-    ))];
-    const sel=$('#month'); months.forEach(m=>{const o=document.createElement('option');o.textContent=m;o.value=m;sel.appendChild(o);});
-    $('#clr').addEventListener('click', ()=>{ $('#q').value=''; $('#month').value=''; filter(); });
-  })();
-
-  function cardHTML(ev){
-    const when = new Date(ev.dateISO).toLocaleString('de-DE',{weekday:'short',hour:'2-digit',minute:'2-digit'});
-    return `
-    <article class="card">
-      <img src="${encodeURI(ev.cover)}" alt="${ev.name}" loading="lazy" decoding="async">
-      <div class="content">
-        <div class="pill">${ev.shortDate}</div>
-        <h3 style="color:#fff">${ev.name}</h3>
-        <p class="muted" style="margin:.25rem 0 .5rem 0">${ev.desc ?? ''}</p>
-        <p class="muted" style="font-size:12px;margin:.25rem 0">Zeit: ${when}</p>
-        <div style="margin-top:8px"><strong>Line-up</strong><div class="muted">${ev.lineup || '—'}</div></div>
-        <div style="margin-top:8px"><strong>Info</strong><div class="muted">${ev.prices || '—'}</div></div>
-        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn book-btn" data-slug="${ev.slug}" aria-label="Lounge für ${ev.name} reservieren">Reservieren</button>
-          ${ev.ticketUrl ? `<a class="btn ghost" href="${ev.ticketUrl}" target="_blank" rel="noopener" aria-label="Tickets für ${ev.name} kaufen">Tickets</a>` : ``}
-        </div>
-      </div>
-    </article>`;
-  }
-
-  const now = new Date();
-  const upcoming = eventiData.filter(e => new Date(e.dateISO) > now).sort((a,b)=>new Date(a.dateISO)-new Date(b.dateISO));
-
-  function render(list){
-    cards.innerHTML = list.length ? list.map(cardHTML).join('') : `<p class="muted">Keine geplanten Events mit Datum.</p>`;
-  }
-  render(upcoming);
-
-  recWrap.innerHTML = recurring.map(ev => `
-    <article class="card">
-      ${ev.cover ? `<img src="${encodeURI(ev.cover)}" alt="${ev.name}" loading="lazy">` : ``}
-      <div class="content">
-        <div class="pill">${ev.when} • ${ev.time}</div>
-        <h3 style="color:#fff">${ev.name}</h3>
-        <p class="muted">${ev.desc ?? ''}</p>
-        <div style="margin-top:12px">
-          <button class="btn book-btn" data-slug="${ev.slug}" aria-label="Lounge für ${ev.name} reservieren">Reservieren</button>
-        </div>
-      </div>
-    </article>
-  `).join('');
-
-  function filter(){
-    const q=$('#q').value.toLowerCase().trim();
-    const m=$('#month').value;
-    const list = upcoming.filter(e=>{
-      const mm=new Date(e.dateISO).toLocaleString('de-DE',{month:'long',year:'numeric'});
-      const txt=(e.name+' '+(e.desc||'')+' '+(e.lineup||'')).toLowerCase();
-      return (!q||txt.includes(q)) && (!m||m===mm);
-    });
-    render(list);
-    attachBookingButtons();
-  }
-  $('#q').addEventListener('input', filter);
-  $('#month').addEventListener('change', filter);
-
-  /* COUNTDOWN */
-  const cdWrap = document.getElementById('countdown');
-  if (upcoming.length){
-    const target = new Date(upcoming[0].dateISO).getTime();
-    const dEl = document.getElementById('cd-d'), hEl=document.getElementById('cd-h'), mEl=document.getElementById('cd-m'), sEl=document.getElementById('cd-s');
-    const tick=()=>{
-      const t = target - Date.now();
-      if (t<=0){dEl.textContent='0';hEl.textContent='00';mEl.textContent='00';sEl.textContent='00';return;}
-      const d=Math.floor(t/86400000), h=Math.floor((t%86400000)/3600000),
-            m=Math.floor((t%3600000)/60000), s=Math.floor((t%60000)/1000);
-      dEl.textContent=d; hEl.textContent=String(h).padStart(2,'0');
-      mEl.textContent=String(m).padStart(2,'0'); sEl.textContent=String(s).padStart(2,'0');
-    }; tick(); setInterval(tick,1000); cdWrap.hidden=false;
-  }
-
-  /* ====== RESERVIEREN: pagina full-screen ====== */
-  const reservePage = document.getElementById('reserve-page');
-  const reserveClose = document.getElementById('reserve-close');
-
-  function findAny(slug){
-    return upcoming.find(e=>e.slug===slug) || eventiData.find(e=>e.slug===slug) || recurring.find(e=>e.slug===slug);
-  }
-
-  let _prevOverflow = '';
-  function lockBody(){ _prevOverflow=document.body.style.overflow; document.body.style.overflow='hidden'; }
-  function unlockBody(){ document.body.style.overflow=_prevOverflow; }
-
-  function openReserve(slug){
-    const ev = findAny(slug);
-    if (!ev) return;
-
-    document.getElementById('reserve-title').textContent = ev.name;
-    document.getElementById('reserve-date').textContent = ev.dateISO
-      ? new Date(ev.dateISO).toLocaleString('de-DE',{weekday:'long',day:'2-digit',month:'long',hour:'2-digit',minute:'2-digit'})
-      : (ev.when ? `${ev.when} • ${ev.time||''}` : '—');
-    document.getElementById('reserve-cover').style.backgroundImage = ev.cover ? `url(${encodeURI(ev.cover)})` : '';
-
-    const dInput = document.getElementById('pr-data');
-    if (ev.dateISO){
-      const d = new Date(ev.dateISO);
-      const yyyy=d.getFullYear(), mm=String(d.getMonth()+1).padStart(2,'0'), dd=String(d.getDate()).padStart(2,'0');
-      dInput.value = `${yyyy}-${mm}-${dd}`;
-    } else { dInput.value = ''; }
-
-    reservePage.classList.add('show');
-    reservePage.setAttribute('aria-hidden','false');
-    window.scrollTo(0,0);
-    lockBody();
-
-    history.pushState({r:slug}, '', `#reservieren/${slug}`);
-  }
-
-  function closeReserve(){
-    reservePage.classList.remove('show');
-    reservePage.setAttribute('aria-hidden','true');
-    unlockBody();
-    if (location.hash.startsWith('#reservieren/')) history.back();
-  }
-  reserveClose.addEventListener('click', closeReserve);
-  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeReserve(); });
-
-  function attachBookingButtons(){
-    document.querySelectorAll('.book-btn').forEach(btn=>{
-      btn.onclick = ()=> openReserve(btn.getAttribute('data-slug'));
-    });
-  }
-  attachBookingButtons();
-
-  // deep-link: #reservieren/slug
-  function handleHash(){
-    if(location.hash.startsWith('#reservieren/')){
-      const slug = location.hash.split('/')[1];
-      if(slug) openReserve(slug);
+    function sendWA(eventName){
+      const msg = buildMsg(eventName);
+      window.open(`https://wa.me/4915738465393?text=${encodeURIComponent(msg)}`,'_blank');
     }
-  }
-  window.addEventListener('hashchange', handleHash);
-  handleHash();
-
-  // Persistenza campi base
-  ['pr-nome','pr-tel','pr-email'].forEach(id=>{
-    const el=document.getElementById(id);
-    el.value = localStorage.getItem(id)||'';
-    el.addEventListener('change',()=>localStorage.setItem(id,el.value));
-  });
-
-  function isValid(){
-    const n=document.getElementById('pr-nome').value.trim();
-    const t=document.getElementById('pr-tel').value.trim();
-    if(!n||!t){ alert('Bitte Name und Telefon angeben.'); return false; }
-    return true;
-  }
-
-  function buildMsg(){
-    const nome = document.getElementById('pr-nome').value.trim();
-    const tel  = document.getElementById('pr-tel').value.trim();
-    const mail = document.getElementById('pr-email').value.trim();
-    const data = document.getElementById('pr-data').value;
-    const lounge = document.getElementById('pr-lounge').value;
-    const persone= document.getElementById('pr-persone').value;
-    const note   = document.getElementById('pr-note').value.trim();
-    const title  = document.getElementById('reserve-title').textContent;
-
-    return [
-      'Hi Afterlux! Ich möchte eine Lounge reservieren.',
-      title ? `Event: ${title}` : 'Event: (noch offen)',
-      data ? `Datum: ${data}` : null,
-      `Lounge: ${lounge}`, `Personen: ${persone}`,
-      nome ? `Name: ${nome}` : null, tel ? `Telefon: ${tel}` : null, mail ? `E-Mail: ${mail}` : null,
-      note ? `Notizen: ${note}` : null
-    ].filter(Boolean).join('\n');
-  }
-
-  // === Tracking prenotazioni (localStorage) ===
-  const BOOKINGS_KEY = 'afterlux_bookings_v1'; // { 'YYYY-MM-DD': ['N1','N3'] }
-  function loadBookings(){ try{ return JSON.parse(localStorage.getItem(BOOKINGS_KEY) || '{}'); }catch{ return {}; } }
-  function saveBookings(map){ localStorage.setItem(BOOKINGS_KEY, JSON.stringify(map)); }
-
-  function addBooking(dateStr, loungeCode){
-    if(!dateStr || !loungeCode) return;
-    const map = loadBookings();
-    const set = new Set(map[dateStr]||[]);
-    set.add(loungeCode);
-    map[dateStr] = [...set].slice(0,6); // max 6 lounges
-    saveBookings(map);
-    renderCalendar(); // aggiorna subito
-  }
-
-  document.getElementById('btn-wa')?.addEventListener('click', ()=>{
-    if(!isValid()) return;
-    const dateStr = document.getElementById('pr-data').value;
-    const lounge  = document.getElementById('pr-lounge').value;
-    addBooking(dateStr, lounge);
-    window.open(`https://wa.me/4915738465393?text=${encodeURIComponent(buildMsg())}`,'_blank');
-  });
-  document.getElementById('btn-mail')?.addEventListener('click', ()=>{
-    if(!isValid()) return;
-    const dateStr = document.getElementById('pr-data').value;
-    const lounge  = document.getElementById('pr-lounge').value;
-    addBooking(dateStr, lounge);
-    location.href = `mailto:afterlux.loerrach@gmail.com?subject=${encodeURIComponent('Lounge-Reservierung - Afterlux')}&body=${encodeURIComponent(buildMsg())}`;
-  });
-
-  /* ====== CALENDARIO DISPONIBILITÀ ====== */
-  const calTitle = document.getElementById('cal-title');
-  const calGrid  = document.getElementById('cal-grid');
-  let calCursor = new Date(); calCursor.setDate(1);
-
-  function ymd(d){ const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), dd=String(d.getDate()).padStart(2,'0'); return `${y}-${m}-${dd}`; }
-
-  function renderCalendar(){
-    const y = calCursor.getFullYear(), m = calCursor.getMonth();
-    calTitle.textContent = new Date(y, m, 1).toLocaleString('de-DE',{month:'long',year:'numeric'});
-    calGrid.innerHTML = '';
-
-    const firstDay = new Date(y, m, 1);
-    const startIdx = (firstDay.getDay()+6)%7; // Mon=0 … Sun=6
-    const daysInMonth = new Date(y, m+1, 0).getDate();
-    const bookings = loadBookings();
-
-    // griglia: riempie offset vuoti
-    for(let i=0;i<startIdx;i++){ const d=document.createElement('div'); calGrid.appendChild(d); }
-
-    for(let day=1; day<=daysInMonth; day++){
-      const cell=document.createElement('div'); cell.className='cal-cell';
-      const cur=new Date(y,m,day);
-      const key=ymd(cur);
-      const booked = new Set(bookings[key]||[]);
-      const free = Math.max(0, 6 - booked.size);
-
-      const dayEl=document.createElement('div'); dayEl.className='cal-day'; dayEl.textContent=String(day);
-      const freeEl=document.createElement('div'); freeEl.className='free-badge'; freeEl.textContent=`frei: ${free}/6`;
-      const fullEl=document.createElement('div'); fullEl.className='full-badge'; fullEl.textContent='voll';
-      const list = document.createElement('div'); list.className='list-mini';
-      if(booked.size) list.textContent = 'reserviert: ' + [...booked].sort().join(', ');
-
-      if(free===0){ freeEl.style.display='none'; fullEl.style.display='inline-block'; }
-
-      cell.appendChild(dayEl); cell.appendChild(freeEl); cell.appendChild(fullEl); if(booked.size) cell.appendChild(list);
-
-      // tap -> dettaglio
-      cell.addEventListener('click', ()=>{
-        alert(`${key}\nReserviert: ${booked.size? [...booked].sort().join(', '): 'keine'}\nFrei: ${free}/6`);
-      });
-
-      calGrid.appendChild(cell);
+    function sendMail(eventName){
+      const msg = buildMsg(eventName);
+      location.href = `mailto:afterlux.loerrach@gmail.com?subject=${encodeURIComponent('Lounge-Reservierung - Afterlux')}&body=${encodeURIComponent(msg)}`;
     }
-  }
-  document.getElementById('cal-prev').addEventListener('click', ()=>{ calCursor.setMonth(calCursor.getMonth()-1); renderCalendar(); });
-  document.getElementById('cal-next').addEventListener('click', ()=>{ calCursor.setMonth(calCursor.getMonth()+1); renderCalendar(); });
-  renderCalendar();
 
-  /* JSON-LD SEO (ridotto) */
-  (function(){
-    const base = new URL('.', location.href).href;
-    const abs = p => { try { return new URL(p, base).href; } catch(e){ return p; } };
-    const addLD = obj => { const s=document.createElement('script'); s.type='application/ld+json'; s.textContent = JSON.stringify(obj); document.head.appendChild(s); };
+    /* CALENDARIO LOUNGE (ridotto) */
+    const booked = {
+      /* es.: '2025-10-18': ['N1','N3'] */
+      '2025-10-18': ['N1','N3'],
+      '2025-10-25': ['N2','N5'],
+      '2025-10-31': ['N4'],
+    };
+    let calDate = new Date(); // mese corrente
+    const calTitle = document.getElementById('calTitle');
+    const calGrid  = document.getElementById('calGrid');
+    document.getElementById('prevCal').onclick = ()=>{ calDate.setMonth(calDate.getMonth()-1); renderCal(); };
+    document.getElementById('nextCal').onclick = ()=>{ calDate.setMonth(calDate.getMonth()+1); renderCal(); };
 
-    addLD({
-      "@context":"https://schema.org","@type":"Organization","name":"Afterlux Club",
-      "url": location.origin + location.pathname,
-      "logo": abs("afterluxluna.png"),
-      "sameAs":["https://www.instagram.com/afterlux_club/"],
-      "address":{"@type":"PostalAddress","streetAddress":"Teicherstrasse 14","postalCode":"79539","addressLocality":"Lörrach","addressCountry":"DE"},
-      "telephone":"+49 1573 8465393"
-    });
+    function renderCal(){
+      const y = calDate.getFullYear(), m = calDate.getMonth();
+      calTitle.textContent = new Date(y,m,1).toLocaleString('de-DE',{month:'long', year:'numeric'});
+      const first = new Date(y,m,1).getDay(); // 0 So ... 6 Sa
+      const days  = new Date(y,m+1,0).getDate();
+      const pad = (n)=>String(n).padStart(2,'0');
 
-    const FREE_RE = /(gratis|free)/i;
-    function buildOffers(ev){
-      const prices = ev.prices || ev.desc || '';
-      if (FREE_RE.test(prices)) {
-        const o={"@type":"Offer","price":"0","priceCurrency":"EUR","availability":"https://schema.org/InStock","isAccessibleForFree":true};
-        if (ev.ticketUrl) o.url = ev.ticketUrl;
-        return o;
+      let html = '';
+      const offset = (first+6)%7; // set monday first
+      for(let i=0;i<offset;i++) html += `<div class="muted"> </div>`;
+      for(let d=1; d<=days; d++){
+        const key = `${y}-${pad(m+1)}-${pad(d)}`;
+        const isBooked = booked[key] && booked[key].length>0;
+        html += `<div class="${isBooked?'booked':''}">${d}</div>`;
       }
-      const matches=(prices.match(/(\d+[.,]?\d*)\s*€/g)||[]).map(x=>x.replace(/[^\d.,]/g,'').replace(',','.'));
-      if (matches.length===0 && ev.ticketUrl){ return {"@type":"Offer","priceCurrency":"EUR","availability":"https://schema.org/InStock","url":ev.ticketUrl}; }
-      if (matches.length===1){ return {"@type":"Offer","price":matches[0],"priceCurrency":"EUR","availability":"https://schema.org/InStock","url":ev.ticketUrl||location.href}; }
-      return matches.map(p=>({"@type":"Offer","price":p,"priceCurrency":"EUR","availability":"https://schema.org/InStock","url":ev.ticketUrl||location.href}));
+      calGrid.innerHTML = html;
     }
-    eventiData.forEach(ev=>{
-      const ld={"@context":"https://schema.org","@type":"Event","name":ev.name,"startDate":ev.dateISO,
-        "eventStatus":"https://schema.org/EventScheduled","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode",
-        "image":[ abs(encodeURI(ev.cover)) ],"description":ev.desc||"",
-        "location":{"@type":"Place","name":"Afterlux Club","address":{"@type":"PostalAddress","streetAddress":"Teicherstrasse 14","addressLocality":"Lörrach","postalCode":"79539","addressCountry":"DE"}},
-        "organizer":{"@type":"Organization","name":"Afterlux Club","url": location.origin + location.pathname}
-      };
-      const offers=buildOffers(ev); if(offers) ld.offers=offers;
-      if (ev.lineup && ev.lineup!=='—'){ ld.performer=[{"@type":"PerformingGroup","name":ev.lineup}]; }
-      addLD(ld);
-    });
-  })();
-</script>
+    renderCal();
+  </script>
 </body>
 </html>
 
