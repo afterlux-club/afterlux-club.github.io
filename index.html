@@ -63,7 +63,13 @@
   .hamburger span{display:block;width:20px;height:2px;background:#fff;position:relative}
   .hamburger span::before,.hamburger span::after{content:"";position:absolute;left:0;width:100%;height:2px;background:#fff}
   .hamburger span::before{top:-6px}.hamburger span::after{top:6px}
-  .logo{ height: clamp(192px, 38.4vw, 432px); max-width:100%; display:block; margin:0 auto; object-fit:contain; }
+
+  .logo{
+    height: clamp(192px, 38.4vw, 432px);
+    max-width:100%; display:block; margin:0 auto; object-fit:contain;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .logo.is-hidden{opacity:0; transform:translateY(-18px); pointer-events:none}
 
   /* Drawer menù (locandina a sinistra) */
   .drawer{position:fixed; inset:0; z-index:93; display:none}
@@ -104,7 +110,7 @@
   /* MAP */
   .map{width:100%;height:300px;border:0;border-radius:12px}
 
-  /* MODAL */
+  /* MODAL (dettagli evento) */
   .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:16px;z-index:90}
   .overlay.show{display:flex}
   .modal{max-width:900px;width:100%;background:#0a0a0a;border:1px solid var(--border);border-radius:16px;overflow:hidden}
@@ -114,10 +120,7 @@
   .modal .cover{height:260px;background:#111 center/cover no-repeat;border:1px solid var(--border);border-radius:12px}
   @media (max-width:800px){.modal-body{grid-template-columns:1fr}}
 
-  footer{border-top:1px solid var(--border);text-align:center;color:var(--muted);padding-bottom:28px}
-
-  /* Prenotazioni nascosta all'avvio */
-  #prenotazioni{display:none !important;}
+  footer{border-top:1px solid var(--border);text-align:center;color:#fff;padding-bottom:28px}
 
   /* CONTATTI COLLASSABILI */
   #contatti .content-wrapper{display:none;margin-top:12px}
@@ -132,6 +135,9 @@
     object-fit:cover;display:block;margin:0 auto 20px;border-radius:12px;
     box-shadow:0 0 20px rgba(255,255,255,.2)
   }
+
+  /* === MODAL: RESERVIEREN (NUOVO) === */
+  #booking-overlay .modal{max-width:980px}
 </style>
 </head>
 <body>
@@ -166,17 +172,14 @@
     <h4>Folge/Schreib uns</h4>
     <div class="socials">
       <a class="sbtn" href="mailto:afterlux.loerrach@gmail.com" aria-label="E-Mail">
-        <!-- Mail icon -->
         <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
         E-Mail
       </a>
       <a class="sbtn" href="https://www.instagram.com/afterlux_club/" target="_blank" rel="noopener" aria-label="Instagram">
-        <!-- Instagram icon -->
         <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.5-.25a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>
         Instagram
       </a>
       <a class="sbtn" href="https://wa.me/4915738465393" target="_blank" rel="noopener" aria-label="WhatsApp">
-        <!-- WhatsApp icon -->
         <svg viewBox="0 0 32 32"><path d="M19.11 17.44a5.52 5.52 0 0 1-2.45-.62 10.63 10.63 0 0 1-3.33-2.62 7.17 7.17 0 0 1-1.48-2.66 3 3 0 0 1 .1-1.87c.22-.51.79-.73 1.28-.54a1.78 1.78 0 0 1 .64.45c.26.27.53.55.74.86.23.33.27.71.1 1.09-.14.32-.32.63-.48.95-.14.28-.12.54.07.79a6.83 6.83 0 0 0 1.77 1.76c.25.19.52.21.81.07.32-.16.63-.34.95-.48.39-.17.77-.13 1.1.11.32.22.61.49.89.76.19.19.35.4.43.67.16.56-.11 1.11-.61 1.28-.53.18-1.07.31-1.62.31ZM16 3a13 13 0 0 0-11.3 19.5L3 29l6.68-1.75A13 13 0 1 0 16 3Zm0 23.6c-2.19 0-4.21-.66-5.9-1.8l-.42-.28-3.93 1.03 1.06-3.8-.29-.44A10.6 10.6 0 1 1 26.6 16c0 5.86-4.74 10.6-10.6 10.6Z"/></svg>
         WhatsApp
       </a>
@@ -296,70 +299,9 @@
       </div>
     </div>
   </section>
-
-  <!-- PRENOTAZIONI -->
-  <section id="prenotazioni">
-    <h2>Reservieren</h2>
-    <p class="muted">Schreib uns direkt: Event & Lounge wählen und dann per WhatsApp oder E-Mail senden.</p>
-
-    <div class="card" style="padding:16px;display:grid;gap:12px">
-      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
-        <label><div class="muted">Vor- und Nachname</div>
-          <input id="pr-nome" type="text" placeholder="Dein Name"
-            style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-        </label>
-        <label><div class="muted">Telefon</div>
-          <input id="pr-tel" type="tel" placeholder="+49 ..."
-            style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-        </label>
-      </div>
-
-      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
-        <label><div class="muted">E-Mail</div>
-          <input id="pr-email" type="email" placeholder="name@email.com"
-            style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-        </label>
-        <label><div class="muted">Datum (bei datiertem Event)</div>
-          <input id="pr-data" type="date"
-            style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-        </label>
-      </div>
-
-      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px">
-        <label><div class="muted">Event</div>
-          <select id="pr-event" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-            <option value="">— Event auswählen —</option>
-          </select>
-        </label>
-
-        <label><div class="muted">Lounge</div>
-          <select id="pr-lounge" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-            <option>N0</option><option>N1</option><option>N2</option><option>N3</option><option>N4</option><option>N5</option>
-          </select>
-        </label>
-
-        <label><div class="muted">Personen</div>
-          <select id="pr-persone" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-            <option>2</option><option>4</option><option>6</option><option>8</option><option>10</option>
-          </select>
-        </label>
-      </div>
-
-      <label><div class="muted">Notizen (optional)</div>
-        <textarea id="pr-note" rows="3" placeholder="z. B. Geburtstag, Wünsche…"
-          style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff"></textarea>
-      </label>
-
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn" type="button" id="btn-wa">Per WhatsApp senden</button>
-        <button class="btn ghost" type="button" id="btn-mail">Per E-Mail senden</button>
-        <a class="btn ghost" href="tel:+4915738465393">Anrufen</a>
-      </div>
-    </div>
-  </section>
 </main>
 
-<!-- MODAL EVENTI -->
+<!-- MODAL DETTAGLI EVENTO -->
 <div id="event-detail" class="overlay" role="dialog" aria-modal="true" aria-labelledby="detail-title">
   <div class="modal">
     <div class="modal-head"><h3 id="detail-title" style="margin:0;color:#fff">Event-Details</h3></div>
@@ -375,7 +317,70 @@
     </div>
     <div class="modal-foot">
       <button id="open-booking" class="btn" type="button">Jetzt reservieren</button>
-      <button id="add-calendar" class="btn ghost" type="button">In den Kalender</button>
+      <!-- RIMOSSO: bottone 'In den Kalender' + logica ICS -->
+    </div>
+  </div>
+</div>
+
+<!-- MODAL RESERVIEREN (NUOVO: apre direttamente senza scroll) -->
+<div id="booking-overlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="booking-title">
+  <div class="modal">
+    <div class="modal-head"><h3 id="booking-title" style="margin:0;color:#fff">Reservieren</h3></div>
+    <div class="modal-body" style="grid-template-columns:1fr">
+      <div class="card" style="padding:16px;display:grid;gap:12px;border:none;background:transparent">
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+          <label><div class="muted">Vor- und Nachname</div>
+            <input id="pr-nome" type="text" placeholder="Dein Name"
+              style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+          </label>
+          <label><div class="muted">Telefon</div>
+            <input id="pr-tel" type="tel" placeholder="+49 ..."
+              style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+          </label>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+          <label><div class="muted">E-Mail</div>
+            <input id="pr-email" type="email" placeholder="name@email.com"
+              style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+          </label>
+          <label><div class="muted">Datum (bei datiertem Event)</div>
+            <input id="pr-data" type="date"
+              style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+          </label>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px">
+          <label><div class="muted">Event</div>
+            <select id="pr-event" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+              <option value="">— Event auswählen —</option>
+            </select>
+          </label>
+
+          <label><div class="muted">Lounge</div>
+            <select id="pr-lounge" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+              <option>N0</option><option>N1</option><option>N2</option><option>N3</option><option>N4</option><option>N5</option>
+            </select>
+          </label>
+
+          <label><div class="muted">Personen</div>
+            <select id="pr-persone" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
+              <option>2</option><option>4</option><option>6</option><option>8</option><option>10</option>
+            </select>
+          </label>
+        </div>
+
+        <label><div class="muted">Notizen (optional)</div>
+          <textarea id="pr-note" rows="3" placeholder="z. B. Geburtstag, Wünsche…"
+            style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff"></textarea>
+        </label>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" type="button" id="btn-wa">Per WhatsApp senden</button>
+          <button class="btn ghost" type="button" id="btn-mail">Per E-Mail senden</button>
+          <button class="btn ghost" type="button" id="close-booking">Schließen</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -385,20 +390,29 @@
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  /* Header fisso: padding dinamico */
+  /* Header fisso + padding dinamico + nascondi logo allo scroll down */
   (function(){
     const topbar = document.getElementById('topbar');
+    const logo = document.getElementById('main-logo');
+    let lastY = window.scrollY;
+
     function setTopPad(){
       const h = topbar.offsetHeight;
       document.documentElement.style.setProperty('--toppad', h + 'px');
     }
     function onScroll(){
-      // manteniamo trasparente
+      const y = window.scrollY;
+      if (y > lastY + 5 && y > 20) {
+        logo.classList.add('is-hidden');     // nascondi scorrendo in giù
+      } else if (y < lastY - 5 || y <= 20) {
+        logo.classList.remove('is-hidden');  // mostra scorrendo in su / vicino top
+      }
+      lastY = y;
     }
     window.addEventListener('load', setTopPad, {once:true});
     window.addEventListener('resize', setTopPad);
     setTimeout(setTopPad, 120);
-    window.addEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, {passive:true});
     onScroll();
   })();
 
@@ -507,7 +521,7 @@
     }; tick(); setInterval(tick,1000); cdWrap.hidden=false;
   }
 
-  /* MODAL */
+  /* MODAL DETTAGLI */
   let currentDetailSlug = null;
   const overlay = document.getElementById('event-detail');
 
@@ -551,7 +565,10 @@
   handleHash();
   window.addEventListener('hashchange', handleHash);
 
-  /* PRENOTAZIONI */
+  /* ===== MODAL RESERVIEREN: apre subito senza scroll ===== */
+  const bookingOverlay = document.getElementById('booking-overlay');
+  const closeBookingBtn = document.getElementById('close-booking');
+
   function ensureEventSelectOptions(){
     const sel = document.getElementById('pr-event');
     if (!sel) return;
@@ -561,13 +578,10 @@
       const o=document.createElement('option'); o.value=n; o.textContent=n; sel.appendChild(o);
     });
   }
-  function showBookingSectionFrom(slug){
-    const ev = findAny(slug);
-    const sec = document.getElementById('prenotazioni');
-    if (!sec) return;
-    sec.style.setProperty('display','block','important');
-    ensureEventSelectOptions();
 
+  function showBookingModalFrom(slug){
+    const ev = findAny(slug);
+    ensureEventSelectOptions();
     const sel = document.getElementById('pr-event');
     if (sel && ev){ sel.value = ev.dateISO ? ev.name : `${ev.name} (wiederkehrend)`; }
     const dateInput = document.getElementById('pr-data');
@@ -578,15 +592,23 @@
         dateInput.value = `${yyyy}-${mm}-${dd}`;
       } else { dateInput.value = ''; }
     }
-    closeDetail();
-    sec.scrollIntoView({behavior:'smooth',block:'start'});
+    // apri modal prenotazione
+    bookingOverlay.classList.add('show');
   }
+
   document.addEventListener('click', e=>{
     if (e.target && e.target.id === 'open-booking'){
-      showBookingSectionFrom(currentDetailSlug);
+      e.preventDefault();
+      // Chiudi il modal dettagli e apri quello prenotazione
+      closeDetail();
+      showBookingModalFrom(currentDetailSlug);
     }
   });
+  // chiusura booking cliccando fuori o sul bottone
+  bookingOverlay.addEventListener('click', (e)=>{ if(e.target===bookingOverlay) bookingOverlay.classList.remove('show'); });
+  closeBookingBtn.addEventListener('click', ()=> bookingOverlay.classList.remove('show'));
 
+  // Validazione + auto-save
   function isValid(){
     const n=document.getElementById('pr-nome').value.trim();
     const t=document.getElementById('pr-tel').value.trim();
@@ -642,7 +664,7 @@
   contatti.querySelector('h2').addEventListener('click', toggleContatti);
   contatti.querySelector('h2').addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); toggleContatti(); } });
 
-  /* JSON-LD SEO (immutato, nessuna sezione chi-siamo nel DOM) */
+  /* JSON-LD SEO */
   (function(){
     const base = new URL('.', location.href).href;
     const abs = p => { try { return new URL(p, base).href; } catch(e){ return p; } };
@@ -685,3 +707,4 @@
 </script>
 </body>
 </html>
+
