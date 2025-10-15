@@ -85,6 +85,17 @@
   .drawer .navlink:hover{background:rgba(255,255,255,.08)}
   .drawer .sep{height:1px;background:rgba(255,255,255,.12);margin:12px 0}
 
+  /* "Über uns" collassabile */
+  .about-toggle{
+    display:flex;align-items:center;gap:8px;cursor:pointer;
+    padding:10px;border-radius:10px;
+  }
+  .about-toggle:hover{background:rgba(255,255,255,.08)}
+  .about-chev{transition:transform .2s ease;display:inline-block}
+  .about-open .about-chev{transform:rotate(90deg)}
+  #about-desc{display:none;color:#ddd;margin:8px 2px 0 2px}
+  .about-open #about-desc{display:block}
+
   /* Pulsanti social nel menù */
   .socials{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
   .sbtn{
@@ -110,16 +121,6 @@
   /* MAP */
   .map{width:100%;height:300px;border:0;border-radius:12px}
 
-  /* MODAL (dettagli evento) */
-  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:16px;z-index:90}
-  .overlay.show{display:flex}
-  .modal{max-width:900px;width:100%;background:#0a0a0a;border:1px solid var(--border);border-radius:16px;overflow:hidden}
-  .modal-head,.modal-foot{padding:12px 14px;border-bottom:1px solid var(--border)}
-  .modal-foot{border-top:1px solid var(--border);border-bottom:none;display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}
-  .modal-body{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:14px}
-  .modal .cover{height:260px;background:#111 center/cover no-repeat;border:1px solid var(--border);border-radius:12px}
-  @media (max-width:800px){.modal-body{grid-template-columns:1fr}}
-
   footer{border-top:1px solid var(--border);text-align:center;color:#fff;padding-bottom:28px}
 
   /* CONTATTI COLLASSABILI */
@@ -135,9 +136,6 @@
     object-fit:cover;display:block;margin:0 auto 20px;border-radius:12px;
     box-shadow:0 0 20px rgba(255,255,255,.2)
   }
-
-  /* === MODAL: RESERVIEREN (NUOVO) === */
-  #booking-overlay .modal{max-width:980px}
 </style>
 </head>
 <body>
@@ -153,20 +151,27 @@
 <!-- Drawer/Hamburger Menu (locandina a sinistra) -->
 <div class="drawer" id="drawer" aria-hidden="true">
   <div class="shade" id="drawer-close" aria-label="Schließen"></div>
-  <nav class="panel" aria-label="Seitennavigation">
+  <nav class="panel" aria-label="Seitennavigation" id="drawer-panel">
     <h3 style="margin-top:6px">Menü</h3>
     <a class="navlink" href="#eventi" onclick="hideDrawer()">Events</a>
     <a class="navlink" href="#galleria" onclick="hideDrawer()">Galerie</a>
     <a class="navlink" href="#contatti" onclick="hideDrawer(); openContatti()">Kontakt</a>
 
     <div class="sep"></div>
-    <h4 id="drawer-about">Über uns</h4>
-    <p class="muted" style="margin-top:6px">
-      <strong>Afterlux Club</strong> ist die Vision zweier junger Partner:
-      <strong>Giuseppe Leocata</strong> und <strong>Luana Ferlito</strong>.<br>
-      Wir pushen das Nachtleben in Lörrach – offen, inklusiv, mit House, Hip-Hop, Reggaeton & Tech House.
-      Motto-Nights, Shows & neue Formate für unvergessliche Nächte.
-    </p>
+
+    <!-- Über uns: nascosto finché non si clicca -->
+    <div id="about-box">
+      <div class="about-toggle" id="about-toggle" role="button" aria-expanded="false" aria-controls="about-desc">
+        <span class="about-chev">▶</span>
+        <span>Über uns</span>
+      </div>
+      <p id="about-desc">
+        <strong>Afterlux Club</strong> ist die Vision zweier junger Partner:
+        <strong>Giuseppe Leocata</strong> und <strong>Luana Ferlito</strong>.<br>
+        Wir pushen das Nachtleben in Lörrach – offen, inklusiv, mit House, Hip-Hop, Reggaeton & Tech House.
+        Motto-Nights, Shows & neue Formate für unvergessliche Nächte.
+      </p>
+    </div>
 
     <div class="sep"></div>
     <h4>Folge/Schreib uns</h4>
@@ -301,119 +306,31 @@
   </section>
 </main>
 
-<!-- MODAL DETTAGLI EVENTO -->
-<div id="event-detail" class="overlay" role="dialog" aria-modal="true" aria-labelledby="detail-title">
-  <div class="modal">
-    <div class="modal-head"><h3 id="detail-title" style="margin:0;color:#fff">Event-Details</h3></div>
-    <div class="modal-body">
-      <div id="detail-cover" class="cover" aria-label="Event-Cover"></div>
-      <div>
-        <div class="pill" id="detail-date">Datum</div>
-        <h3 id="detail-name" style="margin:8px 0 6px;color:#fff">Titel</h3>
-        <p class="muted" id="detail-desc">Beschreibung</p>
-        <div style="margin-top:10px"><strong>Line-up</strong><div class="muted" id="detail-lineup">—</div></div>
-        <div style="margin-top:10px"><strong>Info</strong><div class="muted" id="detail-prices">—</div></div>
-      </div>
-    </div>
-    <div class="modal-foot">
-      <button id="open-booking" class="btn" type="button">Jetzt reservieren</button>
-      <!-- RIMOSSO: bottone 'In den Kalender' + logica ICS -->
-    </div>
-  </div>
-</div>
-
-<!-- MODAL RESERVIEREN (NUOVO: apre direttamente senza scroll) -->
-<div id="booking-overlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="booking-title">
-  <div class="modal">
-    <div class="modal-head"><h3 id="booking-title" style="margin:0;color:#fff">Reservieren</h3></div>
-    <div class="modal-body" style="grid-template-columns:1fr">
-      <div class="card" style="padding:16px;display:grid;gap:12px;border:none;background:transparent">
-        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
-          <label><div class="muted">Vor- und Nachname</div>
-            <input id="pr-nome" type="text" placeholder="Dein Name"
-              style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-          </label>
-          <label><div class="muted">Telefon</div>
-            <input id="pr-tel" type="tel" placeholder="+49 ..."
-              style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-          </label>
-        </div>
-
-        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
-          <label><div class="muted">E-Mail</div>
-            <input id="pr-email" type="email" placeholder="name@email.com"
-              style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-          </label>
-          <label><div class="muted">Datum (bei datiertem Event)</div>
-            <input id="pr-data" type="date"
-              style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-          </label>
-        </div>
-
-        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px">
-          <label><div class="muted">Event</div>
-            <select id="pr-event" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-              <option value="">— Event auswählen —</option>
-            </select>
-          </label>
-
-          <label><div class="muted">Lounge</div>
-            <select id="pr-lounge" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-              <option>N0</option><option>N1</option><option>N2</option><option>N3</option><option>N4</option><option>N5</option>
-            </select>
-          </label>
-
-          <label><div class="muted">Personen</div>
-            <select id="pr-persone" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff">
-              <option>2</option><option>4</option><option>6</option><option>8</option><option>10</option>
-            </select>
-          </label>
-        </div>
-
-        <label><div class="muted">Notizen (optional)</div>
-          <textarea id="pr-note" rows="3" placeholder="z. B. Geburtstag, Wünsche…"
-            style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0b0b0b;color:#fff"></textarea>
-        </label>
-
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn" type="button" id="btn-wa">Per WhatsApp senden</button>
-          <button class="btn ghost" type="button" id="btn-mail">Per E-Mail senden</button>
-          <button class="btn ghost" type="button" id="close-booking">Schließen</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <footer><div class="container">© <span id="year"></span> Afterlux Club • Alle Rechte vorbehalten</div></footer>
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  /* Header fisso + padding dinamico + nascondi logo allo scroll down */
+  /* Header fisso + padding dinamico + logo visibile SOLO sopra #eventi */
   (function(){
     const topbar = document.getElementById('topbar');
     const logo = document.getElementById('main-logo');
-    let lastY = window.scrollY;
+    const eventi = document.getElementById('eventi');
 
     function setTopPad(){
       const h = topbar.offsetHeight;
       document.documentElement.style.setProperty('--toppad', h + 'px');
+      updateLogo();
     }
-    function onScroll(){
-      const y = window.scrollY;
-      if (y > lastY + 5 && y > 20) {
-        logo.classList.add('is-hidden');     // nascondi scorrendo in giù
-      } else if (y < lastY - 5 || y <= 20) {
-        logo.classList.remove('is-hidden');  // mostra scorrendo in su / vicino top
-      }
-      lastY = y;
+    function updateLogo(){
+      const eventsTop = eventi.getBoundingClientRect().top + window.scrollY; // posizione assoluta
+      const show = window.scrollY + 1 < eventsTop; // mostrato solo prima che inizi #eventi
+      logo.classList.toggle('is-hidden', !show);
     }
     window.addEventListener('load', setTopPad, {once:true});
     window.addEventListener('resize', setTopPad);
+    window.addEventListener('scroll', updateLogo, {passive:true});
     setTimeout(setTopPad, 120);
-    window.addEventListener('scroll', onScroll, {passive:true});
-    onScroll();
   })();
 
   /* Drawer */
@@ -422,12 +339,23 @@
   const closeShade = document.getElementById('drawer-close');
   function showDrawer(){ drawer.classList.add('show'); drawer.setAttribute('aria-hidden','false'); }
   function hideDrawer(){ drawer.classList.remove('show'); drawer.setAttribute('aria-hidden','true'); }
-  function showDrawerAbout(){ showDrawer(); setTimeout(()=>document.getElementById('drawer-about')?.scrollIntoView({block:'start'}), 60); }
+  function showDrawerAbout(){ showDrawer(); setTimeout(()=>document.getElementById('about-toggle')?.scrollIntoView({block:'start'}), 60); }
   openBtn.addEventListener('click', showDrawer);
   closeShade.addEventListener('click', hideDrawer);
 
+  // Über uns: toggle descrizione solo al click
+  (function(){
+    const box = document.getElementById('about-box');
+    const tog = document.getElementById('about-toggle');
+    if(!box || !tog) return;
+    tog.addEventListener('click', ()=>{
+      const open = box.classList.toggle('about-open');
+      tog.setAttribute('aria-expanded', String(open));
+    });
+  })();
+
   /* ========== DATI EVENTI ========== */
-  const eventi = [
+  const eventiData = [
     { slug:'russian-beats-2025-10-11', name:'Russian Beats', dateISO:'2025-10-11T22:30:00+02:00', shortDate:'Sa 11 Okt', desc:'Beginn 22:30', lineup:'DJ Andy', prices:'—', cover:'serata russa 11.10.jpg' },
     { slug:'latin-night-2025-10-17', name:'Latin Night', dateISO:'2025-10-17T23:00:00+02:00', shortDate:'Fr 17 Okt', desc:'Start 23:00 • DJ Don-Maiky • Eintritt GRATIS', lineup:'DJ Don-Maiky', prices:'Eintritt GRATIS', cover:'Latin Night.jpg' },
     { slug:'rhythms-of-world-2025-10-18', name:'Rhythms of World', dateISO:'2025-10-18T23:00:00+02:00', shortDate:'Sa 18 Okt', desc:'Start 23:00', lineup:'David Costa', prices:'Eintritt GRATIS & ein GRATIS-SHOT', cover:'david costa 18.10.jpg' },
@@ -446,25 +374,30 @@
   const cards = $('#event-cards');
   const recWrap = $('#recurring-cards');
 
+  // Filtro mesi
   (function fillMonths(){
-    const months = [...new Set(eventi.map(e =>
+    const months = [...new Set(eventiData.map(e =>
       new Date(e.dateISO).toLocaleString('de-DE',{month:'long',year:'numeric'})
     ))];
     const sel=$('#month'); months.forEach(m=>{const o=document.createElement('option');o.textContent=m;o.value=m;sel.appendChild(o);});
     $('#clr').addEventListener('click', ()=>{ $('#q').value=''; $('#month').value=''; filter(); });
   })();
 
+  // Card con dettagli a vista + bottone Reservieren
   function cardHTML(ev){
+    const when = new Date(ev.dateISO).toLocaleString('de-DE',{weekday:'short',hour:'2-digit',minute:'2-digit'});
     return `
     <article class="card">
       <img src="${encodeURI(ev.cover)}" alt="${ev.name}" loading="lazy" decoding="async">
       <div class="content">
         <div class="pill">${ev.shortDate}</div>
         <h3 style="color:#fff">${ev.name}</h3>
-        <p class="muted">${ev.desc ?? ''}</p>
-        <p class="muted" style="font-size:12px">${new Date(ev.dateISO).toLocaleString('de-DE',{weekday:'short',hour:'2-digit',minute:'2-digit'})}</p>
-        <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
-          <a class="btn event-detail-link" href="#evento/${ev.slug}" data-slug="${ev.slug}" aria-label="Details zu ${ev.name}">Details & Reservieren</a>
+        <p class="muted" style="margin:.25rem 0 .5rem 0">${ev.desc ?? ''}</p>
+        <p class="muted" style="font-size:12px;margin:.25rem 0">Zeit: ${when}</p>
+        <div style="margin-top:8px"><strong>Line-up</strong><div class="muted">${ev.lineup || '—'}</div></div>
+        <div style="margin-top:8px"><strong>Info</strong><div class="muted">${ev.prices || '—'}</div></div>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn book-btn" data-slug="${ev.slug}" aria-label="Lounge für ${ev.name} reservieren">Reservieren</button>
           ${ev.ticketUrl ? `<a class="btn ghost" href="${ev.ticketUrl}" target="_blank" rel="noopener" aria-label="Tickets für ${ev.name} kaufen">Tickets</a>` : ``}
         </div>
       </div>
@@ -472,7 +405,7 @@
   }
 
   const now = new Date();
-  const upcoming = eventi.filter(e => new Date(e.dateISO) > now).sort((a,b)=>new Date(a.dateISO)-new Date(b.dateISO));
+  const upcoming = eventiData.filter(e => new Date(e.dateISO) > now).sort((a,b)=>new Date(a.dateISO)-new Date(b.dateISO));
 
   function render(list){
     cards.innerHTML = list.length ? list.map(cardHTML).join('') : `<p class="muted">Keine geplanten Events mit Datum.</p>`;
@@ -486,8 +419,8 @@
         <div class="pill">${ev.when} • ${ev.time}</div>
         <h3 style="color:#fff">${ev.name}</h3>
         <p class="muted">${ev.desc ?? ''}</p>
-        <div style="margin-top:8px">
-          <a class="btn recurring-detail-link" href="#evento/${ev.slug}" data-slug="${ev.slug}" aria-label="Details zu ${ev.name}">Details & Reservieren</a>
+        <div style="margin-top:12px">
+          <button class="btn book-btn" data-slug="${ev.slug}" aria-label="Lounge für ${ev.name} reservieren">Reservieren</button>
         </div>
       </div>
     </article>
@@ -502,6 +435,7 @@
       return (!q||txt.includes(q)) && (!m||m===mm);
     });
     render(list);
+    attachBookingButtons(); // ri-collega i listener dopo il render
   }
   $('#q').addEventListener('input', filter);
   $('#month').addEventListener('change', filter);
@@ -521,132 +455,43 @@
     }; tick(); setInterval(tick,1000); cdWrap.hidden=false;
   }
 
-  /* MODAL DETTAGLI */
-  let currentDetailSlug = null;
-  const overlay = document.getElementById('event-detail');
-
+  /* ===== Booking tramite WhatsApp/E-Mail (modale inline-free, via prompt) ===== */
   function findAny(slug){
-    return upcoming.find(e=>e.slug===slug) || eventi.find(e=>e.slug===slug) || recurring.find(e=>e.slug===slug);
+    return upcoming.find(e=>e.slug===slug) || eventiData.find(e=>e.slug===slug) || recurring.find(e=>e.slug===slug);
   }
-
-  const fillDetail = ev => {
-    document.getElementById('detail-title').textContent = ev.name;
-    document.getElementById('detail-name').textContent  = ev.name;
-    document.getElementById('detail-date').textContent  = ev.dateISO
-      ? new Date(ev.dateISO).toLocaleString('it-IT',{weekday:'long',day:'2-digit',month:'long',hour:'2-digit',minute:'2-digit'})
-      : `${ev.when} • ${ev.time}`;
-    document.getElementById('detail-desc').textContent   = ev.desc || '—';
-    document.getElementById('detail-lineup').textContent = ev.lineup || '—';
-    document.getElementById('detail-prices').textContent = ev.prices || '—';
-    document.getElementById('detail-cover').style.backgroundImage = ev.cover ? `url(${encodeURI(ev.cover)})` : '';
-  };
-
-  function openDetail(slug){
-    const ev = findAny(slug);
-    if (!ev) return;
-    currentDetailSlug = slug;
-    fillDetail(ev);
-    overlay.classList.add('show');
+  function ensureEventValues(ev){
+    const name = ev ? (ev.dateISO ? ev.name : `${ev.name} (wiederkehrend)`) : '';
+    const dateStr = ev && ev.dateISO ? new Date(ev.dateISO).toISOString().slice(0,10) : '';
+    return { name, dateStr };
   }
-  const closeDetail = ()=> overlay.classList.remove('show');
-
-  document.addEventListener('click', e=>{
-    const a = e.target.closest('.event-detail-link, .recurring-detail-link');
-    if(a){ e.preventDefault(); openDetail(a.getAttribute('data-slug')); }
-    if(e.target===overlay) closeDetail();
-  });
-  window.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDetail(); });
-
-  function handleHash(){
-    if(location.hash.startsWith('#evento/')){
-      const slug = location.hash.split('/')[1]; if(slug) openDetail(slug);
-    }
-  }
-  handleHash();
-  window.addEventListener('hashchange', handleHash);
-
-  /* ===== MODAL RESERVIEREN: apre subito senza scroll ===== */
-  const bookingOverlay = document.getElementById('booking-overlay');
-  const closeBookingBtn = document.getElementById('close-booking');
-
-  function ensureEventSelectOptions(){
-    const sel = document.getElementById('pr-event');
-    if (!sel) return;
-    if (sel.options.length > 1) return;
-    const list = [...upcoming.map(e=>e.name), ...recurring.map(e=>e.name+' (wiederkehrend)')];
-    (list.length?list:['Karaoke Night (wiederkehrend)']).forEach(n=>{
-      const o=document.createElement('option'); o.value=n; o.textContent=n; sel.appendChild(o);
-    });
-  }
-
-  function showBookingModalFrom(slug){
-    const ev = findAny(slug);
-    ensureEventSelectOptions();
-    const sel = document.getElementById('pr-event');
-    if (sel && ev){ sel.value = ev.dateISO ? ev.name : `${ev.name} (wiederkehrend)`; }
-    const dateInput = document.getElementById('pr-data');
-    if (dateInput){
-      if (ev && ev.dateISO){
-        const d = new Date(ev.dateISO);
-        const yyyy=d.getFullYear(), mm=String(d.getMonth()+1).padStart(2,'0'), dd=String(d.getDate()).padStart(2,'0');
-        dateInput.value = `${yyyy}-${mm}-${dd}`;
-      } else { dateInput.value = ''; }
-    }
-    // apri modal prenotazione
-    bookingOverlay.classList.add('show');
-  }
-
-  document.addEventListener('click', e=>{
-    if (e.target && e.target.id === 'open-booking'){
-      e.preventDefault();
-      // Chiudi il modal dettagli e apri quello prenotazione
-      closeDetail();
-      showBookingModalFrom(currentDetailSlug);
-    }
-  });
-  // chiusura booking cliccando fuori o sul bottone
-  bookingOverlay.addEventListener('click', (e)=>{ if(e.target===bookingOverlay) bookingOverlay.classList.remove('show'); });
-  closeBookingBtn.addEventListener('click', ()=> bookingOverlay.classList.remove('show'));
-
-  // Validazione + auto-save
-  function isValid(){
-    const n=document.getElementById('pr-nome').value.trim();
-    const t=document.getElementById('pr-tel').value.trim();
-    if(!n||!t){ alert('Bitte Name und Telefon angeben.'); return false; }
-    return true;
-  }
-  ['pr-nome','pr-tel','pr-email'].forEach(id=>{
-    const el=document.getElementById(id);
-    el.value = localStorage.getItem(id)||'';
-    el.addEventListener('change',()=>localStorage.setItem(id,el.value));
-  });
-
-  function buildMsg(){
-    const nome = document.getElementById('pr-nome').value.trim();
-    const tel  = document.getElementById('pr-tel').value.trim();
-    const mail = document.getElementById('pr-email').value.trim();
-    const data = document.getElementById('pr-data').value;
-    const evento = document.getElementById('pr-event').value;
-    const lounge = document.getElementById('pr-lounge').value;
-    const persone= document.getElementById('pr-persone').value;
-    const note   = document.getElementById('pr-note').value.trim();
+  function buildMsgQuick(ev, nome, tel){
+    const { name, dateStr } = ensureEventValues(ev);
     return [
       'Hi Afterlux! Ich möchte eine Lounge reservieren.',
-      evento ? `Event: ${evento}` : 'Event: (noch offen)',
-      data ? `Datum: ${data}` : null,
-      `Lounge: ${lounge}`, `Personen: ${persone}`,
-      nome ? `Name: ${nome}` : null, tel ? `Telefon: ${tel}` : null, mail ? `E-Mail: ${mail}` : null,
-      note ? `Notizen: ${note}` : null
+      name ? `Event: ${name}` : 'Event: (noch offen)',
+      dateStr ? `Datum: ${dateStr}` : null,
+      `Name: ${nome||''}`,
+      `Telefon: ${tel||''}`
     ].filter(Boolean).join('\n');
   }
-  document.getElementById('btn-wa')?.addEventListener('click', ()=>{
-    if(!isValid()) return;
-    window.open(`https://wa.me/4915738465393?text=${encodeURIComponent(buildMsg())}`,'_blank');
-  });
-  document.getElementById('btn-mail')?.addEventListener('click', ()=>{
-    if(!isValid()) return;
-    location.href = `mailto:afterlux.loerrach@gmail.com?subject=${encodeURIComponent('Lounge-Reservierung - Afterlux')}&body=${encodeURIComponent(buildMsg())}`;
-  });
+
+  function attachBookingButtons(){
+    document.querySelectorAll('.book-btn').forEach(btn=>{
+      btn.onclick = ()=>{
+        const slug = btn.getAttribute('data-slug');
+        const ev = findAny(slug);
+        const nome = prompt('Dein Name:');
+        if (nome===null) return;
+        const tel = prompt('Deine Telefonnummer (+49 ...):');
+        if (tel===null) return;
+
+        const msg = buildMsgQuick(ev, nome.trim(), tel.trim());
+        // WhatsApp preferito: apre chat con messaggio precompilato
+        window.open(`https://wa.me/4915738465393?text=${encodeURIComponent(msg)}`,'_blank');
+      };
+    });
+  }
+  attachBookingButtons();
 
   /* CONTATTI toggle */
   const contatti = document.getElementById('contatti');
@@ -692,7 +537,7 @@
       if (matches.length===1){ return {"@type":"Offer","price":matches[0],"priceCurrency":"EUR","availability":"https://schema.org/InStock","url":ev.ticketUrl||location.href}; }
       return matches.map(p=>({"@type":"Offer","price":p,"priceCurrency":"EUR","availability":"https://schema.org/InStock","url":ev.ticketUrl||location.href}));
     }
-    eventi.forEach(ev=>{
+    eventiData.forEach(ev=>{
       const ld={"@context":"https://schema.org","@type":"Event","name":ev.name,"startDate":ev.dateISO,
         "eventStatus":"https://schema.org/EventScheduled","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode",
         "image":[ abs(encodeURI(ev.cover)) ],"description":ev.desc||"",
