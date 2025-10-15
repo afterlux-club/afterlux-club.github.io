@@ -10,7 +10,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Afterlux Club — Events & Reservierungen</title>
 <link rel="icon" type="image/png" href="afterluxluna.png" />
 
@@ -39,6 +39,7 @@
     min-height:100vh;
     line-height:1.45;
     padding-top:var(--toppad, 160px);
+    -webkit-tap-highlight-color: transparent;
   }
   a{color:var(--gold);text-decoration:none}
   a:hover{text-decoration:underline}
@@ -83,8 +84,6 @@
   .drawer .navlink{display:block;padding:14px 10px;border-radius:10px;color:#fff}
   .drawer .navlink:hover{background:rgba(255,255,255,.08)}
   .drawer .sep{height:1px;background:rgba(255,255,255,.12);margin:12px 0}
-
-  /* Über uns collassabile nel menù */
   .about-toggle{ display:flex;align-items:center;gap:8px;cursor:pointer; padding:10px;border-radius:10px; }
   .about-toggle:hover{background:rgba(255,255,255,.08)}
   .about-chev{transition:transform .2s ease;display:inline-block}
@@ -92,7 +91,6 @@
   #about-desc{display:none;color:#ddd;margin:8px 2px 0 2px}
   .about-open #about-desc{display:block}
 
-  /* Social nel menù */
   .socials{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
   .sbtn{
     display:inline-flex;align-items:center;gap:8px;
@@ -103,6 +101,7 @@
 
   /* BTN */
   .btn{display:inline-block;background:var(--gold);color:#000;padding:12px 18px;border-radius:14px;border:none;font-weight:700;cursor:pointer}
+  .btn:active{transform:translateY(1px)}
   .btn:hover{background:var(--gold-d)}
   .ghost{background:transparent;color:#fff;border:1px solid var(--border)}
 
@@ -133,29 +132,50 @@
     box-shadow:0 0 20px rgba(255,255,255,.2)
   }
 
-  /* ====== PAGINA RESERVIEREN (overlay full-page) ====== */
+  /* ====== PAGINA RESERVIEREN (FULL-SCREEN) ====== */
+  /* 100dvh compat mobile (var --vh) */
   #reserve-page{
     position:fixed; inset:0; z-index:95; display:none;
-    background:rgba(0,0,0,.88); backdrop-filter: blur(4px);
+    height:calc(var(--vh, 1vh) * 100);
+    background:rgba(0,0,0,.88); backdrop-filter: blur(6px);
   }
   #reserve-page.show{display:block}
   .reserve-wrap{
-    max-width:960px; margin: min(8vh,48px) auto; padding:16px;
+    height:100%; width:100%;
+    padding: env(safe-area-inset-top) 12px env(safe-area-inset-bottom);
+    display:flex; align-items:stretch; justify-content:center;
   }
   .reserve-card{
-    background:#0a0a0a; border:1px solid var(--border); border-radius:16px; overflow:hidden;
+    width:100%; max-width:960px;
+    height:100%; display:flex; flex-direction:column;
+    background:#0a0a0a; border:1px solid var(--border); border-radius:18px; overflow:hidden;
   }
-  .reserve-head,.reserve-foot{ padding:14px 16px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
-  .reserve-foot{ border-top:1px solid var(--border); border-bottom:0; }
-  .reserve-body{ padding:16px; display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .reserve-head{
+    flex:0 0 auto; position:sticky; top:0; z-index:2;
+    padding:14px 16px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    background:rgba(10,10,10,.96); backdrop-filter: blur(6px); border-bottom:1px solid var(--border);
+  }
+  .reserve-body{
+    flex:1 1 auto; overflow:auto; -webkit-overflow-scrolling:touch;
+    padding:16px; display:grid; grid-template-columns:1fr 1fr; gap:14px;
+  }
   @media (max-width:800px){ .reserve-body{ grid-template-columns:1fr; } }
-  .reserve-cover{ height:260px; border:1px solid var(--border); border-radius:12px; background:#111 center/cover no-repeat; }
+  .reserve-foot{
+    flex:0 0 auto; position:sticky; bottom:0; z-index:2;
+    padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    background:rgba(10,10,10,.96); backdrop-filter: blur(6px); border-top:1px solid var(--border);
+  }
+  .reserve-cover{
+    height:clamp(220px, 45svh, 360px);
+    border:1px solid var(--border); border-radius:12px; background:#111 center/cover no-repeat;
+  }
   .reserve-form label{ display:block; font-size:12px; color:var(--muted); margin-bottom:6px }
   .reserve-form input,.reserve-form select,.reserve-form textarea{
-    width:100%; padding:10px; border-radius:10px; border:1px solid var(--border); background:#0b0b0b; color:#fff
+    width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); background:#0b0b0b; color:#fff;
+    font-size:16px; /* evita zoom su iOS */
   }
   .close-x{
-    appearance:none; border:1px solid var(--border); background:transparent; color:#fff; border-radius:10px; padding:8px 10px; cursor:pointer;
+    appearance:none; border:1px solid var(--border); background:transparent; color:#fff; border-radius:12px; padding:10px 12px; cursor:pointer;
   }
 </style>
 </head>
@@ -179,7 +199,6 @@
     <a class="navlink" href="#contatti" onclick="hideDrawer(); openContatti()">Kontakt</a>
 
     <div class="sep"></div>
-    <!-- Über uns solo su click -->
     <div id="about-box">
       <div class="about-toggle" id="about-toggle" role="button" aria-expanded="false" aria-controls="about-desc">
         <span class="about-chev">▶</span>
@@ -326,7 +345,7 @@
   </section>
 </main>
 
-<!-- ====== PAGINA RESERVIEREN (overlay) ====== -->
+<!-- ====== PAGINA RESERVIEREN (overlay full-screen) ====== -->
 <div id="reserve-page" aria-hidden="true">
   <div class="reserve-wrap">
     <div class="reserve-card">
@@ -334,6 +353,7 @@
         <h3 style="margin:0;color:#fff">Reservieren</h3>
         <button class="close-x" id="reserve-close" aria-label="Schließen">Schließen ✕</button>
       </div>
+
       <div class="reserve-body">
         <div>
           <div id="reserve-cover" class="reserve-cover" aria-label="Event-Cover"></div>
@@ -343,18 +363,18 @@
           <h3 id="reserve-title" style="margin:8px 0 6px;color:#fff">—</h3>
 
           <label>Vor- und Nachname
-            <input id="pr-nome" type="text" placeholder="Dein Name">
+            <input id="pr-nome" type="text" placeholder="Dein Name" autocomplete="name" inputmode="text">
           </label>
           <label>Telefon
-            <input id="pr-tel" type="tel" placeholder="+49 ...">
+            <input id="pr-tel" type="tel" placeholder="+49 ..." autocomplete="tel" inputmode="tel">
           </label>
           <label>E-Mail
-            <input id="pr-email" type="email" placeholder="name@email.com">
+            <input id="pr-email" type="email" placeholder="name@email.com" autocomplete="email" inputmode="email">
           </label>
 
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px">
             <label>Datum (bei datiertem Event)
-              <input id="pr-data" type="date">
+              <input id="pr-data" type="date" autocomplete="off">
             </label>
             <label>Personen
               <select id="pr-persone">
@@ -374,6 +394,7 @@
           </label>
         </div>
       </div>
+
       <div class="reserve-foot">
         <div class="muted">Sende deine Anfrage über WhatsApp oder E-Mail</div>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
@@ -389,6 +410,12 @@
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* Viewport unit mobile fix: --vh = 1% of innerHeight (per 100dvh reali) */
+  function setVhUnit(){
+    document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');
+  }
+  setVhUnit(); window.addEventListener('resize', setVhUnit);
 
   /* Header fisso + padding dinamico + logo visibile solo sopra #eventi */
   (function(){
@@ -534,41 +561,52 @@
     }; tick(); setInterval(tick,1000); cdWrap.hidden=false;
   }
 
-  /* ====== RESERVIEREN: pagina dedicata ====== */
+  /* ====== RESERVIEREN: pagina full-screen ====== */
   const reservePage = document.getElementById('reserve-page');
   const reserveClose = document.getElementById('reserve-close');
 
   function findAny(slug){
     return upcoming.find(e=>e.slug===slug) || eventiData.find(e=>e.slug===slug) || recurring.find(e=>e.slug===slug);
   }
+
+  // Scroll-lock del body quando il layer è aperto
+  let _prevOverflow = '';
+  function lockBody(){ _prevOverflow=document.body.style.overflow; document.body.style.overflow='hidden'; }
+  function unlockBody(){ document.body.style.overflow=_prevOverflow; }
+
   function openReserve(slug){
     const ev = findAny(slug);
     if (!ev) return;
-    // Precompila
+
+    // Precompila dati evento
     document.getElementById('reserve-title').textContent = ev.name;
     document.getElementById('reserve-date').textContent = ev.dateISO
       ? new Date(ev.dateISO).toLocaleString('de-DE',{weekday:'long',day:'2-digit',month:'long',hour:'2-digit',minute:'2-digit'})
       : (ev.when ? `${ev.when} • ${ev.time||''}` : '—');
     document.getElementById('reserve-cover').style.backgroundImage = ev.cover ? `url(${encodeURI(ev.cover)})` : '';
+
+    // Precompila data
     const dInput = document.getElementById('pr-data');
     if (ev.dateISO){
       const d = new Date(ev.dateISO);
       const yyyy=d.getFullYear(), mm=String(d.getMonth()+1).padStart(2,'0'), dd=String(d.getDate()).padStart(2,'0');
       dInput.value = `${yyyy}-${mm}-${dd}`;
-    } else {
-      dInput.value = '';
-    }
-    // mostra la “pagina”
+    } else { dInput.value = ''; }
+
+    // Mostra pagina (full-screen)
     reservePage.classList.add('show');
     reservePage.setAttribute('aria-hidden','false');
+    window.scrollTo(0,0);   // porta su (evita che resti mezza schermata)
+    lockBody();
+
     history.pushState({r:slug}, '', `#reservieren/${slug}`);
   }
+
   function closeReserve(){
     reservePage.classList.remove('show');
     reservePage.setAttribute('aria-hidden','true');
-    if (location.hash.startsWith('#reservieren/')) {
-      history.back();
-    }
+    unlockBody();
+    if (location.hash.startsWith('#reservieren/')) history.back();
   }
   reserveClose.addEventListener('click', closeReserve);
   document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeReserve(); });
@@ -590,7 +628,13 @@
   window.addEventListener('hashchange', handleHash);
   handleHash();
 
-  // Validazione rapida
+  // Persistenza campi base
+  ['pr-nome','pr-tel','pr-email'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.value = localStorage.getItem(id)||'';
+    el.addEventListener('change',()=>localStorage.setItem(id,el.value));
+  });
+
   function isValid(){
     const n=document.getElementById('pr-nome').value.trim();
     const t=document.getElementById('pr-tel').value.trim();
