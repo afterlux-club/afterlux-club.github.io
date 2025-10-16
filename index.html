@@ -126,10 +126,17 @@
     .btn:hover{background:var(--gold-d)}
     .ghost{background:transparent;color:#fff;border:1px solid var(--border)}
 
-    /* CARDS */
+    /* CARDS — mostrano l'immagine intera (verticale ok) */
     .cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
     .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-    .card img,.card video{ width:100%;height:clamp(220px,32vw,420px);object-fit:cover;display:block;background:#000 }
+    .card img,.card video{
+      width:100%;
+      aspect-ratio:16/9;    /* cornice stabile */
+      height:auto;
+      object-fit:contain;   /* <<< se vuoi “pieno” cambia in cover */
+      background:#000;
+      display:block;
+    }
     .card .content{padding:14px}
     .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.10);font-size:12px;margin-bottom:8px;color:#fff}
     .muted{color:var(--muted)}
@@ -139,11 +146,15 @@
 
     footer{border-top:1px solid var(--border);text-align:center;color:#fff;padding-bottom:28px}
 
-    /* Immagini grandi per Lounge/Promoter */
+    /* Immagini grandi (lounge/promoter) — mostrate per intero */
     .wide-img{
-      width:100%;height:clamp(220px,32vw,420px);
-      object-fit:cover;display:block;margin:0 auto 20px;border-radius:12px;
-      box-shadow:0 0 20px rgba(255,255,255,.2)
+      width:100%;
+      aspect-ratio:1100/420; /* ≈ 2.62:1 */
+      height:auto;
+      object-fit:contain;    /* cambia in cover se preferisci senza bande */
+      display:block;margin:0 auto 20px;border-radius:12px;
+      box-shadow:0 0 20px rgba(255,255,255,.2);
+      background:#000;
     }
 
     /* ====== PAGINA RESERVIEREN (FULL-SCREEN) ====== */
@@ -179,8 +190,10 @@
       background:rgba(10,10,10,.96); backdrop-filter: blur(6px); border-top:1px solid var(--border);
     }
     .reserve-cover{
-      height:clamp(220px, 45svh, 360px);
-      border:1px solid var(--border); border-radius:12px; background:#111 center/cover no-repeat;
+      aspect-ratio:16/9;
+      height:auto;
+      border:1px solid var(--border); border-radius:12px;
+      background:#111 center/contain no-repeat; /* <<< 'cover' per pieno */
     }
     .reserve-form label{ display:block; font-size:12px; color:var(--muted); margin-bottom:6px }
     .reserve-form input,.reserve-form select,.reserve-form textarea{
@@ -271,7 +284,7 @@
   <main class="container">
     <!-- EVENTS -->
     <section id="eventi" style="margin-top:10px">
-      <!-- Countdown sopra al titolo -->
+      <!-- Countdown -->
       <div id="countdown" hidden style="display:flex;gap:10px;justify-content:flex-start;flex-wrap:wrap;margin:0 0 10px 0">
         <span class="pill"><b id="cd-d">--</b> Tage</span>
         <span class="pill"><b id="cd-h">--</b> Std</span>
@@ -301,7 +314,7 @@
     <section id="galleria">
       <h2>Galerie</h2>
 
-      <img src="./Lounge-Afterlux.png" alt="Lounge-Plan Afterlux" class="wide-img" loading="lazy">
+      <img src="./loungeweb.png" alt="Lounge-Plan Afterlux" class="wide-img" loading="lazy">
       <p style="color:#FFD700;text-align:center;margin-top:-8px">Reserviere deine Lounge: N1–N5 jedes Wochenende verfügbar.</p>
 
       <div class="cards" style="margin-top:18px">
@@ -333,7 +346,7 @@
 
       <div class="promoter-section" style="text-align:center;margin-top:28px">
         <h3 style="color:#fff;font-size:1.8rem;margin-bottom:15px">Werde Afterlux Promoter</h3>
-        <img src="./promoter.jpg" alt="Afterlux Club Promoter" class="wide-img" loading="lazy" style="max-width:1000px">
+        <img src="./promoterweb.png" alt="Afterlux Club Promoter" class="wide-img" loading="lazy" style="max-width:1000px">
         <p style="color:#FFD700;font-size:1rem;max-width:800px;margin:8px auto 0">
           Du willst Teil vom Afterlux-Team werden? Schreib uns auf Instagram oder per E-Mail und sichere dir exklusive Vorteile.
         </p><br>
@@ -412,7 +425,6 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Consent update da richiamare dal tuo banner
     function acceptAllCookies(){
       gtag('consent', 'update', {
         ad_storage: 'granted',
@@ -425,18 +437,15 @@
     }
     window.acceptAllCookies = acceptAllCookies;
 
-    /* Viewport unit mobile fix: --vh = 1% of innerHeight */
-    function setVhUnit(){
-      document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');
-    }
+    /* Viewport unit mobile fix */
+    function setVhUnit(){ document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px'); }
     setVhUnit(); window.addEventListener('resize', setVhUnit);
 
-    /* Header fisso + padding dinamico + logo visibile SOLO nella sezione THE ORIGINAL (hero) */
+    /* Header/logo visibilità dinamica */
     (function(){
       const topbar = document.getElementById('topbar');
       const logo = document.getElementById('main-logo');
       const hero = document.getElementById('hero');
-
       function setTopPad(){
         const h = topbar.offsetHeight;
         document.documentElement.style.setProperty('--toppad', h + 'px');
@@ -446,8 +455,7 @@
         const heroRectTop = hero.getBoundingClientRect().top + window.scrollY;
         const heroRectBottom = heroRectTop + hero.offsetHeight;
         const y = window.scrollY + 1;
-        const show = (y < heroRectBottom);
-        logo.classList.toggle('is-hidden', !show);
+        logo.classList.toggle('is-hidden', !(y < heroRectBottom));
       }
       window.addEventListener('load', setTopPad, {once:true});
       window.addEventListener('resize', setTopPad);
@@ -465,7 +473,7 @@
     closeShade.addEventListener('click', hideDrawer);
     window.hideDrawer = hideDrawer;
 
-    // Über uns toggle nel drawer
+    // Über uns toggle
     (function(){
       const box = document.getElementById('about-box');
       const tog = document.getElementById('about-toggle');
@@ -476,20 +484,19 @@
       });
     })();
 
-    /* ====== DATI EVENTI ====== */
+    /* ====== DATI EVENTI (immagini nuove) ====== */
     const eventiData = [
-      { slug:'russian-beats-2025-10-11', name:'Russian Beats', dateISO:'2025-10-11T22:30:00+02:00', shortDate:'Sa 11 Okt', desc:'Beginn 22:30', lineup:'DJ Andy', prices:'—', cover:'serata russa 11.10.jpg' },
-      { slug:'latin-night-2025-10-17', name:'Latin Night', dateISO:'2025-10-17T23:00:00+02:00', shortDate:'Fr 17 Okt', desc:'Start 23:00 • DJ Don-Maiky • Eintritt GRATIS', lineup:'DJ Don-Maiky', prices:'Eintritt GRATIS', cover:'Latin Night.jpg' },
-      { slug:'rhythms-of-world-2025-10-18', name:'Rhythms of World', dateISO:'2025-10-18T23:00:00+02:00', shortDate:'Sa 18 Okt', desc:'Start 23:00', lineup:'David Costa', prices:'Eintritt GRATIS & ein GRATIS-SHOT', cover:'david costa 18.10.jpg' },
-      { slug:'la-noche-brasilena-2025-10-25', name:'La noche brasileña', dateISO:'2025-10-25T23:00:00+02:00', shortDate:'Sa 25 Okt', desc:'Start 23:00', lineup:'Salese', prices:'Eintritt 5€ & ein GRATIS-SHOT', cover:'dj salese 25.10.jpg',
+      { slug:'latin-night-2025-10-17', name:'Latin Night', dateISO:'2025-10-17T23:00:00+02:00', shortDate:'Fr 17 Okt', desc:'Start 23:00 • DJ Don-Maiky • Eintritt GRATIS', lineup:'DJ Don-Maiky', prices:'Eintritt GRATIS', cover:'17.10web.png' },
+      { slug:'rhythms-of-world-2025-10-18', name:'Rhythms of World', dateISO:'2025-10-18T23:00:00+02:00', shortDate:'Sa 18 Okt', desc:'Start 23:00', lineup:'David Costa', prices:'Eintritt GRATIS & ein GRATIS-SHOT', cover:'18.10web.png' },
+      { slug:'la-noche-brasilena-2025-10-25', name:'La noche brasileña', dateISO:'2025-10-25T23:00:00+02:00', shortDate:'Sa 25 Okt', desc:'Start 23:00', lineup:'Salese', prices:'Eintritt 5€ & ein GRATIS-SHOT', cover:'25.10web.png',
         ticketUrl:'https://eventfrog.de/de/p/party/disco/la-noche-brasilena-7381417087799956339.html' },
-      { slug:'halloween-party-2025-10-31', name:'Halloween Party', dateISO:'2025-10-31T23:00:00+01:00', shortDate:'Fr 31 Okt', desc:'Latin Mix • Costume Contest', lineup:'DJ Pepe', prices:'Vorverkauf 5€ • Abendkasse 10€', cover:'hallowe 31.10.jpg',
+      { slug:'halloween-party-2025-10-31', name:'Halloween Party', dateISO:'2025-10-31T23:00:00+01:00', shortDate:'Fr 31 Okt', desc:'Latin Mix • Costume Contest', lineup:'DJ Pepe', prices:'Vorverkauf 5€ • Abendkasse 10€', cover:'31.10web.png',
         ticketUrl:'https://eventfrog.de/de/p/party/disco/halloween-party-7381430034773332317.html' },
-      { slug:'last-school-day-2025-12-19', name:'Last School Day 2025 – Spendenparty Abi 2026 (FES)', dateISO:'2025-12-19T22:00:00+01:00', shortDate:'Fr 19 Dez', desc:'Spendenaktion des Abi-Jahrgangs 2026 der FES • Einlass 22:00', lineup:'—', prices:'Ticket 7€ • Mindestalter 16', cover:'Black Party Night Club Dj Flyer.png',
+      { slug:'last-school-day-2025-12-19', name:'Last School Day 2025 – Spendenparty Abi 2026 (FES)', dateISO:'2025-12-19T22:00:00+01:00', shortDate:'Fr 19 Dez', desc:'Spendenaktion des Abi-Jahrgangs 2026 der FES • Einlass 22:00', lineup:'—', prices:'Ticket 7€ • Mindestalter 16', cover:'19.12web.png',
         ticketUrl:'https://eventfrog.de/de/p/party/disco/last-school-day-2025-7383798159095412970.html' }
     ];
     const recurring = [
-      { slug:'karaoke-night', name:'Karaoke Night', when:'Jeden Donnerstag', time:'21:30 – 02:00', desc:'Eintritt frei • Die Bühne gehört dir!', lineup:'Open Mic • Host Afterlux', prices:'Free Entry', cover:'karaoke.jpg' },
+      { slug:'karaoke-night', name:'Karaoke Night', when:'Jeden Donnerstag', time:'21:30 – 02:00', desc:'Eintritt frei • Die Bühne gehört dir!', lineup:'Open Mic • Host Afterlux', prices:'Free Entry', cover:'karaokeweb.png' },
     ];
 
     const $ = s => document.querySelector(s);
@@ -505,7 +512,7 @@
       $('#clr').addEventListener('click', ()=>{ $('#q').value=''; $('#month').value=''; filter(); });
     })();
 
-    // Card con dettagli a vista + bottone Reservieren (aggiungo data-ticket per tracking)
+    // Card HTML (usa nuove immagini verticali)
     function cardHTML(ev){
       const when = new Date(ev.dateISO).toLocaleString('de-DE',{weekday:'short',hour:'2-digit',minute:'2-digit'});
       return `
@@ -531,7 +538,7 @@
 
     function render(list){
       cards.innerHTML = list.length ? list.map(cardHTML).join('') : `<p class="muted">Keine geplanten Events mit Datum.</p>`;
-      attachBookingButtons(); // ricollega listeners dopo ogni render
+      attachBookingButtons();
       attachTicketClicks();
     }
     render(upcoming);
@@ -563,7 +570,7 @@
     $('#q').addEventListener('input', filter);
     $('#month').addEventListener('change', filter);
 
-    /* COUNTDOWN ora dentro #eventi */
+    /* COUNTDOWN */
     const cdWrap = document.getElementById('countdown');
     if (upcoming.length){
       const target = new Date(upcoming[0].dateISO).getTime();
@@ -578,7 +585,7 @@
       }; tick(); setInterval(tick,1000); cdWrap.hidden=false;
     }
 
-    /* ====== RESERVIEREN: pagina full-screen ====== */
+    /* ====== RESERVIEREN overlay ====== */
     const reservePage = document.getElementById('reserve-page');
     const reserveClose = document.getElementById('reserve-close');
 
@@ -614,7 +621,7 @@
 
       history.pushState({r:slug}, '', `#reservieren/${slug}`);
 
-      // GA4: view_item all'apertura overlay
+      // GA4: view_item apertura overlay
       gtag('event','view_item',{
         items:[{
           item_id: ev.slug,
@@ -641,7 +648,6 @@
           const slug = btn.getAttribute('data-slug');
           const ev = findAny(slug);
           if (ev){
-            // GA4: selezione item dal listato
             gtag('event','select_item',{
               item_list_name: 'Kommende Events',
               items:[{ item_id: ev.slug, item_name: ev.name, item_category: 'Event' }]
@@ -714,18 +720,16 @@
 
     document.getElementById('btn-wa')?.addEventListener('click', ()=>{
       if(!isValid()) return;
-      // GA4: lead via WhatsApp
       gtag('event','generate_lead',{ value:0, currency:'EUR', method:'whatsapp' });
       window.open(`https://wa.me/4915738465393?text=${encodeURIComponent(buildMsg())}`,'_blank');
     });
     document.getElementById('btn-mail')?.addEventListener('click', ()=>{
       if(!isValid()) return;
-      // GA4: lead via Email
       gtag('event','generate_lead',{ value:0, currency:'EUR', method:'email' });
       location.href = `mailto:afterlux.loerrach@gmail.com?subject=${encodeURIComponent('Lounge-Reservierung - Afterlux')}&body=${encodeURIComponent(buildMsg())}`;
     });
 
-    /* JSON-LD SEO essenziali */
+    /* JSON-LD SEO */
     (function(){
       const base = new URL('.', location.href).href;
       const abs = p => { try { return new URL(p, base).href; } catch(e){ return p; } };
@@ -736,7 +740,7 @@
         "url": location.origin + location.pathname,
         "logo": abs("afterluxluna.png"),
         "sameAs":["https://www.instagram.com/afterlux_club/"],
-        "address":{"@type":"PostalAddress","streetAddress":"Teicherstrasse 14","postalCode":"79539","addressLocality":"Lörrach","addressCountry":"DE"},
+        "address":{"@type":"PostalAddress","streetAddress":"Teichstrasse 14","postalCode":"79539","addressLocality":"Lörrach","addressCountry":"DE"},
         "telephone":"+49 1573 8465393"
       });
       const FREE_RE = /(gratis|free)/i;
@@ -756,7 +760,7 @@
         const ld={"@context":"https://schema.org","@type":"Event","name":ev.name,"startDate":ev.dateISO,
           "eventStatus":"https://schema.org/EventScheduled","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode",
           "image":[ abs(encodeURI(ev.cover)) ],"description":ev.desc||"",
-          "location":{"@type":"Place","name":"Afterlux Club","address":{"@type":"PostalAddress","streetAddress":"Teicherstrasse 14","addressLocality":"Lörrach","postalCode":"79539","addressCountry":"DE"}},
+          "location":{"@type":"Place","name":"Afterlux Club","address":{"@type":"PostalAddress","streetAddress":"Teichstrasse 14","addressLocality":"Lörrach","postalCode":"79539","addressCountry":"DE"}},
           "organizer":{"@type":"Organization","name":"Afterlux Club","url": location.origin + location.pathname}
         };
         const offers=buildOffers(ev); if(offers) ld.offers=offers;
@@ -764,7 +768,7 @@
         addLD(ld);
       });
 
-      // GA4: view_item_list quando la lista è pronta
+      // GA4: view_item_list
       try{
         const items = (eventiData||[]).map((e,i)=>({
           item_id: e.slug,
@@ -776,7 +780,7 @@
       }catch(_){}
     })();
 
-    // Esporta alcune funzioni nel namespace globale (se ti servono altrove)
+    // export per eventuale uso
     window.render = render;
     window.openReserve = openReserve;
     window.cardHTML = cardHTML;
