@@ -124,16 +124,15 @@
     .btn{display:inline-block;background:var(--gold);color:#000;padding:12px 18px;border-radius:14px;border:none;font-weight:700;cursor:pointer}
     .btn:active{transform:translateY(1px)}
     .btn:hover{background:var(--gold-d)}
-    .ghost{background:transparent;color:#fff;border:1px solid var(--border)}
 
-    /* CARDS — mostrano l'immagine intera (verticale ok) */
+    /* CARDS — poster verticali 900x1600, pieni */
     .cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
     .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
     .card img,.card video{
       width:100%;
-      aspect-ratio:16/9;    /* cornice stabile */
+      aspect-ratio:9/16;   /* 900x1600 */
       height:auto;
-      object-fit:contain;   /* <<< se vuoi “pieno” cambia in cover */
+      object-fit:cover;     /* pieno, senza bande */
       background:#000;
       display:block;
     }
@@ -146,12 +145,12 @@
 
     footer{border-top:1px solid var(--border);text-align:center;color:#fff;padding-bottom:28px}
 
-    /* Immagini grandi (lounge/promoter) — mostrate per intero */
+    /* Immagini “wide” (lounge/promoter) — lounge resta contain */
     .wide-img{
       width:100%;
       aspect-ratio:1100/420; /* ≈ 2.62:1 */
       height:auto;
-      object-fit:contain;    /* cambia in cover se preferisci senza bande */
+      object-fit:contain;    /* lasciata com'è */
       display:block;margin:0 auto 20px;border-radius:12px;
       box-shadow:0 0 20px rgba(255,255,255,.2);
       background:#000;
@@ -190,10 +189,10 @@
       background:rgba(10,10,10,.96); backdrop-filter: blur(6px); border-top:1px solid var(--border);
     }
     .reserve-cover{
-      aspect-ratio:16/9;
+      aspect-ratio:9/16;             /* 900x1600 */
       height:auto;
       border:1px solid var(--border); border-radius:12px;
-      background:#111 center/contain no-repeat; /* <<< 'cover' per pieno */
+      background:#111 center/cover no-repeat; /* pieno */
     }
     .reserve-form label{ display:block; font-size:12px; color:var(--muted); margin-bottom:6px }
     .reserve-form input,.reserve-form select,.reserve-form textarea{
@@ -484,7 +483,7 @@
       });
     })();
 
-    /* ====== DATI EVENTI (immagini nuove) ====== */
+    /* ====== DATI EVENTI (poster 900x1600) ====== */
     const eventiData = [
       { slug:'latin-night-2025-10-17', name:'Latin Night', dateISO:'2025-10-17T23:00:00+02:00', shortDate:'Fr 17 Okt', desc:'Start 23:00 • DJ Don-Maiky • Eintritt GRATIS', lineup:'DJ Don-Maiky', prices:'Eintritt GRATIS', cover:'17.10web.png' },
       { slug:'rhythms-of-world-2025-10-18', name:'Rhythms of World', dateISO:'2025-10-18T23:00:00+02:00', shortDate:'Sa 18 Okt', desc:'Start 23:00', lineup:'David Costa', prices:'Eintritt GRATIS & ein GRATIS-SHOT', cover:'18.10web.png' },
@@ -512,12 +511,12 @@
       $('#clr').addEventListener('click', ()=>{ $('#q').value=''; $('#month').value=''; filter(); });
     })();
 
-    // Card HTML (usa nuove immagini verticali)
+    // Card HTML: dichiaro size intrinseca 900x1600
     function cardHTML(ev){
       const when = new Date(ev.dateISO).toLocaleString('de-DE',{weekday:'short',hour:'2-digit',minute:'2-digit'});
       return `
       <article class="card">
-        <img src="${encodeURI(ev.cover)}" alt="${ev.name}" loading="lazy" decoding="async">
+        <img src="${encodeURI(ev.cover)}" alt="${ev.name}" width="900" height="1600" loading="lazy" decoding="async">
         <div class="content">
           <div class="pill">${ev.shortDate}</div>
           <h3 style="color:#fff">${ev.name}</h3>
@@ -545,7 +544,7 @@
 
     recWrap.innerHTML = recurring.map(ev => `
       <article class="card">
-        ${ev.cover ? `<img src="${encodeURI(ev.cover)}" alt="${ev.name}" loading="lazy">` : ``}
+        ${ev.cover ? `<img src="${encodeURI(ev.cover)}" alt="${ev.name}" width="900" height="1600" loading="lazy">` : ``}
         <div class="content">
           <div class="pill">${ev.when} • ${ev.time}</div>
           <h3 style="color:#fff">${ev.name}</h3>
@@ -780,7 +779,6 @@
       }catch(_){}
     })();
 
-    // export per eventuale uso
     window.render = render;
     window.openReserve = openReserve;
     window.cardHTML = cardHTML;
