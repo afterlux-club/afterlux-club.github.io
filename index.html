@@ -649,9 +649,12 @@
 
     // deep-link: legacy #prenotazioni -> open first upcoming
     (function fixLegacyHash(){
+      // Non aprire più l'overlay automaticamente con #prenotazioni
       if (location.hash === '#prenotazioni') {
-        const first = (upcoming[0] || eventiData[0] || recurring[0]);
-        if (first) openReserve(first.slug);
+        // porta l'utente alla sezione eventi e rimuovi l'hash
+        const evSec = document.getElementById('eventi');
+        if (evSec) evSec.scrollIntoView({behavior:'smooth'});
+        history.replaceState(null, '', location.pathname + location.search);
       }
     })();
 
@@ -788,3 +791,4 @@
   </script>
 </body>
 </html>
+
