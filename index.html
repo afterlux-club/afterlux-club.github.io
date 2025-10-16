@@ -117,12 +117,7 @@
     .hamburger span::before,.hamburger span::after{content:"";position:absolute;left:0;width:100%;height:2px;background:#fff}
     .hamburger span::before{top:-6px}.hamburger span::after{top:6px}
 
-    .logo{
-      height: clamp(192px, 38.4vw, 432px);
-      max-width:100%; display:block; margin:0 auto; object-fit:contain;
-      transition:opacity .25s ease, transform .25s ease;
-      aspect-ratio: 1 / 1; /* helps CLS */
-    }
+    .hero-logo{ display:block; margin:10px auto 0; height: clamp(90px, 18vw, 180px); max-width:100%; object-fit:contain; }
     .logo.is-hidden{opacity:0; transform:translateY(-18px); pointer-events:none}
 
     /* Drawer (menù a sinistra) */
@@ -241,7 +236,7 @@
   <div class="topbar" id="topbar">
     <div class="row">
       <button class="hamburger" id="open-menu" aria-label="Menü öffnen"><span></span></button>
-      <img src="https://afterlux-club.github.io/afterluxluna.png" alt="Afterlux Club Logo" class="logo" id="main-logo" loading="eager" decoding="async">
+      <!-- (desktop fix) niente logo grande nel topbar per evitare sovrapposizioni -->
     </div>
   </div>
 
@@ -299,9 +294,10 @@
     <h1 style="font-size:clamp(28px,6.8vw,56px);line-height:1.1;color:#fff;margin:6px 0 10px">
       THE ORIGINAL NIGHT<br>EXPERIENCE IN<br>LÖRRACH — AFTERLUX
     </h1>
-    <p style="font-size:clamp(16px,3.6vw,22px);color:#ddd;max-width:900px;margin-bottom:0">
+    <p style="font-size:clamp(16px,3.6vw,22px);color:#ddd;max-width:900px;margin-bottom:12px">
       House, Hip-Hop, Reggaeton & mehr: moderne Party-Vibes mit goldener Eleganz – für Nächte, die in Erinnerung bleiben.
     </p>
+    <img src="https://afterlux-club.github.io/afterluxluna.png" alt="Afterlux Club Logo" class="hero-logo" loading="eager" decoding="async">
   </header>
 
   <main class="container">
@@ -456,28 +452,15 @@
     }
     setVhUnit(); window.addEventListener('resize', setVhUnit);
 
-    /* Header fisso + padding dinamico + logo visibile SOLO nella sezione THE ORIGINAL (hero) */
+    /* Header fisso + padding dinamico */
     (function(){
       const topbar = document.getElementById('topbar');
-      const logo = document.getElementById('main-logo');
-      const hero = document.getElementById('hero');
-
       function setTopPad(){
         const h = topbar.offsetHeight;
-        document.documentElement.style.setProperty('--toppad', h + 'px');
-        updateLogo();
-      }
-      function updateLogo(){
-        const heroRectTop = hero.getBoundingClientRect().top + window.scrollY;
-        const heroRectBottom = heroRectTop + hero.offsetHeight;
-        const y = window.scrollY + 1;
-        // Mostra logo solo mentre sto entro la sezione hero
-        const show = (y < heroRectBottom);
-        logo.classList.toggle('is-hidden', !show);
+        document.documentElement.style.setProperty('--toppad', (h || 72) + 'px');
       }
       window.addEventListener('load', setTopPad, {once:true});
       window.addEventListener('resize', setTopPad);
-      window.addEventListener('scroll', updateLogo, {passive:true});
       setTimeout(setTopPad, 120);
     })();
 
@@ -612,8 +595,8 @@
     }
 
     let _prevOverflow = '';
-    function lockBody(){ _prevOverflow=document.body.style.overflow; document.body.style.overflow='hidden'; }
-    function unlockBody(){ document.body.style.overflow=_prevOverflow; }
+    function lockBody(){ _prevOverflow=document.body.style.overflow; document.body.style.overflow='hidden'; document.body.style.position='relative'; }
+    function unlockBody(){ document.body.style.overflow=_prevOverflow||''; document.body.style.position=''; }
 
     function onOpenReserve(slug){
       // GA4 recommended: view_promotion can describe promo/overlay views
@@ -681,6 +664,9 @@
     }
     window.addEventListener('hashchange', handleHash);
     handleHash();
+
+    // Safety: se l'overlay non è visibile, assicurati che lo scroll del body sia attivo (fix PC)
+    window.addEventListener('load', ()=>{ if(!reservePage.classList.contains('show')) unlockBody(); });
 
     // Persistenza campi base
     ['pr-nome','pr-tel','pr-email'].forEach(id=>{
@@ -800,8 +786,5 @@
       });
     };
   </script>
-</body>
-</html>
-
 </body>
 </html>
