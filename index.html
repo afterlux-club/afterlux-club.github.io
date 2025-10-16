@@ -146,14 +146,12 @@
 
     footer{border-top:1px solid var(--border);text-align:center;color:#fff;padding-bottom:28px}
 
-    /* Immagini grandi:
-       - Lounge: resta WIDE (come richiesto)
-       - Promoter: verticale piena (.tall-img) */
+    /* Immagini grandi: Lounge wide (invariata) + Promoter verticale piena */
     .wide-img{
       width:100%;
-      aspect-ratio:1100/420; /* ≈ 2.62:1 */
+      aspect-ratio:1100/420;
       height:auto;
-      object-fit:contain;    /* LOUNGE: lasciata così com'è */
+      object-fit:contain;
       display:block;margin:0 auto 20px;border-radius:12px;
       box-shadow:0 0 20px rgba(255,255,255,.2);
       background:#000;
@@ -161,9 +159,9 @@
     .tall-img{
       width:100%;
       max-width:1000px;
-      aspect-ratio:9/16;     /* verticale 900x1600 */
+      aspect-ratio:9/16;
       height:auto;
-      object-fit:cover;      /* piena, senza bande */
+      object-fit:cover;
       display:block;margin:0 auto 12px;border-radius:12px;
       box-shadow:0 0 20px rgba(255,255,255,.2);
       background:#000;
@@ -202,10 +200,10 @@
       background:rgba(10,10,10,.96); backdrop-filter: blur(6px); border-top:1px solid var(--border);
     }
     .reserve-cover{
-      aspect-ratio:9/16;  /* allineato ai poster verticali */
+      aspect-ratio:9/16;
       height:auto;
       border:1px solid var(--border); border-radius:12px;
-      background:#111 center/cover no-repeat; /* pieno */
+      background:#111 center/cover no-repeat;
     }
     .reserve-form label{ display:block; font-size:12px; color:var(--muted); margin-bottom:6px }
     .reserve-form input,.reserve-form select,.reserve-form textarea{
@@ -218,11 +216,7 @@
 
     /* ====== OTTIMIZZAZIONI SOLO DESKTOP ====== */
     @media (min-width: 980px){
-      /* colonne meno larghe → poster visivamente più piccoli su PC */
-      .cards{
-        grid-template-columns: repeat(auto-fit, minmax(220px, 280px));
-      }
-      /* limite altezza di poster molto lunghi */
+      .cards{ grid-template-columns: repeat(auto-fit, minmax(220px, 280px)); }
       .card img, .card video{ max-height: 720px; }
       .tall-img{ max-height: 820px; }
     }
@@ -337,7 +331,6 @@
     <section id="galleria">
       <h2>Galerie</h2>
 
-      <!-- LOUNGE: wide e invariata -->
       <img src="./loungeweb.png" alt="Lounge-Plan Afterlux" class="wide-img" loading="lazy">
       <p style="color:#FFD700;text-align:center;margin-top:-8px">Reserviere deine Lounge: N1–N5 jedes Wochenende verfügbar.</p>
 
@@ -370,7 +363,6 @@
 
       <div class="promoter-section" style="text-align:center;margin-top:28px">
         <h3 style="color:#fff;font-size:1.8rem;margin-bottom:15px">Werde Afterlux Promoter</h3>
-        <!-- PROMOTER: verticale piena -->
         <img src="./promoterweb.png" alt="Afterlux Club Promoter" class="tall-img" loading="lazy">
         <p style="color:#FFD700;font-size:1rem;max-width:800px;margin:8px auto 0">
           Du willst Teil vom Afterlux-Team werden? Schreib uns auf Instagram oder per E-Mail und sichere dir exklusive Vorteile.
@@ -509,7 +501,7 @@
       });
     })();
 
-    /* ====== DATI EVENTI (immagini nuove) ====== */
+    /* ====== DATI EVENTI ====== */
     const eventiData = [
       { slug:'latin-night-2025-10-17', name:'Latin Night', dateISO:'2025-10-17T23:00:00+02:00', shortDate:'Fr 17 Okt', desc:'Start 23:00 • DJ Don-Maiky • Eintritt GRATIS', lineup:'DJ Don-Maiky', prices:'Eintritt GRATIS', cover:'17.10web.png' },
       { slug:'rhythms-of-world-2025-10-18', name:'Rhythms of World', dateISO:'2025-10-18T23:00:00+02:00', shortDate:'Sa 18 Okt', desc:'Start 23:00', lineup:'David Costa', prices:'Eintritt GRATIS & ein GRATIS-SHOT', cover:'18.10web.png' },
@@ -537,7 +529,7 @@
       $('#clr').addEventListener('click', ()=>{ $('#q').value=''; $('#month').value=''; filter(); });
     })();
 
-    // Card HTML (usa poster verticali 9:16)
+    // Card HTML
     function cardHTML(ev){
       const when = new Date(ev.dateISO).toLocaleString('de-DE',{weekday:'short',hour:'2-digit',minute:'2-digit'});
       return `
@@ -568,6 +560,7 @@
     }
     render(upcoming);
 
+    // Ricorrenti
     recWrap.innerHTML = recurring.map(ev => `
       <article class="card">
         ${ev.cover ? `<img src="${encodeURI(ev.cover)}" alt="${ev.name}" loading="lazy">` : ``}
@@ -581,6 +574,9 @@
         </div>
       </article>
     `).join('');
+
+    /* >>> FIX: collega gli handler anche ai bottoni della sezione ricorrenti <<< */
+    attachBookingButtons();
 
     function filter(){
       const q=$('#q').value.toLowerCase().trim();
@@ -805,7 +801,7 @@
       }catch(_){}
     })();
 
-    // export per eventuale uso
+    // export
     window.render = render;
     window.openReserve = openReserve;
     window.cardHTML = cardHTML;
