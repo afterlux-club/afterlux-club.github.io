@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+html_content = r"""<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="utf-8" />
@@ -503,6 +503,15 @@
 
     /* ====== DATI EVENTI ====== */
     const eventiData = [
+      /* === NUOVI EVENTI NOVEMBRE 2025 === */
+      { slug:'balkan-beats-2025-11-07', name:'Balkan Beats', dateISO:'2025-11-07T23:00:00+01:00', shortDate:'Fr 07 Nov', desc:'Start 23:00 • DJ Don-Maiky', lineup:'DJ Don-Maiky', prices:'Eintritt 5€ online • 10€ Abendkasse', cover:'7.11web.jpg',
+        ticketUrl:'https://eventfrog.de/de/p/party/disco/balkan-beats-afterlux-7391063423314856566.html' },
+      { slug:'ue30-party-2025-11-08', name:'Ü30 Party', dateISO:'2025-11-08T23:00:00+01:00', shortDate:'Sa 08 Nov', desc:'Einlass ab 23:00 – Nur ab 30 Jahren', lineup:'Don Maiky', prices:'Eintritt 10€', cover:'8.11web.jpg',
+        ticketUrl:'https://eventfrog.de/de/p/party/disco/ue30-party-afterlux-7391585849916281356.html' },
+      { slug:'italian-night-2025-11-22', name:'Italian Night', dateISO:'2025-11-22T23:00:00+01:00', shortDate:'Sa 22 Nov', desc:'Die größte Party in Lörrach • Start 23:00', lineup:'DJ Don-Maiky & Castiello Deejay', prices:'Eintritt 5€ online • 10€ Abendkasse', cover:'22.11web.jpg',
+        ticketUrl:'https://eventfrog.de/de/p/party/disco/italian-night-afterlux-7391820792701397877.html' },
+
+      /* === EVENTI PRECEDENTI (lasciati invariati) === */
       { slug:'latin-night-2025-10-17', name:'Latin Night', dateISO:'2025-10-17T23:00:00+02:00', shortDate:'Fr 17 Okt', desc:'Start 23:00 • DJ Don-Maiky • Eintritt GRATIS', lineup:'DJ Don-Maiky', prices:'Eintritt GRATIS', cover:'17.10web.png' },
       { slug:'rhythms-of-world-2025-10-18', name:'Rhythms of World', dateISO:'2025-10-18T23:00:00+02:00', shortDate:'Sa 18 Okt', desc:'Start 23:00', lineup:'David Costa', prices:'Eintritt GRATIS & ein GRATIS-SHOT', cover:'18.10web.png' },
       { slug:'la-noche-brasilena-2025-10-25', name:'La noche brasileña', dateISO:'2025-10-25T23:00:00+02:00', shortDate:'Sa 25 Okt', desc:'Start 23:00', lineup:'Salese', prices:'Eintritt 5€ & ein GRATIS-SHOT', cover:'25.10web.png',
@@ -510,25 +519,14 @@
       { slug:'halloween-party-2025-10-31', name:'Halloween Party', dateISO:'2025-10-31T23:00:00+01:00', shortDate:'Fr 31 Okt', desc:'Latin Mix • Costume Contest', lineup:'DJ Pepe', prices:'Vorverkauf 5€ • Abendkasse 10€', cover:'31.10web.png',
         ticketUrl:'https://eventfrog.de/de/p/party/disco/halloween-party-7381430034773332317.html' },
       { slug:'last-school-day-2025-12-19', name:'Last School Day 2025 – Spendenparty Abi 2026 (FES)', dateISO:'2025-12-19T22:00:00+01:00', shortDate:'Fr 19 Dez', desc:'Spendenaktion des Abi-Jahrgangs 2026 der FES • Einlass 22:00', lineup:'—', prices:'Ticket 7€ • Mindestalter 16', cover:'19.12web.png',
-        ticketUrl:'https://eventfrog.de/de/p/party/disco/last-school-day-2025-7383798159095412970.html' }<script>
-  /* === NUOVI EVENTI NOVEMBRE 2025 === */
-  { slug:'balkan-beats-2025-11-07', name:'Balkan Beats', dateISO:'2025-11-07T23:00:00+01:00', shortDate:'Fr 07 Nov', desc:'Start 23:00 • DJ Don-Maiky', lineup:'DJ Don-Maiky', prices:'Eintritt 5€ online • 10€ Abendkasse', cover:'7.11web.jpg',
-    ticketUrl:'https://eventfrog.de/de/p/party/disco/balkan-beats-afterlux-7391063423314856566.html' },
-
-  { slug:'ue30-party-2025-11-08', name:'Ü30 Party', dateISO:'2025-11-08T23:00:00+01:00', shortDate:'Sa 08 Nov', desc:'Einlass ab 23:00 – Nur ab 30 Jahren', lineup:'Don Maiky', prices:'Eintritt 10€', cover:'8.11web.jpg',
-    ticketUrl:'https://eventfrog.de/de/p/party/disco/ue30-party-afterlux-7391585849916281356.html' },
-
-  { slug:'italian-night-2025-11-22', name:'Italian Night', dateISO:'2025-11-22T23:00:00+01:00', shortDate:'Sa 22 Nov', desc:'Die größte Party in Lörrach • Start 23:00', lineup:'DJ Don-Maiky & Castiello Deejay', prices:'Eintritt 5€ online • 10€ Abendkasse', cover:'22.11web.jpg',
-    ticketUrl:'https://eventfrog.de/de/p/party/disco/italian-night-afterlux-7391820792701397877.html' },
-];
-</script>
-
-      
+        ticketUrl:'https://eventfrog.de/de/p/party/disco/last-school-day-2025-7383798159095412970.html' }
     ];
     const recurring = [
       /* ▼▼ NUOVO: Querbeat Party ogni venerdì ▼▼ */
       { slug:'querbeat-party', name:'Querbeat Party', when:'Jeden Freitag', time:'ab 23:00', desc:'Eintritt GRATIS! Latin • Reggaeton • House • Italiana', lineup:'DJ Don-Maiky', prices:'Eintritt GRATIS', cover:'jedenfreitag.png' },
-      
+
+      /* già presente: Karaoke Night ogni giovedì */
+      { slug:'karaoke-night', name:'Karaoke Night', when:'Jeden Donnerstag', time:'ab 19:00', desc:'Eintritt frei • Die Bühne gehört dir!', lineup:'Open Mic • Host Afterlux', prices:'Free Entry', cover:'karaoke nuovo.png' },
     ];
 
     const $ = s => document.querySelector(s);
@@ -646,7 +644,7 @@
       const dInput = document.getElementById('pr-data');
       if (ev.dateISO){
         const d = new Date(ev.dateISO);
-        const yyyy=d.getFullYear(), mm=String(d.getMonth()+1).padStart(2,'0'), dd=String(d.getDate()).padStart(2,'0');
+        const yyyy=d.getFullYear(), mm=String(d.getMonth()+1).padStart(2,'0'), dd=String(d.getDate()).padStart(2).padStart(2,'0');
         dInput.value = `${yyyy}-${mm}-${dd}`;
       } else { dInput.value = ''; }
 
@@ -823,3 +821,4 @@
   </script>
 </body>
 </html>
+"""
