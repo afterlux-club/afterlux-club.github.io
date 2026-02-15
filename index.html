@@ -1,4 +1,4 @@
-html_content = r"""<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="utf-8" />
@@ -501,9 +501,45 @@ html_content = r"""<!DOCTYPE html>
       });
     })();
 
-    /* ====== DATI EVENTI ====== */
+    /* ====== EVENTI RICORRENTI (AGGIUNTI) ====== */
+    const recurring = [
+      {
+        slug:'karaoke-night-every-sunday',
+        name:'Karaoke Night',
+        when:'jeden Sonntag',
+        time:'Einlass ab 19:00 Uhr',
+        desc:'Eintritt frei • Ab 16 Jahren',
+        lineup:'—',
+        prices:'Eintritt frei',
+        cover:'karaoke.1.jpeg'
+      },
+      {
+        slug:'schulklassen-studierende-feiern',
+        name:'Schulklassen & Studierende – Feiert bei uns!',
+        when:'Individuell',
+        time:'Termin nach Vereinbarung',
+        desc:'Exklusive Partys für Schulklassen & Studierende • Sonderangebote für Gruppen • Musik, Stimmung & unvergessliche Atmosphäre',
+        lineup:'—',
+        prices:'Anfrage per E-Mail oder WhatsApp',
+        cover:'schule.web.jpeg'
+      }
+    ];
+
+    /* ====== DATI EVENTI (AGGIUNTO 20.02.2026) ====== */
     const eventiData = [
-      /* === NUOVI EVENTI NOVEMBRE 2025 === */
+      /* === NUOVO EVENTO (DA LOCANDINA) === */
+      {
+        slug:'kant-party-2026-02-20',
+        name:'Wir geben uns die Kante! (KS2 Kant-Gymnasium)',
+        dateISO:'2026-02-20T22:00:00+01:00',
+        shortDate:'Fr 20 Feb',
+        desc:'Eingeladen von der KS2 des Kant-Gymnasiums • Start 22:00 Uhr • 16+ mit Muttizettel',
+        lineup:'—',
+        prices:'Eintritt: 10€ VVK • 12€ Abendkasse',
+        cover:'20.02web.jpeg'
+      },
+
+      /* === EVENTI NOVEMBRE 2025 === */
       { slug:'balkan-beats-2025-11-07', name:'Balkan Beats', dateISO:'2025-11-07T23:00:00+01:00', shortDate:'Fr 07 Nov', desc:'Start 23:00 • DJ Don-Maiky', lineup:'DJ Don-Maiky', prices:'Eintritt 5€ online • 10€ Abendkasse', cover:'7.11web.jpg',
         ticketUrl:'https://eventfrog.de/de/p/party/disco/balkan-beats-afterlux-7391063423314856566.html' },
       { slug:'ue30-party-2025-11-08', name:'Ü30 Party', dateISO:'2025-11-08T23:00:00+01:00', shortDate:'Sa 08 Nov', desc:'Einlass ab 23:00 – Nur ab 30 Jahren', lineup:'Don Maiky', prices:'Eintritt 10€', cover:'8.11web.jpg',
@@ -511,7 +547,7 @@ html_content = r"""<!DOCTYPE html>
       { slug:'italian-night-2025-11-22', name:'Italian Night', dateISO:'2025-11-22T23:00:00+01:00', shortDate:'Sa 22 Nov', desc:'Die größte Party in Lörrach • Start 23:00', lineup:'DJ Don-Maiky & Castiello Deejay', prices:'Eintritt 5€ online • 10€ Abendkasse', cover:'22.11web.jpg',
         ticketUrl:'https://eventfrog.de/de/p/party/disco/italian-night-afterlux-7391820792701397877.html' },
 
-      /* === NUOVI EVENTI GENNAIO 2026 (DA LOCANDINE) === */
+      /* === EVENTI GENNAIO 2026 (DA LOCANDINE) === */
       {
         slug:'urban-night-2026-01-10',
         name:'Urban Night',
@@ -553,8 +589,6 @@ html_content = r"""<!DOCTYPE html>
       { slug:'last-school-day-2025-12-19', name:'Last School Day 2025 – Spendenparty Abi 2026 (FES)', dateISO:'2025-12-19T22:00:00+01:00', shortDate:'Fr 19 Dez', desc:'Spendenaktion des Abi-Jahrgangs 2026 der FES • Einlass 22:00', lineup:'—', prices:'Ticket 7€ • Mindestalter 16', cover:'19.12web.png',
         ticketUrl:'https://eventfrog.de/de/p/party/disco/last-school-day-2025-7383798159095412970.html' }
     ];
-   
-    
 
     const $ = s => document.querySelector(s);
     const cards = $('#event-cards');
@@ -671,7 +705,7 @@ html_content = r"""<!DOCTYPE html>
       const dInput = document.getElementById('pr-data');
       if (ev.dateISO){
         const d = new Date(ev.dateISO);
-        const yyyy=d.getFullYear(), mm=String(d.getMonth()+1).padStart(2,'0'), dd=String(d.getDate()).padStart(2).padStart(2,'0');
+        const yyyy=d.getFullYear(), mm=String(d.getMonth()+1).padStart(2,'0'), dd=String(d.getDate()).padStart(2,'0');
         dInput.value = `${yyyy}-${mm}-${dd}`;
       } else { dInput.value = ''; }
 
@@ -848,4 +882,3 @@ html_content = r"""<!DOCTYPE html>
   </script>
 </body>
 </html>
-"""
